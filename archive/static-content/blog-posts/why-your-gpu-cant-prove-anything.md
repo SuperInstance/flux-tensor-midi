@@ -107,7 +107,6 @@ We tested FP16. Here's what happened:
 
 ```
 FP16 Safety Test Results (10M+ constraint checks)
-==================================================
 Constraint: reactor_temp in [280, 520]
 Input range: 0..4095 (12-bit sensor values)
 
@@ -130,7 +129,6 @@ Here's the counterintuitive result: by restricting ourselves to integer arithmet
 
 ```
 FLUX Performance (NVIDIA RTX 4050, 46.2W measured)
-====================================================
 Peak throughput:       341 billion constraints/sec (INT8 x8 packed)
 Sustained throughput:   90.2 billion constraints/sec
 Production kernel:     188 billion constraints/sec (validated, zero mismatches)
