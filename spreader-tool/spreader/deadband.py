@@ -116,12 +116,6 @@ class DeadbandDetector:
         self._state.mae_consecutive_count = self._mae_consecutive
         self._state.severity = self._compute_severity(breached, durations, now)
 
-        # Clean up breach starts for metrics no longer breached
-        active = set(breached)
-        for m in list(self._breach_start):
-            if m not in active and m != DeadbandMetric.INFERENCE_MAE:
-                del self._breach_start[m]
-
         return self._state
 
     def is_in_deadband(self) -> bool:
