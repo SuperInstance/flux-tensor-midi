@@ -1,0 +1,25 @@
+{
+  "total_cells": 370,
+  "total_params": 38052,
+  "total_kb": 148.640625,
+  "evolution_ticks": 100,
+  "evolution_time_s": 62.871795654296875,
+  "counts": {
+    "sandbox": 328,
+    "tide_pool": 38,
+    "school": 3,
+    "whale": 1
+  },
+  "best_fitness": {
+    "sandbox": 0.7699999809265137,
+    "tide_pool": 0.6499999761581421,
+    "school": 0.6699999570846558,
+    "whale": 0.429999977350235
+  },
+  "max_generation": {
+    "sandbox": 9,
+    "tide_pool": 2,
+    "school": 0,
+    "whale": 0
+  }
+}
