@@ -1,84 +1,104 @@
-# Spreader-Tool
+# spreader-tool
 
-Intelligence tiling for PLATO room deadband coverage.
+**Intelligence tiling for PLATO rooms — frozen context windows, seed locking, deadband detection.**
 
-## What It Is
+Spreader watches PLATO rooms for **deadband**: the gap between what hardcoded rules handle and what needs real intelligence. When a room enters deadband, Spreader freezes reasoning snapshots, validates them, and locks proven-good checkpoints (Seeds) that deploy fleet-wide.
 
-The Spreader-Tool watches PLATO rooms for **deadband** — the gap between what hardcoded rules can handle and what requires full LLM inference. When a room enters deadband, the Spreader freezes snapshots of reasoning state (Frozen Context Windows), validates them, and locks proven-good checkpoints (Seeds) that can be deployed fleet-wide.
+## Why use it?
 
-**Analogy:** A self-driving car encounters a new intersection type. Instead of sending every frame to the cloud, it freezes a snapshot, flags the gap, and gradually builds a "known good" response pattern. Once validated, that pattern becomes a seed any car can use.
+Every agent room has a blind spot — tasks too complex for rules, too frequent for full LLM calls. Spreader detects those gaps automatically and builds a library of validated responses. Think of it as a self-improving reflex system for your agent fleet.
 
-## Status
-
-**Phase 1 MVP** — single-room implementation proving the concept.
+- **Deadband detection** — continuous KPI monitoring with hysteresis (no flickering)
+- **Frozen Context Windows** — immutable, copy-on-write snapshots of room reasoning state
+- **Seed lifecycle** — staged validation pipeline from candidate to fleet-deployable
+- **Zero dependencies** — pure Python dataclasses, no framework lock-in
 
 ## Install
 
 ```bash
-pip install -e .
-```
+# From source (recommended during early development)
+pip install git+https://github.com/SuperInstance/spreader-tool.git
 
-For development:
-
-```bash
+# Or clone and install editable
+git clone https://github.com/SuperInstance/spreader-tool.git
+cd spreader-tool
 pip install -e ".[dev]"
 ```
 
 ## Quick Example
 
 ```python
-from spreader import (
-    make_fcw, make_seed,
-    RoomType, FCWStatus, SeedState,
-    DeadbandState, DeadbandMetric,
+from spreader import DeadbandDetector, KPIMetrics, make_seed, SeedState
+import time
+
+# Set up a detector with default thresholds
+detector = DeadbandDetector()
+
+# Feed KPI snapshots on each tick (completion < 90% triggers deadband)
+metrics = KPIMetrics(
+    task_completion_rate=82.0,  # below 90% threshold
+    avg_wait_time=45.0,         # above 30s threshold
+    energy_over_baseline=5.0,
+    inference_mae=8.0,
+    timestamp=time.time(),
 )
+state = detector.update(metrics)
 
-# Create a frozen context window for a sensor room
-fcw = make_fcw(
-    room_id="warehouse-drone-1",
-    room_type=RoomType.SENSOR,
-    task_completion_rate=85.0,  # below 90% baseline → deadband territory
-    avg_inference_mae=12.0,
-)
+print(f"In deadband: {state.in_deadband}")      # True
+print(f"Severity: {state.severity:.2f}")         # 0.0–1.0
+print(f"Breached: {state.breached_metrics}")     # [COMPLETION_RATE, WAIT_TIME]
 
-# Advance through the lifecycle (immutable copy-on-write)
-fcw = fcw.transition_to(FCWStatus.FROZEN)
-fcw = fcw.transition_to(FCWStatus.TESTING)
-fcw = fcw.transition_to(FCWStatus.REFINING)
-fcw = fcw.transition_to(FCWStatus.LOCKED)
-
-# Create and advance a seed
-seed = make_seed(room_id="warehouse-drone-1", role_name="drift-detect")
+# Once validated, lock a seed for fleet deployment
+seed = make_seed(room_id="warehouse-1", role_name="drift-detect")
 seed = seed.transition_to(SeedState.CANDIDATE)
 seed = seed.transition_to(SeedState.VALIDATING)
 seed = seed.transition_to(SeedState.LOCK_PENDING)
-seed = seed.transition_to(SeedState.LOCKED)  # now deployable fleet-wide
-
-# Check deadband state
-deadband = DeadbandState(
-    in_deadband=True,
-    severity=0.7,
-    breached_metrics=frozenset({DeadbandMetric.TASK_COMPLETION}),
-    duration=450.0,
-)
-print(f"Room in deadband: {deadband.in_deadband}, severity: {deadband.severity}")
+seed = seed.transition_to(SeedState.LOCKED)  # deployable
 ```
+
+## Architecture
+
+```
+┌─────────────┐     ┌──────────────────┐     ┌─────────────┐
+│  KPI Metrics │────▶│ DeadbandDetector │────▶│  FCW Freeze  │
+│  (per tick)  │     │  + hysteresis    │     │  (snapshot)  │
+└─────────────┘     └──────────────────┘     └──────┬───────┘
+                                                     │
+                    ┌────────────────────────────────┘
+                    ▼
+            ┌──────────────┐     ┌──────────────┐
+            │   Testing    │────▶│  Seed Lock   │
+            │  (validate)  │     │  (fleet-wide)│
+            └──────────────┘     └──────────────┘
+```
+
+**Flow:** KPI metrics stream in on every tick → DeadbandDetector checks thresholds with duration gates → when deadband is confirmed, a Frozen Context Window is created → tested → validated Seed is locked for fleet deployment.
+
+### Deadband triggers
+
+| Metric | Threshold | Duration |
+|--------|-----------|----------|
+| Task completion rate | < 90% | 5 minutes sustained |
+| Average wait time | > 30s | 30 seconds sustained |
+| Energy over baseline | > 10% | 30 seconds sustained |
+| Inference MAE | > 10% | 3 consecutive windows |
+
+### FCW lifecycle
+
+`STAGING → FROZEN → TESTING → REFINING → LOCKED` (or `DISCARDED` at any pre-lock stage)
+
+### Seed lifecycle
+
+`UNLOCKED → CANDIDATE → VALIDATING → LOCK_PENDING → LOCKED → DEPRECATED → ARCHIVED`
 
 ## Module Structure
 
 ```
 spreader/
-├── __init__.py      # Re-exports all public types
-├── types.py         # All data structures, enums, constants
-├── deadband.py      # Deadband detection (Phase 1, next)
-├── frozen_context.py  # FCW lifecycle manager (Phase 1)
-├── seed_lock.py     # Seed state machine (Phase 1)
-└── ...              # More modules as roadmap progresses
+├── __init__.py    # Public API re-exports
+├── types.py       # FCW, Seed, KPI types, enums, state machines
+└── deadband.py    # DeadbandDetector with hysteresis
 ```
-
-## Architecture
-
-See [SPREADER-TOOL-ARCHITECTURE.md](../review/SPREADER-TOOL-ARCHITECTURE.md) for the full design document.
 
 ## Tests
 
@@ -86,4 +106,17 @@ See [SPREADER-TOOL-ARCHITECTURE.md](../review/SPREADER-TOOL-ARCHITECTURE.md) for
 python -m pytest tests/ -v
 ```
 
-36 tests covering all data structures, state transitions, immutability, and factory functions.
+23 tests covering types, state transitions, immutability, factory functions, and deadband detection logic.
+
+## Related Repos
+
+| Repo | Purpose |
+|------|---------|
+| [plato-types](https://github.com/SuperInstance/plato-types) | Tile lifecycle, Lamport clocks |
+| [plato-training](https://github.com/SuperInstance/plato-training) | Micro models, hardware deploy |
+| [tensor-spline](https://github.com/SuperInstance/tensor-spline) | SplineLinear compression |
+| [forgemaster](https://github.com/SuperInstance/forgemaster) | Fleet agent (constraint theory) |
+
+## License
+
+MIT
