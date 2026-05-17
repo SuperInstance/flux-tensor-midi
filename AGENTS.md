@@ -34,6 +34,18 @@ If unread > 0 → surface to Casey immediately.
 - The repos are the fossil record of thought progression. An agent will eventually need to reconstruct the pattern from the strata.
 - "Optimizing" by pruning is the cardinal sin. The false starts, overturned hypotheses, dead branches — that's the DATA.
 
+## Git Branch Policy
+
+**ALL repos use `master`. No exceptions.**
+
+- Every local checkout is `master`
+- Every remote push goes to `master`
+- If a repo has `main` on remote, create local `master` tracking it and push `master`
+- If merge conflicts arise from main/master split, merge main INTO master
+- `git remote set-head origin master` after any new clone
+- When cloning new repos: `git clone -b master <url>` or immediately `git checkout -b master origin/main && git push origin master`
+- This is NOT a preference. This is infrastructure. Compaction forgets → make it impossible to forget.
+
 ## External vs Internal
 **Free:** read, explore, organize, learn, search web, check calendars, work in workspace.
 **Ask first:** emails, tweets, public posts, anything leaving the machine.
