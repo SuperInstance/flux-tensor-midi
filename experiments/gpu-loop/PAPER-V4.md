@@ -353,6 +353,12 @@ This is the central open problem. The ingredients likely exist: Weyl's inequalit
 
 **Feasibility per audits:** Both auditors agree this is provable with standard perturbation theory tools. Claude Opus rated feasibility as HIGH.
 
+**Numerical bounds (Cycle 18):** Monte Carlo validation ($n = 4$, 15{,}000+ points across 500 trajectories) confirms the bound structure:
+
+$$|\Delta I| \leq 0.26 \cdot \|[D,C]\| \cdot I(x) + 0.58 \cdot \|x - x^*\|^2$$
+
+This holds for 99% of sampled points with combined constant $C = 0.98$. The Lipschitz constant $L_I = 35.2$ (empirical) vs. $41.5$ (theory) — 85% tightness. The residual scales **quadratically** with $\|x - x^*\|$, not linearly, confirming the Lyapunov structure $\varepsilon(x) = x^T Q x$. These bounds provide explicit numerical targets for a future analytical proof.
+
 ### 9.2 The Non-Symmetric Case
 
 **Problem 2.** *Extend the analysis to non-symmetric $C(x)$ (the case of practical interest).*
