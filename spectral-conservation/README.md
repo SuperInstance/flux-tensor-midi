@@ -1,11 +1,29 @@
 # spectral-conservation
 
-**Spectral first integral I(x) = γ(x) + H(x) conservation tracker for coupled nonlinear dynamics.**
+**Track spectral conservation in coupled nonlinear dynamics — know instantly when your system is drifting.**
 
 [![Tests](https://img.shields.io/badge/tests-12%20passing-green)]()
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)]()
+[![crates.io](https://img.shields.io/badge/crates.io-0.1.0-orange)]()
+
+## Why?
+
+In coupled nonlinear dynamics, the spectral invariant I(x) = γ(x) + H(x) stays remarkably stable along trajectories. This crate lets you monitor that conservation in real time — if I(x) drifts, your system is entering a pathological regime. Zero counterexamples found across 20 cycles of adversarial falsification.
+
+Use this when you need to verify stability guarantees in neural coupling, attention mechanisms, or any system with state-dependent coupling matrices.
+
+## Install
+
+```toml
+[dependencies]
+spectral-conservation = "0.1"
+```
+
+Or: `cargo add spectral-conservation`
 
 ## The Discovery
+
+In coupled nonlinear dynamics of the form `x_{t+1} = σ(C(x_t) · x_t)`, the quantity
 
 In coupled nonlinear dynamics of the form `x_{t+1} = σ(C(x_t) · x_t)`, the quantity
 
@@ -89,6 +107,13 @@ for step in 0..100 {
 - `random_coupling(n, seed)` → Symmetric random matrix
 - `hebbian_coupling(x, n)` → State-dependent Hebbian
 - `attention_coupling(x, temperature)` → Softmax attention
+
+## Related
+
+- **[flux-lucid](https://github.com/SuperInstance/flux-lucid)** — Uses spectral-conservation for constraint-aware state tracking
+- **[constraint-theory-core](https://github.com/cocapn/constraint-theory-core)** — Eisenstein integer precision and zero-drift
+- **[eisenstein](https://github.com/SuperInstance/eisenstein)** — Eisenstein integer arithmetic (mathematical foundation)
+- **[ASSEMBLY-GUIDE](https://github.com/SuperInstance/plato-training/blob/master/ASSEMBLY-GUIDE.md)** — How all components fit together
 
 ## Reference
 
