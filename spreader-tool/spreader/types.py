@@ -137,9 +137,11 @@ class FrozenContextWindow:
     _transition_guard: int = 0  # bumped on every transition for copy-on-write
 
     def can_transition_to(self, new_status: FCWStatus) -> bool:
+        """Check whether a transition to *new_status* is valid."""
         return new_status in _FCW_TRANSITIONS.get(self.status, set())
 
     def transition_to(self, new_status: FCWStatus) -> "FrozenContextWindow":
+        """Return a new FCW with updated status (copy-on-write)."""
         if not self.can_transition_to(new_status):
             raise ValueError(f"Invalid FCW transition: {self.status} → {new_status}")
         return FrozenContextWindow(
@@ -176,9 +178,11 @@ class Seed:
     _transition_guard: int = 0
 
     def can_transition_to(self, new_state: SeedState) -> bool:
+        """Check whether a transition to *new_state* is valid."""
         return new_state in _SEED_TRANSITIONS.get(self.state, set())
 
     def transition_to(self, new_state: SeedState) -> "Seed":
+        """Return a new Seed with updated state (copy-on-write)."""
         if not self.can_transition_to(new_state):
             raise ValueError(f"Invalid Seed transition: {self.state} → {new_state}")
         now = time.time()
@@ -212,6 +216,7 @@ def make_fcw(
     trigger: TriggerType,
     **extensions: Any,
 ) -> FrozenContextWindow:
+    """Factory: create a new FCW in STAGING status."""
     return FrozenContextWindow(
         fcw_id=str(uuid4()),
         frozen_at=time.time(),
@@ -228,6 +233,7 @@ def make_seed(
     role_name: str,
     lineage_id: Optional[str] = None,
 ) -> Seed:
+    """Factory: create a new Seed in UNLOCKED state."""
     return Seed(
         seed_id=str(uuid4()),
         room_id=room_id,

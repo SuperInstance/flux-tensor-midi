@@ -203,6 +203,7 @@ class SeedLockManager:
     # ── Internals ────────────────────────────────────────────────────────
 
     def _require_seed(self, seed_id: str) -> Seed:
+        """Look up a seed or raise KeyError."""
         seed = self._store.get(seed_id)
         if seed is None:
             raise KeyError(f"Seed not found: {seed_id}")

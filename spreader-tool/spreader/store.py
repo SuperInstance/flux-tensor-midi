@@ -47,16 +47,19 @@ class SpreaderStore:
         return hashlib.sha256(data).hexdigest()
 
     def _ensure_dirs(self) -> None:
+        """Create storage directories if they don't exist."""
         os.makedirs(self._fcw_dir, exist_ok=True)
         os.makedirs(self._seed_dir, exist_ok=True)
 
     def _load_index(self) -> Dict[str, Any]:
+        """Load the room→hash index from disk."""
         if os.path.exists(self._index_path):
             with open(self._index_path, "r") as f:
                 return json.load(f)
         return {"fcws": {}, "seeds": {}}
 
     def _save_index(self, idx: Dict[str, Any]) -> None:
+        """Persist the room→hash index to disk."""
         self._ensure_dirs()
         with open(self._index_path, "w") as f:
             json.dump(idx, f, indent=2)
@@ -69,6 +72,7 @@ class SpreaderStore:
 
     @staticmethod
     def _deserialize_fcw(raw: str) -> FrozenContextWindow:
+        """Deserialize a JSON string into a FrozenContextWindow."""
         d = json.loads(raw)
         d["room_type"] = RoomType(d["room_type"])
         d["status"] = FCWStatus(d["status"])
@@ -80,6 +84,7 @@ class SpreaderStore:
 
     @staticmethod
     def _deserialize_seed(raw: str) -> Seed:
+        """Deserialize a JSON string into a Seed."""
         d = json.loads(raw)
         d["state"] = SeedState(d["state"])
         if d.get("locked_kpis") and isinstance(d["locked_kpis"], dict):
@@ -150,26 +155,49 @@ class SpreaderStore:
             self._save_index(idx)
         return removed
 
+    def _list_items(
+        self,
+        kind: str,
+        room_id: Optional[str],
+        status_filter: Optional[object],
+        status_attr: str,
+        deserialize_fn,
+        expected_type: type,
+    ) -> list:
+        """Shared listing logic for FCWs and Seeds."""
+        idx = self._load_index()
+        results: list = []
+        bucket = idx.get(kind, {})
+        hash_lists = (
+            [bucket[room_id]]
+            if room_id and room_id in bucket
+            else (list(bucket.values()) if not room_id else [])
+        )
+        for hashes in hash_lists:
+            for h in hashes:
+                item = self.get(h)
+                if item is None:
+                    continue
+                assert isinstance(item, expected_type)
+                if status_filter and getattr(item, status_attr) != status_filter:
+                    continue
+                results.append(item)
+        return results
+
     def list_fcws(
         self,
         room_id: Optional[str] = None,
         status: Optional[FCWStatus] = None,
     ) -> List[FrozenContextWindow]:
         """List stored FCWs, optionally filtered by room_id and/or status."""
-        idx = self._load_index()
-        results: List[FrozenContextWindow] = []
-        bucket = idx.get("fcws", {})
-        hash_lists = [bucket[room_id]] if room_id and room_id in bucket else (list(bucket.values()) if not room_id else [])
-        for hashes in hash_lists:
-            for h in hashes:
-                item = self.get(h)
-                if item is None:
-                    continue
-                assert isinstance(item, FrozenContextWindow)
-                if status and item.status != status:
-                    continue
-                results.append(item)
-        return results
+        return self._list_items(
+            kind="fcws",
+            room_id=room_id,
+            status_filter=status,
+            status_attr="status",
+            deserialize_fn=None,
+            expected_type=FrozenContextWindow,
+        )
 
     def list_seeds(
         self,
@@ -177,20 +205,14 @@ class SpreaderStore:
         state: Optional[SeedState] = None,
     ) -> List[Seed]:
         """List stored Seeds, optionally filtered by room_id and/or state."""
-        idx = self._load_index()
-        results: List[Seed] = []
-        bucket = idx.get("seeds", {})
-        hash_lists = [bucket[room_id]] if room_id and room_id in bucket else (list(bucket.values()) if not room_id else [])
-        for hashes in hash_lists:
-            for h in hashes:
-                item = self.get(h)
-                if item is None:
-                    continue
-                assert isinstance(item, Seed)
-                if state and item.state != state:
-                    continue
-                results.append(item)
-        return results
+        return self._list_items(
+            kind="seeds",
+            room_id=room_id,
+            status_filter=state,
+            status_attr="state",
+            deserialize_fn=None,
+            expected_type=Seed,
+        )
 
     def destroy(self) -> None:
         """Remove the entire store directory (for test cleanup)."""

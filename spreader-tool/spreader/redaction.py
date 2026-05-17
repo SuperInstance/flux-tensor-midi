@@ -19,6 +19,10 @@ from typing import List, Tuple
 from .types import FrozenContextWindow, KPIMetrics
 
 
+# Distance threshold for coverage proximity (0–1 normalized KPI space).
+_PROXIMITY_THRESHOLD: float = 0.25
+
+
 class RedactionEngine:
     """Prune FCWs while preserving KPI-space coverage."""
 
@@ -178,7 +182,7 @@ class RedactionEngine:
         if not remaining:
             return 0.0
 
-        proximity_threshold = 0.25
+        proximity_threshold = _PROXIMITY_THRESHOLD
 
         covered = 0
         for orig in original:

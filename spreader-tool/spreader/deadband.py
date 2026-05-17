@@ -119,9 +119,11 @@ class DeadbandDetector:
         return self._state
 
     def is_in_deadband(self) -> bool:
+        """Return whether the room is currently in the deadband."""
         return self._state.in_deadband
 
     def severity(self) -> float:
+        """Return current severity score (0.0–1.0)."""
         return self._state.severity
 
     def time_in_deadband(self) -> float:
@@ -135,9 +137,11 @@ class DeadbandDetector:
         return max(0.0, now - self._state.time_entered)
 
     def breached_metrics(self) -> List[DeadbandMetric]:
+        """Return the list of currently breached metrics."""
         return list(self._state.breached_metrics)
 
     def reset(self) -> None:
+        """Reset detector state, clearing all breach tracking."""
         self._state = DeadbandState(in_deadband=False, severity=0.0)
         self._breach_start.clear()
         self._mae_consecutive = 0
@@ -156,6 +160,7 @@ class DeadbandDetector:
         durations: Dict[str, float],
         below: bool,
     ) -> None:
+        """Track a single metric's breach status and duration."""
         is_breached = (value < threshold) if below else (value > threshold)
 
         if is_breached:
@@ -186,6 +191,7 @@ class DeadbandDetector:
         durations: Dict[str, float],
         now: float,
     ) -> float:
+        """Compute a 0–1 severity score from breach count and duration."""
         if not breached:
             return 0.0
 

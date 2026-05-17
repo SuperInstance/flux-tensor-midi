@@ -135,9 +135,11 @@ class FCWManager:
     # ── Statistics ─────────────────────────────────────────────────────────
 
     def count(self) -> int:
+        """Return total number of stored FCWs."""
         return len(self._fcws)
 
     def count_by_status(self) -> Dict[FCWStatus, int]:
+        """Return a dict of FCWStatus → count."""
         counts: Dict[FCWStatus, int] = {}
         for fcw in self._fcws.values():
             counts[fcw.status] = counts.get(fcw.status, 0) + 1
@@ -161,6 +163,7 @@ class FCWManager:
         self._room_index[fcw.room_id].add(fcw.fcw_id)
 
     def _get_or_raise(self, fcw_id: str) -> FrozenContextWindow:
+        """Look up an FCW or raise KeyError."""
         fcw = self._fcws.get(fcw_id)
         if fcw is None:
             raise KeyError(f"FCW not found: {fcw_id}")
