@@ -1,0 +1,53 @@
+{
+  "model_size": 1037,
+  "shared_params": 816,
+  "bytes": 4148,
+  "rooms": [
+    "room-drift-detect",
+    "room-intent-classify",
+    "room-anomaly-flag",
+    "room-priority-rank",
+    "room-tile-relevance"
+  ],
+  "domains": [
+    "stability",
+    "understanding",
+    "quality",
+    "relevance",
+    "matching"
+  ],
+  "spectral_I_final": 5.289684772491455,
+  "spectral_CV": 0.10270267170257441,
+  "provenance": {
+    "0.weight": {
+      "room-drift-detect": 0.16144580534472497,
+      "room-intent-classify": 0.19778060271315148,
+      "room-anomaly-flag": 0.2062193876146355,
+      "room-priority-rank": 0.1908985163058475,
+      "room-tile-relevance": 0.24365568802164053
+    },
+    "0.bias": {
+      "room-drift-detect": 0.16144580534472497,
+      "room-intent-classify": 0.19778060271315148,
+      "room-anomaly-flag": 0.2062193876146355,
+      "room-priority-rank": 0.1908985163058475,
+      "room-tile-relevance": 0.24365568802164053
+    },
+    "2.weight": {
+      "room-drift-detect": 0.16144580534472497,
+      "room-intent-classify": 0.19778060271315148,
+      "room-anomaly-flag": 0.2062193876146355,
+      "room-priority-rank": 0.1908985163058475,
+      "room-tile-relevance": 0.24365568802164053
+    },
+    "2.bias": {
+      "room-drift-detect": 0.16144580534472497,
+      "room-intent-classify": 0.19778060271315148,
+      "room-anomaly-flag": 0.2062193876146355,
+      "room-priority-rank": 0.1908985163058475,
+      "room-tile-relevance": 0.24365568802164053
+    }
+  },
+  "training_samples": 1000,
+  "training_epochs": 30
+}
