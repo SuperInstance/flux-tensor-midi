@@ -1,0 +1,11 @@
+{
+  "drift_gpu_acc": 1.0,
+  "drift_cpu_acc": 1.0,
+  "gpu_speedup": 16.375594396671932,
+  "intent_acc": 0.7149999737739563,
+  "esc_acc": 0.8100000023841858,
+  "esc_caught": 0.5714285373687744,
+  "esc_fp": 0.09176470339298248,
+  "esc_params": 737,
+  "vram_used": 0.018432
+}
