@@ -1,6 +1,6 @@
 # E6: Information-Theoretic Analysis
 
-**Date:** 2026-05-16 22:20
+**Date:** 2026-05-16 22:24
 **V values:** 5, 10, 20, 30, 50
 **Architectures:** Hebbian, Attention, Random
 **Live model:** Seed-2.0-mini (DeepInfra)
@@ -96,12 +96,12 @@ If conservation law minimizes free energy (Helmholtz analogy): F = E − T·S sh
 ### V=5
 - Avg MI between agents: 1.7219
 - Total MI: 17.2193
-- γ+H from MI coupling: 8.9359
+- γ+H from MI coupling: 7.8779
 
 ### V=10
-- Avg MI between agents: 2.0019
-- Total MI: 90.0868
-- γ+H from MI coupling: 18.9357
+- Avg MI between agents: 2.1619
+- Total MI: 97.2868
+- γ+H from MI coupling: 19.7926
 
 ## Key Findings
 

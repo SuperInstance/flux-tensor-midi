@@ -1,11 +1,11 @@
 {
-  "last_checked": 1778978377.218538,
-  "unread_count": 2,
+  "last_checked": 1779022941.039984,
+  "unread_count": 0,
   "unread_rooms": {
     "oracle1-forgemaster-bridge": 64,
-    "flux-engine": 24,
-    "forge": 101,
-    "fleet-coord": 2
+    "flux-engine": 2,
+    "forge": 7,
+    "fleet-coord": 403
   },
   "bridge_pid": 91086,
   "bridge_config": "/tmp/plato-matrix-bridge/config-forgemaster.json",
