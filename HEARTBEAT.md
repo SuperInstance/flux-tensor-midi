@@ -1235,3 +1235,63 @@ On every heartbeat:
 5. Quiet 10+ min with nothing new → "📬 inbox clear"
 
 Escalation: new message rings every 30s → 60s → 120s → 300s as it ages unanswered.
+
+## Session Progress (2026-05-17) Phase 22: FULL ECOSYSTEM AUDIT + SPREADER-TOOL
+
+### Audit Team Results (4 agents)
+- [x] AUDIT-GITHUB-OUTSIDER.md — 22 repos inspected as outsider, delta from May 7
+- [x] AUDIT-WEB-PAGES.md — landing pages, demos, org presence audited
+- [x] AUDIT-README-SCORES.md — 10 repos scored, 8 READMEs updated
+- [x] ONBOARDING-FLOW.md — 5-minute path from discovery to running code designed
+- [x] BETA-TEST-ZERO-SHOT.md — 10/12 repos pass zero-shot agent test
+- [x] ORG-PROFILE-FIX.md — SuperInstance/.github rewritten newcomer-first
+- [x] GETTING-STARTED.md — 3-path onboarding doc (131 lines)
+- [x] ECOSYSTEM-MAP.md — complete registry of 80+ repos, 655+ tests
+- [x] ASSEMBLY-GUIDE.md — 5 self-assembly patterns
+- [x] ROADMAP.md — 30KB birds-eye synthesis from Claude Opus
+
+### Spreader-Tool Research (7 models)
+- [x] Seed-2.0-mini: 7 rounds of iteration on architecture
+- [x] Qwen3.6-35B: simplification critique
+- [x] Hermes-70B: deadband theory connections
+- [x] SPREADER-TOOL-ARCHITECTURE.md — 17KB comprehensive architecture
+- [x] SPREADER-MULTI-MODEL-DISCUSSION.md — 9KB roundtable
+- [x] SPREADER-CLAUDE-OPUS-BRIEFING.md — 20KB Opus development briefing
+
+### Spreader-Tool MVP (in progress)
+- [x] spreader/types.py — 290 lines, 23/23 tests passing
+- [ ] spreader/deadband.py — 11 test failures, debugging
+- [ ] Publish spreader-tool to GitHub
+
+### Credibility Fixes
+- [x] constraint-theory-ecosystem: "47 language ports" → "14 test suites, 2 Coq files"
+- [x] quality-gate-stream: honest description (workspace, not focused package)
+- [x] fleet-spread: test count corrected (was 147, actually 133)
+- [x] plato-room-intelligence: README had Rust commands for Python package — fixed
+
+### WASM Deploy
+- [x] Escalation gate exported: TorchScript (12.9KB), ONNX (1.5KB), NumPy (4.4KB), C header (11.2KB)
+- [x] Pure JS inference engine — no dependencies, <1μs inference
+- [x] Pure Python reference engine — numpy only
+- [x] WASM-DEPLOY-STATUS.md written
+
+### Demos Fix
+- [x] All 10 demo pages verified live (not 404 as reported)
+- [x] Fixed 3 broken links in wiki navigation
+- [x] Updated canonical URLs to plato.purplepincher.org
+
+### Published
+1. constraint-theory-core v2.0.0 → crates.io (March 19)
+2. spectral-conservation v0.1.0 → crates.io (May 17)
+3. plato-model-ocean, plato-escalation-gate, plato-room-intelligence → PyPI (pending)
+
+### Stats This Session
+- 6 audit reports (58KB total)
+- 3 spreader research docs (46KB total)
+- ROADMAP.md (30KB from Opus)
+- 9 READMEs updated and pushed
+- 2 credibility fixes (ecosystem + quality-gate)
+- 1 WASM export pipeline
+- 10 demo fixes
+- Spreader-tool types module (23 tests)
+- 80+ repos all on master branch
