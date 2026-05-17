@@ -261,6 +261,7 @@ The theory was broken and rebuilt three times:
 | 6 | Quadratic form $x^TPx = I$ | $R^2 < 0$ for state-dependent coupling |
 | 7 | $I$ is monotonically decreasing | 46–51% of steps show increase |
 | 8 | $\alpha \approx 1 - \rho(J)$ | 50× discrepancy (0.003 vs 0.15) |
+| 9 | Conservation is universal | **Cycle 20: triple shape cycle breaks it (CV = 0.69)** |
 
 ---
 
