@@ -6,6 +6,7 @@ members = [
     "flux-lucid",
     "snapkit-rust", "plato-mud", "zeitgeist-protocol",
     "flux-verify-api",
+    "spectral-conservation",
 ]
 exclude = ["lighthouse-cli"]
 
