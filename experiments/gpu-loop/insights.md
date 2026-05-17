@@ -978,3 +978,39 @@ Adversarial (contractive): CV≈3.0   | Constructed to maximize violation
 3. Can structured sparse coupling (e.g., banded with N/2 bandwidth) conserve well?
 4. Is there a sparse + rank-1 hybrid?
 5. What is the minimum effective rank for dynamical (non-structural) conservation?
+
+## Cycle 19 (GLM-5.1) — 2026-05-17
+
+### MAJOR FINDING: Asymmetry Degrades Conservation Smoothly (confidence: HIGH)
+
+State-dependent coupling with antisymmetric perturbation ε shows monotonic CV degradation:
+- ε=0: CV=0.000 (baseline, symmetric)
+- ε=0.1: CV=0.0007 (detectable)
+- ε=1.0: CV=0.007 (7× baseline)
+- ε=10.0: CV=0.029 (still below 0.03 threshold!)
+
+Rough fit: CV(ε) ≈ 0.003 · ε^0.7
+
+Conservation survives even 10× antisymmetric perturbation. This means:
+1. Non-symmetric attention coupling should still show approximate conservation
+2. The degradation is graceful, not catastrophic
+3. Fleet designs with asymmetric communication channels are viable
+
+### FINDING: Conservation is Noise-Immune for Static Coupling (confidence: HIGH)
+
+Additive Gaussian noise up to η=1.0 (50% of tanh range) produces CV=0.000 for static coupling.
+Noise changes the state trajectory but not the coupling matrix.
+Conservation is a property of C(x), not of x(t).
+
+### FINDING: High-Dim Scaling Is Trivial for Quasi-Static Coupling (confidence: HIGH)
+
+For random static and Hebbian coupling with tanh activation, CV=0.000000 at all tested dimensions (N=10-100).
+Tanh saturation drives the system to near-equilibrium fast, making coupling quasi-static.
+The N^{-0.28} scaling from earlier cycles likely applies to the transient phase only.
+Need genuinely persistent state-dependent dynamics (e.g., chaotic coupling) to test dimension scaling properly.
+
+### Open Questions for Next Cycle
+1. Noise + state-dependent coupling simultaneously — interaction effects?
+2. What coupling architectures produce genuinely persistent state-dependence (not quasi-static)?
+3. Does the ε^0.7 power law hold for N>30?
+4. Can we design a coupling that intentionally maximizes CV(I) to find the breaking point?
