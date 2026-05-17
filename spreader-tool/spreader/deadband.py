@@ -106,15 +106,19 @@ class DeadbandDetector:
             # Hysteresis check: must recover past threshold to exit
             new_in = not self._all_recovered(metrics)
 
-        # ── Update state ────────────────────────────────────────────────
+        # ── Update state (immutable replacement) ───────────────────────
+        entered_at = self._state.time_entered
         if new_in and not currently_in:
-            self._state.time_entered = now
+            entered_at = now
 
-        self._state.in_deadband = new_in
-        self._state.breached_metrics = breached
-        self._state.durations = durations
-        self._state.mae_consecutive_count = self._mae_consecutive
-        self._state.severity = self._compute_severity(breached, durations, now)
+        self._state = DeadbandState(
+            in_deadband=new_in,
+            severity=self._compute_severity(breached, durations, now),
+            breached_metrics=breached,
+            time_entered=entered_at,
+            durations=durations,
+            mae_consecutive_count=self._mae_consecutive,
+        )
 
         return self._state
 

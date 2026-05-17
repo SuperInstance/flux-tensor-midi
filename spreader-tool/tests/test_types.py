@@ -192,6 +192,9 @@ class TestDeadbandState:
     def test_frozen_by_default(self):
         ds = DeadbandState(in_deadband=False, severity=0.0)
         assert not ds.in_deadband
-        # DeadbandState is mutable (deadband detector updates in-place)
-        ds.in_deadband = True
-        assert ds.in_deadband
+        # DeadbandState is now frozen — immutable
+        with pytest.raises(AttributeError):
+            ds.in_deadband = True
+        # Create new instance instead
+        ds2 = DeadbandState(in_deadband=True, severity=0.5)
+        assert ds2.in_deadband

@@ -30,3 +30,10 @@ from spreader.types import (
     make_fcw,
     make_seed,
 )
+from spreader.deadband import DeadbandDetector, DeadbandConfig as DeadbandDetectorConfig
+from spreader.frozen_context import FCWManager
+from spreader.store import SpreaderStore
+from spreader.seed_lock import SeedLockManager
+from spreader.cost import CostTracker
+from spreader.redaction import RedactionEngine
+from spreader.spreader_room import SpreaderRoom

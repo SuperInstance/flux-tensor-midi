@@ -1,6 +1,6 @@
 """Spreader-Tool type definitions — FCW, Seed, Deadband types."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from enum import Enum
 from typing import Any, Dict, List, Optional
 from uuid import UUID, uuid4
@@ -112,7 +112,7 @@ class DeadbandConfig:
     hysteresis_exit_factor: float = 1.1
     tick_interval: float = 10.0
 
-@dataclass
+@dataclass(frozen=True)
 class DeadbandState:
     in_deadband: bool
     severity: float  # 0.0 – 1.0
@@ -144,17 +144,9 @@ class FrozenContextWindow:
         """Return a new FCW with updated status (copy-on-write)."""
         if not self.can_transition_to(new_status):
             raise ValueError(f"Invalid FCW transition: {self.status} → {new_status}")
-        return FrozenContextWindow(
-            fcw_id=self.fcw_id,
-            frozen_at=self.frozen_at,
-            room_id=self.room_id,
-            room_type=self.room_type,
+        return replace(
+            self,
             status=new_status,
-            kpi_snapshot=self.kpi_snapshot,
-            trigger=self.trigger,
-            safety_compliant=self.safety_compliant,
-            peer_count=self.peer_count,
-            linked_seed_version=self.linked_seed_version,
             extensions=dict(self.extensions),
             _transition_guard=self._transition_guard + 1,
         )
@@ -185,27 +177,14 @@ class Seed:
         """Return a new Seed with updated state (copy-on-write)."""
         if not self.can_transition_to(new_state):
             raise ValueError(f"Invalid Seed transition: {self.state} → {new_state}")
-        now = time.time()
-        locked_at = self.locked_at
+        updates = {
+            "state": new_state,
+            "extensions": dict(self.extensions),
+            "_transition_guard": self._transition_guard + 1,
+        }
         if new_state == SeedState.LOCKED:
-            locked_at = now
-        return Seed(
-            seed_id=self.seed_id,
-            room_id=self.room_id,
-            role_name=self.role_name,
-            lineage_id=self.lineage_id,
-            state=new_state,
-            weights_ref=self.weights_ref,
-            context_window_ids=self.context_window_ids,
-            locked_kpis=self.locked_kpis,
-            backtest_score=self.backtest_score,
-            version_major=self.version_major,
-            version_minor=self.version_minor,
-            created_at=self.created_at,
-            locked_at=locked_at,
-            extensions=dict(self.extensions),
-            _transition_guard=self._transition_guard + 1,
-        )
+            updates["locked_at"] = time.time()
+        return replace(self, **updates)
 
 # ── Factory helpers ─────────────────────────────────────────────────────────
 
