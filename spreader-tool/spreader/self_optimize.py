@@ -609,26 +609,17 @@ class SelfOptimizer:
 
     @staticmethod
     def _extract_functions(content: str) -> List[Tuple[str, int]]:
-        """Extract top-level function names and their line counts."""
+        """Extract function names and their line counts using AST."""
+        import ast as _ast
         functions: List[Tuple[str, int]] = []
-        lines = content.splitlines()
-        current_func: Optional[str] = None
-        func_start: int = 0
-
-        for i, line in enumerate(lines):
-            stripped = line.strip()
-            if stripped.startswith("def ") and not stripped.startswith("def _"):
-                # Save previous function
-                if current_func is not None:
-                    functions.append((current_func, i - func_start))
-                current_func = stripped.split("(")[0].replace("def ", "")
-                func_start = i
-            elif stripped.startswith("class ") and current_func is not None:
-                # End of function at class boundary
-                functions.append((current_func, i - func_start))
-                current_func = None
-
-        if current_func is not None:
-            functions.append((current_func, len(lines) - func_start))
-
+        try:
+            tree = _ast.parse(content)
+        except SyntaxError:
+            return []
+        for node in _ast.walk(tree):
+            if isinstance(node, (_ast.FunctionDef, _ast.AsyncFunctionDef)):
+                if node.name.startswith("_"):
+                    continue
+                if node.end_lineno is not None:
+                    functions.append((node.name, node.end_lineno - node.lineno + 1))
         return functions
