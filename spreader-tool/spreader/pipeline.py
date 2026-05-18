@@ -212,7 +212,18 @@ _HAM_PATTERNS = [
     re.compile(r"thanks?\s+(for|again)", re.I),
     re.compile(r"re:\s+", re.I),
     re.compile(r"invoice\s*#?\d+", re.I),
+    re.compile(r"\[.*\]\s*\w+", re.I),           # [Repo] subject (GitHub, Jira, etc)
+    re.compile(r"(?:lunch|dinner|coffee|sync|chat)\b", re.I),  # Social invites
+    re.compile(r"(?:push|move|reschedule|cancel)\s+\w+", re.I),  # Calendar actions
+    re.compile(r"(?:can|could|would|let\'s)\s+", re.I),  # Questions/suggestions
+    re.compile(r"(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday)", re.I),  # Days
 ]
+
+# Trusted internal domains — strong ham signal
+_TRUSTED_DOMAINS = frozenset({
+    "company.com", "github.com", "gitlab.com", "google.com",
+    "microsoft.com", "slack.com", "notion.so", "figma.com",
+})
 
 
 def header_parse_handler(input_data: dict, prev_tiles: List[Tile]) -> Tile:
@@ -257,6 +268,20 @@ def content_classify_handler(input_data: dict, prev_tiles: List[Tile]) -> Tile:
     spam_hits = sum(1 for p in _SPAM_PATTERNS if p.search(text))
     ham_hits = sum(1 for p in _HAM_PATTERNS if p.search(text))
 
+    # Sender domain check — strong signal
+    sender = input_data.get("sender", "")
+    domain = sender.split("@")[-1] if "@" in sender else ""
+    from_trusted = domain in _TRUSTED_DOMAINS
+
+    # Check previous tile for header signals
+    prev_header = None
+    for t in prev_tiles:
+        if t.room_name == "header_parse" and t.metadata:
+            prev_header = t.metadata
+            break
+    has_reply = prev_header.get("has_reply_to", False) if prev_header else False
+
+    # Classification with sender context
     if spam_hits >= 2:
         return Tile(
             room_name="content_classify",
@@ -264,12 +289,27 @@ def content_classify_handler(input_data: dict, prev_tiles: List[Tile]) -> Tile:
             confidence=0.85,
             metadata={"spam_hits": spam_hits, "ham_hits": ham_hits, "path": "code"},
         )
-    if spam_hits == 1 and ham_hits == 0:
+    if spam_hits == 1 and ham_hits == 0 and not from_trusted:
         return Tile(
             room_name="content_classify",
             label="spam",
             confidence=0.65,
             metadata={"spam_hits": spam_hits, "ham_hits": ham_hits, "path": "code"},
+        )
+    # Strong ham: trusted domain + reply + ham patterns
+    if from_trusted and (has_reply or ham_hits >= 1):
+        return Tile(
+            room_name="content_classify",
+            label="ham",
+            confidence=0.85,
+            metadata={"spam_hits": spam_hits, "ham_hits": ham_hits, "from_trusted": True, "path": "code"},
+        )
+    if from_trusted and spam_hits == 0:
+        return Tile(
+            room_name="content_classify",
+            label="ham",
+            confidence=0.75,
+            metadata={"spam_hits": spam_hits, "ham_hits": ham_hits, "from_trusted": True, "path": "code"},
         )
     if ham_hits >= 2:
         return Tile(
@@ -282,7 +322,7 @@ def content_classify_handler(input_data: dict, prev_tiles: List[Tile]) -> Tile:
         return Tile(
             room_name="content_classify",
             label="ham",
-            confidence=0.65,
+            confidence=0.70,
             metadata={"spam_hits": spam_hits, "ham_hits": ham_hits, "path": "code"},
         )
 
