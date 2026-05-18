@@ -646,3 +646,36 @@ class BackendFactory:
         if groq_key:
             backends.append(GroqBackend(api_key=groq_key))
         return EnsembleBackend(backends=backends, session_budget=session_budget)
+
+# === Ultra-cheap tier for rapid iteration ===
+
+CHEAP_MODELS = {
+    "qwen-0.8b": {
+        "provider": "deepinfra",
+        "model": "Qwen/Qwen3.5-0.8B",
+        "cost_per_M_input": 0.01,
+        "cost_per_M_output": 0.05,
+        "max_tokens": 2048,
+    },
+    "llama-3.1-8b": {
+        "provider": "deepinfra",
+        "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+        "cost_per_M_input": 0.02,
+        "cost_per_M_output": 0.02,
+        "max_tokens": 4096,
+    },
+    "gemma-4b": {
+        "provider": "deepinfra",
+        "model": "google/gemma-3-4b-it",
+        "cost_per_M_input": 0.04,
+        "cost_per_M_output": 0.08,
+        "max_tokens": 4096,
+    },
+    "gemma-12b": {
+        "provider": "deepinfra",
+        "model": "google/gemma-3-12b-it",
+        "cost_per_M_input": 0.04,
+        "cost_per_M_output": 0.13,
+        "max_tokens": 4096,
+    },
+}
