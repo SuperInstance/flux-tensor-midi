@@ -1,14 +1,22 @@
 # Night Shift Task Queue
 
-## Session Progress (2026-05-14) 🔨 ACTIVE — BUILD MODE
+## Session Progress (2026-05-18) 🔨 COLLECTIVE INTELLIGENCE
 
-**Casey's directive: Blinders on. Build the best possible system. Forget HN. Make useful micro models.**
+**Directive: Build real systems. Ship. Continue.**
 
-## Session Progress (2026-05-17) 🔨 MODULARIZATION
+### This Session Shipped
+- [x] 3 PLATO packages pushed to GitHub (model-ocean, escalation-gate, room-intelligence)
+- [x] Spreader-tool published to GitHub — 520 tests passing (was stuck on deadband failures)
+- [x] Collective inference loop wired (31 tests) — predict → observe → gap → learn cycle
+- [x] First real collective cycle against live fleet: 247 commits from 8 repos, 6 synergies
+- [x] Commit pattern predictor: real micro model on fleet git data (28 tests)
+  - 96.25% commit accuracy, 100% file activity, 99.89% crossref
+  - 1812 samples from 341 real commits across 5 repos
+  - Pure numpy, no PyTorch dependency — portable anywhere
+- [x] **359 tests passing** in plato-training (up from ~185)
 
-**Directive: All components extracted, modular, self-assembly ready.**
+### Previously Shipped
 
-### Modularization Complete
 - [x] 74/76 repos on `master` branch (2 exceptions: sana-wm=NVlabs, claude=no branches)
 - [x] Branch policy in AGENTS.md — survives compaction
 - [x] 4 PLATO stack repos cloned locally: plato-types, plato-data, tensor-spline, plato-training
