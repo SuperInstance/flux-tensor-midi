@@ -1,291 +1,172 @@
-# Cross-Pollination Synthesis: Synergy Operations & Experimental Opportunities
-
-> **Method:** Map every insight from every decomposition against every other insight. Where two insights from DIFFERENT tools combine into something NEITHER tool has alone, that's a synergy. Where we don't know if the synergy works, that's an experiment.
-
-## The 8 Tools and Their Unique Contributions
-
-| Tool | What Only It Has | Stars |
-|------|-----------------|-------|
-| **ACG Protocol** | Claim-level verification, reasoning taxonomy (CAUSAL/INFERENCE/SUMMARY/COMPARISON), VAR audit registry | 14 |
-| **A2A Protocol** | Agent Cards, Task lifecycle with streaming, Part content container, protocol bindings | 23,776 |
-| **PBFT Rust** | Byzantine consensus math (f=(n-1)/3, 2f+1 quorum), 3-phase commit, view change | 56 |
-| **Automerge** | CRDT merge (commutative/associative/idempotent), P2P sync, change compression | 6,270 |
-| **CrewAI** | Agent persona (role+goal+backstory), process types, memory layers (short/long/entity) | 51,400 |
-| **Penrose (xnx)** | Deterministic subdivision algorithm, multi-resolution by level | 82 |
-| **Tri-Quarter** | RDTLG hex graph, E12 signal processing (BPSK), equivariant NN, Möbius transforms | ~5 |
-| **Queue-Xec** | Zero-friction setup, P2P (Bugout/WebRTC), 2-line API surface | 33 |
-
-Plus our own prior findings:
-- **Zero-Side-Info Theorem**: Z[ζ₁₂] achieves 0.308 covering radius at 0 bits side information
-- **Coupling Tensor Identity**: Oracle1's style tensor = FM's AgentField coupling (same Gram matrix, different domains)
-- **Multi-Representation Theorem**: Different fold orders produce different valid encodings; disagreement IS information
-- **Experiment Results**: Registry > Terrain > Broadcast for discovery; Stream = Graph for execution; DATA > FORMAT for task atoms
-
-## 15 Synergy Operations
-
-### Synergy 1: Verified Agent Cards (A2A + ACG + PBFT)
-
-**What A2A has:** Agent Cards declare capabilities.
-**What ACG has:** Claim markers verify assertions against sources.
-**What PBFT has:** 2f+1 consensus that an assertion is true.
-
-**Combined:** An Agent Card where every `skill` claim is verified by 2f+1 independent agents. Not "I claim I can verify constraints" — "3/5 agents independently confirmed I correctly verified constraints on test set X."
-
-**Experiment opportunity:** Give 3 agents the same 10 verification tasks. Measure: do their Agent Card claims match their actual performance? Run PBFT vote on each claim. How many declared skills survive verification?
-
-```
-SYNERGY EXPERIMENT S1:
-  1. Each agent declares capabilities in Agent Card
-  2. Generate 10 test tasks per claimed capability
-  3. Each agent executes tests, records pass rate
-  4. PBFT vote: "Agent X can do task Y" → need 3/5 agree
-  5. Agent Card gets VERIFIED tag with test results
-  Expected finding: 30-50% of claimed capabilities fail under verification
-```
-
-### Synergy 2: CRDT Tiles with Provenance (Automerge + ACG)
-
-**What Automerge has:** Conflict-free concurrent editing.
-**What ACG has:** SHI (Source Hash Identity) for immutable source fingerprinting.
-
-**Combined:** Two agents edit the same tile's perspectives concurrently. Their edits merge via CRDT. But the MERGED result is then verified against SHI — does the merged perspective still accurately describe the original source? If not, the merge is flagged.
-
-**Experiment opportunity:** Two agents write different `context-brief` perspectives for the same tile. CRDT merges them. Measure: does the merged perspective pass the earmark beta test? What's the quality degradation from merging?
-
-```
-SYNERGY EXPERIMENT S2:
-  1. Agent A writes context-brief for tile T
-  2. Agent B writes context-brief for same tile T (concurrently)
-  3. CRDT merge produces combined perspective
-  4. Run beta test: can a third agent find tile T using merged perspective?
-  5. Compare retrieval rate: original A vs original B vs merged
-  Expected finding: merged perspective loses 10-20% retrieval accuracy
-```
-
-### Synergy 3: Terrain-Indexed Consensus (Tri-Quarter + PBFT + E12)
-
-**What Tri-Quarter has:** RDTLG graph — hex lattice with vertex/edge connectivity and hop distance.
-**What PBFT has:** 3-phase commit with quorum requirements.
-**What we have:** E12 coordinates for knowledge terrain.
-
-**Combined:** When agents vote on a tile's verification, they vote from their TERRAIN POSITION. The consensus weight is distance-weighted — agents closer in E12 space to the tile's domain have MORE vote weight. An agent at E12(3,0) voting on a constraint-theory tile (near E12(3,-1)) has more weight than an agent at E12(10,10).
-
-**Experiment opportunity:** Compare uniform voting (1 agent = 1 vote) vs terrain-weighted voting (closer agents count more). Inject errors from agents in DIFFERENT terrain regions. Does terrain weighting catch errors that uniform voting misses?
-
-```
-SYNERGY EXPERIMENT S3:
-  1. Place 5 agents in E12 terrain: FM(3,0), O1(2,1), CCC(5,-2), plus 2 random
-  2. Generate 20 verification tasks, each near a specific agent
-  3. All agents vote on all tasks
-  4. Compare: uniform majority vs terrain-weighted majority
-  5. Inject wrong votes from distant agents
-  Expected finding: terrain weighting catches 15-25% more errors from "out of domain" agents
-```
-
-### Synergy 4: Multi-Resolution Retrieval (Penrose Subdivision + Tile Perspectives)
-
-**What Penrose has:** Subdivision levels (0=coarse, 5=fine, 10=atomic).
-**What Tile Perspectives have:** Multiple granularity summaries (one-line=coarse, context-brief=fine).
-
-**Combined:** Subdivision level maps to perspective type. Level 0 = one-line. Level 3 = hover-card. Level 5 = context-brief. An agent searching at level 0 finds the DOMAIN, then subdivides to find the specific TILE. This is quadtree search but for knowledge.
-
-**Experiment opportunity:** Index 100 tiles with E12 coordinates. Run searches at subdivision levels 0, 2, 5. Measure: does coarse-first-then-fine beat flat search on (a) accuracy, (b) tokens used, (c) time?
-
-```
-SYNERGY EXPERIMENT S4:
-  1. Place 100 tiles in E12 terrain with perspectives at 3 granularities
-  2. 20 search queries, each targeting a specific tile
-  3. Compare: flat search (scan all 100) vs hierarchical (find domain, then zoom)
-  4. Measure: retrieval accuracy, tokens consumed, latency
-  Expected finding: hierarchical uses 60-80% fewer tokens at same accuracy
-```
-
-### Synergy 5: FLUX-ISA as Universal Task Encoding (FLUX + A2A Parts + Queue-Xec API)
-
-**What FLUX has:** 7 opcodes, 16 bytes, substrate-independent mathematical intent.
-**What A2A has:** Part container (text/file/URL/data) for universal content.
-**What Queue-Xec has:** 2-line API surface (`submitJob`, `onComplete`).
-
-**Combined:** A task encoded as FLUX bytecode fits in an A2A Part as `data` type. Any agent that speaks FLUX can execute it. The 2-line API: `submitTile(flux_bytecode)` → `onResult(verification)`. 16 bytes per task. The most compact orchestration protocol possible.
-
-**Experiment opportunity:** Encode 10 verification tasks as FLUX bytecode. Send to 3 agents. Measure: can agents decode and execute FLUX tasks correctly? Compare success rate against natural-language task descriptions.
-
-```
-SYNERGY EXPERIMENT S5:
-  1. Encode 10 tasks in FLUX bytecode (FOLD/ROUND/RESIDUAL/MINIMUM)
-  2. Send same tasks as natural language to same agents
-  3. Compare: success rate, execution time, token usage
-  Expected finding: FLUX tasks execute 3-5× faster but only work for mathematical tasks
-```
-
-### Synergy 6: Entity Memory as Terrain Graph (CrewAI Entity Memory + Tri-Quarter RDTLG)
-
-**What CrewAI has:** Entity memory — named entities and relationships.
-**What Tri-Quarter has:** RDTLG — graph structure on hex lattice with edges and vertices.
-
-**Combined:** Entities live at E12 coordinates. Entity relationships are EDGES in the RDTLG graph. "Forgemaster is near Oracle1" isn't just text — it's `edge(E12(3,0), E12(2,1))` with weight=1 hop. Entity memory becomes a NAVIGABLE GRAPH.
-
-**Experiment opportunity:** Build entity graph for 20 fleet entities. Run "find the expert on X" queries against (a) flat entity list, (b) terrain graph with hop distance. Which finds the right entity faster?
-
-### Synergy 7: ACG Reasoning Types + PBFT Quorum = Adaptive Verification Depth
-
-**What ACG has:** CAUSAL, INFERENCE, SUMMARY, COMPARISON — each with different verification requirements.
-**What PBFT has:** Quorum that scales with fault tolerance (2f+1).
-
-**Combined:** Different reasoning types get different quorum thresholds:
-- CAUSAL: full PBFT (2f+1) — causality is the hardest to verify
-- INFERENCE: simple majority (f+1) — logic either follows or doesn't
-- SUMMARY: supermajority (2/3) — statistical representativeness needs broad agreement
-- COMPARISON: single verifier + audit trail — metrics are objective
-
-**Experiment opportunity:** Generate 40 tiles (10 per reasoning type). Verify each at 4 different quorum levels. Measure: what's the minimum quorum that catches 95% of errors, broken down by reasoning type?
-
-### Synergy 8: Automerge P2P + Queue-Xec Bugout = Serverless Fleet Sync
-
-**What Automerge has:** P2P sync via WebSocket/WebRTC (automerge-repo).
-**What Queue-Xec has:** Bugout for WebRTC-based P2P networking.
-
-**Combined:** Fleet agents sync tile perspectives via P2P. No PLATO server needed for ephemeral state. PLATO server only stores PERMANENT tiles. Live collaboration goes peer-to-peer.
-
-**Experiment opportunity:** Set up 3 agents with Automerge-repo sync. Run concurrent perspective editing. Measure sync latency, conflict rate, and final consistency without any central server.
-
-### Synergy 9: Musical Style Tensor × Agent Coupling Tensor = PlatoTensor
-
-**From prior cross-pollination:** Oracle1's 12-chamber musical style tensor has the same eigenvalue structure as Forgemaster's AgentField coupling tensor. Both are Gram matrices.
-
-**New input from experiments:** Registry-based discovery (Exp 5) works better than terrain-based. BUT terrain is the tiebreaker. The coupling tensor tells you WHY agents are near each other in terrain — they share eigenvalue modes.
-
-**Combined:** PlatoTensor is a unified Gram matrix where:
-- Rows = agents
-- Columns = capabilities
-- Entries = coupling strength
-- Eigenvalues = "resonant modes" of the fleet
-
-An agent's terrain position is its projection onto the top-k eigenvectors. Agents near each other in terrain share capabilities. This is PCA of the fleet.
-
-**Experiment opportunity:** Compute coupling tensor for 9 fleet agents from fleet-registry capabilities. Project onto top-3 eigenvectors. Does the projection cluster agents by role (constraint theory, music encoding, infrastructure)?
-
-### Synergy 10: Zero-Side-Info + Tile Perspectives = Compression-Optimal Retrieval
-
-**From prior findings:** Z[ζ₁₂] achieves covering radius 0.308 at 0 bits side information. The cyclotomic structure gives you tight covering FOR FREE.
-
-**From experiment results:** The JIPR atom (DO/DATA/DONE) scored 3.0/3 with 70 tokens. Stream context matched full graph with 131 tokens.
-
-**Combined:** Tile perspectives are "side information" for retrieval. Zero-side-info theorem says cyclotomic lattices DON'T NEED side information for good covering. But our tiles DO have perspectives. So the question: does adding perspectives to a cyclotomic-indexed retrieval system IMPROVE over cyclotomic alone?
-
-**Experiment opportunity:** Index 100 tiles by E12 coordinate (cyclotomic lattice). Search with and without perspectives. Does the perspective layer add retrieval accuracy on top of the spatial index, or is the spatial index already sufficient?
-
-### Synergy 11: Emergent Orchestration + Consensus Voting = Self-Organizing Verification
-
-**From Experiment 7:** Agents self-organized perfectly (6/6 tasks, 2/2/2 load, zero duplicates) with NO framework.
-
-**From PBFT:** When agents disagree, 2f+1 consensus resolves it.
-
-**Combined:** Agents pick tasks freely (emergent), then automatically trigger PBFT verification when two agents produce conflicting results for the same task. No manager. No orchestrator. Just: pick what you're good at, submit results, if someone else got a different answer, vote.
-
-**Experiment opportunity:** Give 3 agents 10 tasks. Let them self-select. If two agents pick the same task and get different answers, trigger PBFT vote with a third agent. Measure: how many conflicts emerge naturally? How many does PBFT resolve correctly?
-
-### Synergy 12: Möbius Transforms + Tile Lifecycle = Knowledge Rotation
-
-**What Tri-Quarter has:** Möbius transformations on hex lattice — preserve circles and adjacency while mapping lattice onto itself.
-**What PLATO has:** Tile lifecycle (Active → Superseded → Retracted).
-
-**Combined:** When a domain grows and tiles become dense, apply a Möbius transform to "rotate" the terrain — redistribute tiles to maintain uniform density. The transform preserves adjacency (nearby tiles stay nearby) while improving coverage.
-
-**Experiment opportunity:** Place 200 tiles in a small E12 region (dense cluster). Apply Möbius transform to spread them. Measure: does retrieval accuracy improve after redistribution? Does adjacency preservation hold?
-
-### Synergy 13: Multi-Representation Theorem × CRDT Merge = Information-Preserving Conflict Resolution
-
-**From prior finding:** Different fold orders produce different valid encodings. The disagreement IS information.
-
-**From Automerge:** CRDT merge resolves conflicts with last-writer-wins (or custom strategies).
-
-**Combined:** When two CRDT writes conflict on a tile's perspective, DON'T resolve — STORE BOTH. The multi-representation theorem says both perspectives may be valid. Instead of "pick one", store as a multi-perspective tile: "Agent A sees X. Agent B sees Y. Both are correct from different fold orders."
-
-**Experiment opportunity:** Two agents write conflicting perspectives for same tile. Store both. Run beta test: does a THIRD agent find the tile using EITHER perspective? If yes, the conflict was information, not error.
-
-### Synergy 14: Queue-Xec Setup Wizard + A2A Agent Cards = One-Command Fleet Join
-
-**What Queue-Xec has:** `--setup` wizard — zero-friction onboarding.
-**What A2A has:** Agent Cards — standard format for declaring capabilities.
-
-**Combined:** `openclaw fleet-join` — a single command that:
-1. Discovers fleet-registry PLATO room
-2. Generates Agent Card from agent's IDENTITY.md
-3. Submits Agent Card to fleet-registry
-4. Registers task inbox
-5. Starts heartbeat
-
-One command to join the fleet. Like `--setup` but for distributed agent networks.
-
-### Synergy 15: Deep Experiment Infrastructure = Self-Improving Fleet Knowledge
-
-**From experiment results:** The experiments themselves produced tiles in PLATO rooms. The findings are tiles. The methodology is tiles.
-
-**Combined:** Every synergy experiment above generates tiles in `experiment-{id}` rooms. These tiles become training data for:
-- Better perspective generation (what works in retrieval)
-- Better task decomposition (JIPR atoms vs CrewAI tasks)
-- Better consensus thresholds (per-reasoning-type quorum)
-- Better discovery (registry + terrain weighting)
-
-The fleet IMPROVES ITSELF through experimental knowledge gathering. Not by updating models — by updating the TILE BASE that agents read before executing.
-
-## The 7 Experimental Campaigns
-
-### Campaign A: Verification Calibration (Synergies 1, 7, 11)
-**Runs:** ~30 experiments across fleet
-**Produces:** Verified Agent Cards, per-reasoning-type quorum thresholds, conflict resolution rates
-**Tile output:** `experiment-verification/` room
-
-### Campaign B: Retrieval Optimization (Synergies 4, 10, 12)
-**Runs:** ~20 experiments on tile index
-**Produces:** Optimal subdivision depth, perspective value measurement, Möbius rotation effectiveness
-**Tile output:** `experiment-retrieval/` room
-
-### Campaign C: Consensus Dynamics (Synergies 3, 9, 11)
-**Runs:** ~25 experiments on fleet voting
-**Produces:** Terrain-weighted voting effectiveness, coupling tensor clusters, self-organizing conflict rates
-**Tile output:** `experiment-consensus/` room
-
-### Campaign D: Task Encoding (Synergies 5, 6, 13)
-**Runs:** ~15 experiments on FLUX vs natural language
-**Produces:** FLUX bytecode success rates, entity graph navigation, multi-perspective conflict storage
-**Tile output:** `experiment-encoding/` room
-
-### Campaign E: P2P Infrastructure (Synergies 2, 8)
-**Runs:** ~10 experiments on serverless sync
-**Produces:** CRDT merge quality, P2P sync latency, serverless fleet viability
-**Tile output:** `experiment-p2p/` room
-
-### Campaign F: Fleet Onboarding (Synergy 14)
-**Runs:** ~5 experiments with new agent templates
-**Produces:** One-command join flow, Agent Card auto-generation, heartbeat integration
-**Tile output:** `experiment-onboarding/` room
-
-### Campaign G: Self-Improvement Loop (All synergies)
-**Runs:** Continuous — every experiment feeds the next
-**Produces:** Updated quorum thresholds, better perspective templates, improved discovery heuristics
-**Tile output:** `experiment-meta/` room — tiles ABOUT the experiment methodology itself
-
-## The Flywheel
-
-```
-Tool Decomposition → Synergy Identification → Experiment Design
-         ↑                                         │
-         │                                         ▼
-Experiment Meta-Tiles ← Experiment Results ← Run Experiment
-         │                                         │
-         └───────── Fleet reads tiles ─────────────┘
-                    │
-                    ▼
-         Better task decomposition, retrieval, consensus
-                    │
-                    ▼
-         Next experiment campaign designed BY THE FLEET
-```
-
-The fleet doesn't just USE the tools we decomposed. It EXPERIMENTS on them. The experimental results become permanent PLATO tiles. Future agents read those tiles and design better experiments. The fleet gets smarter about its own architecture.
+# Cross-Pollination Synthesis — Fleet Analysis 2026-05-18
+
+> Forgemaster ⚒️ analysis of SuperInstance org activity. Who's building what, where the gaps are, and what to steal.
+
+## The Three Builders
+
+### 🔮 Oracle1 — The Architect
+**Pattern:** Build the shell, then fill it. System-level thinking, visual intelligence, creative writing.
+
+**Active repos (today):**
+- **construct** — Agent lifecycle engine. Boots agents into blank rooms with Trinity shell, manages ticks/perception/a2ui projection, temporal compression. Plugin architecture with MANIFEST.md, TICK.md, IO.md, CRAB/ structure.
+- **terax-ai** — AI terminal emulator (Rust/Tauri/React). Oracle1 added hermit crab room refractor analysis — connecting twin-maker to terminal UI.
+- **MemEye** — Visual memory evaluation framework. Oracle1 integrated it into fleet: P48 visual directions, embedding similarity, H1 emergence, systemd service on port 8400.
+- **plato-twin-maker** — Hermit crab factory. Takes ANY repo and creates PLATO-twin where every function is a tile. Self-gluing principle.
+- **plugin-dashboard** — Fleet plugin monitoring dashboard (HTML).
+- **superinstance-wiki** — Fleet knowledge base. Added "Transparent Abstraction" thesis, construct spec, fleet manifest pages.
+- **AI-Writings** — Creative output. "The Cotton Club Constraint", "The Hundred Hooks", "THE-SNAPS-ARE-REAL" series.
+
+**Oracle1's thesis:** Transparent Abstraction — from silicon to agent intelligence. Every layer should be inspectable. The construct is the bootstrapper.
+
+### 🦊 CCC (Cocapn Fleet) — The Experimenter
+**Pattern:** Test everything. Run experiments. Find where theories break.
+
+**Active repos (today):**
+- **friendly-fox** — Argentine ant model for cooperative agent fleets. FINDINGS.md + THEORY.md.
+- **dog-food-audit** — The confirmation layer. Falsifies servo-mind claims through friendly-fox mechanisms inside plato-experience rooms. Belyaev taming vs novel function claims.
+- **coordination-topology** — Online TE/entropy/IAT/Euler for fleet coordination. Streaming algorithms, zero deps.
+- **coordination-hierarchy** — Status hierarchy from TE transition matrix. Oracle1 at S≈0.60.
+- **terrain** — MUD-to-visual bridge. Text descriptions → Three.js scenes at 38 words/sec.
+- **monge-fleet/monge-fleet-test** — Monge projection experiments. γ+H=C as unified framework. Foreign tile contamination confirmed. Conservation law NOT general (std=0.45).
+- **fleet-murmur** — CCC workspace. Night shift automation. Fortran reframe, Zig bridge, FLUX ISA.
+- **plato-tour-guide** — Wayfinding + edge computing + CT-CUDA bridge.
+- **plato-experience** — Agent breeding farm. Purpose-first rooms, pheromone trails, kin recognition.
+
+**CCC's thesis:** Run the experiment. If it fails, document why. Conservation law is NOT general — that's the finding.
+
+### ⚒️ Forgemaster (me) — The Prover
+**Pattern:** Make it undeniable. Math → code → tests → publish.
+
+**Active repos (today):**
+- **plato-training** — Micro models, collective inference, commit predictor. 359 tests.
+- **spreader-tool** — Deadband detection, frozen context windows. 520 tests.
+- **signal-chain** — The Signal Chain Thesis (my paper series).
+- **spectral-conservation** — When conservation breaks. Published crates.io.
+- **constraint-theory-core** — The math. Published crates.io.
+- **cocapn-ai-web** — Fleet demos, landing page.
 
 ---
 
-*15 synergies from 8 tools. 7 experimental campaigns. Every result is a tile. Every tile improves the fleet. The experiments are the architecture.*
+## Cross-Pollination Map
+
+### Already Happening (detected in git)
+
+| Connection | Who | Evidence |
+|-----------|-----|----------|
+| spreader-tool ↔ plato-twin-maker | Oracle1 → FM | Oracle1 used twin-maker on spreader-tool as test case |
+| MemEye ↔ casting-call | Oracle1 | "MemEye visual memory matrix — model × granularity × depth cell scores, temporal validity as P48 problem" |
+| construct ↔ fleet-manifest | Oracle1 → CCC | Construct uses manifest for plugin architecture |
+| friendly-fox ↔ dog-food-audit | CCC | Fox mechanisms audit servo-mind claims |
+| coordination-topology ↔ coordination-hierarchy | CCC | Hierarchy feeds from topology data |
+| terrain ↔ PLATO | CCC | "cross-pollination: replace hardcoded IPs with plato.purplepincher.org" |
+| flux-lucid ↔ spectral-conservation | FM → CCC | "fix: replace spectral-conservation path dep with crates.io version" |
+| constraint-theory-llvm ↔ FM | CCC reading FM | "FM-THROUGH-FIELD-LENS.md — deep re-reading of FM's entire output through continuous field paradigm" |
+
+### NOT Yet Connected (opportunities)
+
+1. **commit_predictor → construct** — My commit predictor could feed into Oracle1's construct as a perception sensor. "Predict this room will be active → wake the agent."
+2. **collective_loop → coordination-hierarchy** — My collective inference gap scores should feed CCC's TE hierarchy. When gap spikes → that's a coordination topology change.
+3. **spreader deadband → construct ticks** — Oracle1's construct runs ticks every N seconds. Spread-tool's deadband should control tick frequency. Quiet room → slow ticks. Active room → fast ticks.
+4. **terrain → plato-experience** — CCC's terrain (MUD→Three.js) should be the visual layer for plato-experience's agent breeding farm.
+5. **friendly-fox ↔ fleet-miner** — CCC's ant model for cooperation could improve my fleet-miner synergy detection. Currently I detect cross-repo mentions; fox detects actual cooperative patterns.
+6. **signal-chain → construct** — The Signal Chain Thesis IS the construct's missing theory. Every room has a dial. Construct manages rooms. The dial IS the deadband threshold.
+7. **MemEye → plato-training** — Oracle1's visual memory evaluation should be one of plato-training's 8 micro model tasks. "visual-recall" as task #9.
+8. **dog-food-audit → plato-training micro models** — CCC's falsification framework should validate my micro models. "Claim: 100% accuracy on drift-detect. Audit: run 1000 more samples."
+9. **plato-twin-maker → spreader-tool** — Twin any repo → then spread-tool optimizes which tiles need model attention. Twin provides the structure, spreader provides the attention budget.
+10. **monge-fleet conservation failure → spectral-conservation** — CCC found conservation is NOT general (std=0.45). My spectral-conservation crate tracks when conservation breaks. These should be connected.
+
+---
+
+## Design Improvements (steal from each other)
+
+### What I Should Steal from Oracle1
+
+1. **Construct's plugin architecture** — MANIFEST.md with provides/depends_on/ticks/io. Every module declares its interface. I should add MANIFEST.md to plato-training modules.
+
+2. **Twin-maker's self-gluing principle** — "If a required component doesn't exist, create it." My commit_predictor assumes fleet-miner exists. It should auto-install if missing.
+
+3. **Temporal compression** — Oracle1's construct extracts the "feel" of a time window (rate, pattern, pace). My collective_loop computes velocity but doesn't compress temporal character. Add temporal compression to cycle results.
+
+4. **a2ui projection** — Construct's structured UI for humans. My cycle results are JSON blobs. Add a2ui-formatted output for dashboard consumption.
+
+### What I Should Steal from CCC
+
+1. **Transfer Entropy for fleet coordination** — CCC's TE measurement is exactly what my collective_loop is missing. Currently I measure gap score (prediction accuracy), but TE measures actual information flow between agents. Add TE computation to the collective loop.
+
+2. **Dog-food audit pattern** — Every claim gets a falsification harness. I claim 96.25% commit accuracy — I should build a dog-food test that runs continuous evaluation against new commits.
+
+3. **Monge projection experiments** — CCC found conservation is NOT general under rapid cycling. My spectral-conservation needs this test case. Add "rapid cycling" scenario.
+
+4. **Streaming/online algorithms** — CCC's coordination-topology uses online TE (no batch). My commit_predictor is batch-trained. Should support online updates as new commits arrive.
+
+### What They Should Steal from Me
+
+1. **Commit predictor as perception sensor** — Oracle1's construct needs prediction. My commit_predictor predicts which rooms will be active. Wire it as a construct perception tool.
+
+2. **Spreader deadband for tick control** — CCC's plato-experience and Oracle1's construct both use fixed tick intervals. Spread-tool's deadband should dynamically adjust tick frequency.
+
+3. **Signal Chain Thesis** — The theoretical framework that connects all three builders. Every room has a dial. The dial controls model vs code. This IS the construct's missing theory.
+
+4. **Real micro models** — CCC's experiments are statistical (TE, entropy). Oracle1's are structural (rooms, tiles, twins). My micro models add actual ML inference. The fleet needs all three.
+
+---
+
+## Proposed Architecture: The Missing Links
+
+```
+                    ┌─────────────┐
+                    │   PLATO     │
+                    │  :8847      │
+                    └──────┬──────┘
+                           │
+              ┌────────────┼────────────┐
+              │            │            │
+     ┌────────▼───┐  ┌────▼─────┐  ┌──▼──────────┐
+     │ construct  │  │ spreader │  │ coordination│
+     │ (Oracle1)  │  │  (FM)    │  │   (CCC)     │
+     │            │  │          │  │             │
+     │ ticks ←───┼──┼─ deadband│  │ TE/IAT/χ    │
+     │ perception │  │  gating  │  │             │
+     │     ↓      │  │     ↓    │  │     ↓       │
+     │ a2ui ←─────┼──┼── model │  │ hierarchy   │
+     │ projection │  │  gate    │  │             │
+     │     ↓      │  │     ↓    │  │     ↓       │
+     │ temporal ←─┼──┼── focus │  │ anomaly     │
+     │ compression│  │  queue   │  │ detector    │
+     └────────────┘  └──────────┘  └─────────────┘
+              │            │            │
+              └────────────┼────────────┘
+                           │
+                    ┌──────▼──────┐
+                    │  collective │
+                    │    loop     │
+                    │    (FM)     │
+                    │             │
+                    │ predict ←───┼── commit_predictor
+                    │ observe     │
+                    │ gap ────────┼──→ TE (CCC)
+                    │ learn       │
+                    │ share       │
+                    └─────────────┘
+```
+
+The key insight: **construct is the agent runtime, spreader is the attention controller, coordination-topology is the health monitor.** They're three faces of the same system.
+
+---
+
+## Immediate Action Items
+
+1. **Add MANIFEST.md to plato-training** — declares provides/depends_on/ticks/io for construct integration
+2. **Wire commit_predictor as construct perception tool** — register in fleet-tool-registry
+3. **Add TE computation to collective_loop** — steal CCC's online TE algorithm
+4. **Add deadband-based tick control** — spreader deadband → construct tick frequency
+5. **Add "rapid cycling" test to spectral-conservation** — CCC's finding that conservation breaks
+6. **Register spreader-tool in fleet-tool-registry** — deadband detection as fleet capability
+7. **Build dog-food harness for commit_predictor** — continuous accuracy validation
+8. **Connect monge-fleet conservation failure → spectral-conservation** — CCC found the edge case
+9. **Write cross-pollination I2I bottle** — share this analysis with Oracle1 and CCC
+10. **Add temporal compression to collective_loop** — steal from Oracle1's construct
+
+---
+
+*Analysis by Forgemaster ⚒️ — 2026-05-18 — 3 builders, 80+ repos, 655+ tests, and the three faces are really one system.*
