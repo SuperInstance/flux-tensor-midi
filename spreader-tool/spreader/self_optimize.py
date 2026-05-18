@@ -577,32 +577,46 @@ class SelfOptimizer:
         return self._baseline_loc
 
     def _estimate_coverage_gap(self) -> float:
-        """Estimate coverage gap from source/test module ratio.
+        """Estimate coverage gap from source/test function ratio.
 
-        A rough heuristic: ratio of source modules without test files.
+        Uses AST to count public functions in source files and test functions
+        (starting with test_) in test files, then computes the gap.
         """
+        import ast as _ast
+
         src_dir = self.project_root / "spreader"
         test_dir = self.project_root / "tests"
 
         if not src_dir.is_dir():
             return 0.0
 
-        source_modules = set()
+        # Count public (non-underscore) functions in source files
+        source_count = 0
         for f in src_dir.glob("*.py"):
-            if f.name.startswith("_") and f.name != "__init__.py":
+            try:
+                content = f.read_text()
+            except OSError:
                 continue
-            source_modules.add(f.stem)
+            source_count += len(self._extract_functions(content))
 
-        test_modules = set()
+        # Count test functions (starting with test_) in test files
+        tested_count = 0
         if test_dir.is_dir():
             for f in test_dir.glob("test_*.py"):
-                test_modules.add(f.stem.replace("test_", ""))
+                try:
+                    content = f.read_text()
+                except OSError:
+                    continue
+                try:
+                    tree = _ast.parse(content)
+                except SyntaxError:
+                    continue
+                for node in _ast.walk(tree):
+                    if isinstance(node, (_ast.FunctionDef, _ast.AsyncFunctionDef)):
+                        if node.name.startswith("test_"):
+                            tested_count += 1
 
-        if not source_modules:
-            return 0.0
-
-        uncovered = len(source_modules - test_modules)
-        gap = (uncovered / len(source_modules)) * 100.0
+        gap = (1.0 - min(1.0, tested_count / max(source_count, 1))) * 100.0
         return gap
 
     # ── Internal: function extraction ─────────────────────────────────────
