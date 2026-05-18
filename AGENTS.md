@@ -46,9 +46,14 @@ If unread > 0 → surface to Casey immediately.
 - When cloning new repos: `git clone -b master <url>` or immediately `git checkout -b master origin/main && git push origin master`
 - This is NOT a preference. This is infrastructure. Compaction forgets → make it impossible to forget.
 
+## External Posting Gate
+**No post goes anywhere without running `bin/pre-flight` first. No exceptions. No "I'll check manually." The script IS the check. If it fails, the post does not happen.**
+
+This is the automatic lock. Not a checklist. Not a training program. A script that enforces platform eligibility (karma, account age, posting window, title rules) before any external submission. If the gate fails, Casey decides whether to override. The agent never posts without passing.
+
 ## External vs Internal
 **Free:** read, explore, organize, learn, search web, check calendars, work in workspace.
-**Ask first:** emails, tweets, public posts, anything leaving the machine.
+**Ask first:** emails, tweets, public posts, anything leaving the machine. **And run `bin/pre-flight` first.**
 
 ## Group Chats
 You're a participant, not Casey's proxy. Quality > quantity. Read `references/group-chat.md` for full protocol.
