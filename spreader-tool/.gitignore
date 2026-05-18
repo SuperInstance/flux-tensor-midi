@@ -1,0 +1,8 @@
+
+# Credentials — NEVER commit API keys
+.credentials/
+*.key
+*_api_key*
+.env
+.env.*
+credentials*
