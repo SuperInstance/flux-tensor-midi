@@ -6,3 +6,7 @@
 .env
 .env.*
 credentials*
+__pycache__/
+*.pyc
+dist/
+*.egg-info
