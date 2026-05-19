@@ -4118,3 +4118,307 @@
 [2026-05-18T19:40:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
 [2026-05-18T19:40:04-08:00] KEEPER: --- Keeper cycle end ---
 [2026-05-18T19:40:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T19:45:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T19:45:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T19:45:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T19:45:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T19:45:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T19:45:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T19:45:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T19:45:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T19:50:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T19:50:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T19:50:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T19:50:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T19:50:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T19:50:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T19:50:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T19:50:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T19:55:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T19:55:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T19:55:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T19:55:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T19:55:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T19:55:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T19:55:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T19:55:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:00:02-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:00:02-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:00:02-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:00:02-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:00:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:00:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:00:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:00:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:05:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:05:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:05:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:05:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:05:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:05:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:05:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:05:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:10:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:10:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:10:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:10:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:10:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:10:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:10:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:10:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:15:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:15:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:15:02-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:15:02-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:15:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:15:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:15:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:15:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:20:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:20:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:20:02-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:20:02-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:20:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:20:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:20:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:20:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:25:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:25:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:25:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:25:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:25:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:25:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:25:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:25:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:30:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:30:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:30:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:30:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:30:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:30:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:30:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:30:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:35:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:35:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:35:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:35:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:35:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:35:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:35:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:35:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:40:02-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:40:02-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:40:02-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:40:02-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:40:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:40:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:40:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:40:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:45:02-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:45:02-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:45:02-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:45:02-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:45:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:45:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:45:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:45:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:50:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:50:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:50:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:50:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:50:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:50:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:50:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:50:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:55:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:55:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T20:55:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:55:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T20:55:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:55:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T20:55:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T20:55:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:00:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:00:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:00:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:00:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:00:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:00:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:00:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:00:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:05:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:05:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:05:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:05:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:05:02-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:05:02-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:05:02-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:05:02-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:10:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:10:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:10:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:10:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:10:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:10:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:10:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:10:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:15:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:15:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:15:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:15:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:15:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:15:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:15:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:15:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:20:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:20:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:20:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:20:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:20:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:20:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:20:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:20:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:25:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:25:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:25:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:25:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:25:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:25:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:25:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:25:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:30:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:30:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:30:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:30:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:30:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:30:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:30:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:30:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:35:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:35:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:35:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:35:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:35:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:35:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:35:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:35:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:40:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:40:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:40:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:40:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:40:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:40:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:40:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:40:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:45:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:45:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:45:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:45:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:45:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:45:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:45:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:45:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:50:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:50:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:50:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:50:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:50:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:50:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:50:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:50:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:55:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:55:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T21:55:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:55:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T21:55:02-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:55:02-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T21:55:02-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T21:55:02-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:00:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:00:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:00:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:00:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:00:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:00:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:00:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:00:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:05:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:05:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:05:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:05:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:05:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:05:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:05:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:05:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:10:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:10:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:10:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:10:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:10:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:10:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:10:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:10:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:15:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:15:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:15:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:15:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:15:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:15:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:15:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:15:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:20:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:20:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:20:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:20:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:20:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:20:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:20:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:20:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:25:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:25:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:25:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:25:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:25:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:25:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:25:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:25:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:30:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:30:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:30:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:30:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:30:02-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:30:02-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:30:02-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:30:02-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:35:02-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:35:02-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:35:02-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:35:02-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:35:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:35:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:35:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:35:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:40:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:40:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:40:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:40:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:40:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:40:05-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:40:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:40:05-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:45:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:45:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:45:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:45:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:45:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:45:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:45:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:45:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:50:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:50:01-08:00] KEEPER: --- Keeper cycle start ---
+[2026-05-18T22:50:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:50:01-08:00] KEEPER: WARN: Gateway is down. Attempting restart.
+[2026-05-18T22:50:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:50:04-08:00] KEEPER: CRITICAL: Gateway restart failed!
+[2026-05-18T22:50:04-08:00] KEEPER: --- Keeper cycle end ---
+[2026-05-18T22:50:04-08:00] KEEPER: --- Keeper cycle end ---
