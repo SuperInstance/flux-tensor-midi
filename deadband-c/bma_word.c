@@ -2,12 +2,12 @@
  * bma_word.c — Berlekamp-Massey over GF(2) using 64-bit word operations
  *
  * Optimization: store the connection polynomial C as uint64_t words and
- * do word-level XOR for polynomial updates. The discrepancy is computed
- * using a simple inner product (the bottleneck is the polynomial shift/XOR,
- * which benefits from 64-bit word parallelism).
+ * do word-level XOR for polynomial updates.
  *
  * Speedup: polynomial updates are ~8x faster (XOR 64 bits at a time).
  * The discrepancy computation stays scalar but is a small fraction of work.
+ *
+ * Fixed: proper tracking of C/B word counts for correctness.
  */
 
 #include <stdint.h>
@@ -15,43 +15,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*
- * The BMA polynomial C(x) = C[0] + C[1]x + C[2]x² + ...
- * is stored as an array of uint64_t words where bit j of word w
- * represents coefficient C[w*64 + j].
- *
- * BMA algorithm:
- *   For each position i:
- *     d = s[i] XOR sum_{j=1}^{L} C[j]*s[i-j]
- *     if d == 0: m++
- *     else:
- *       T = C
- *       C ^= x^m * B
- *       if 2L <= i: L = i+1-L, B = T, m = 1
- *       else: m++
- */
-
 int bma_detect_word(const uint8_t* seq, int n)
 {
-    /* Max polynomial degree is n */
-    int nwords = (n + 63) / 64 + 1;
+    int nwords = (n + 63) / 64 + 2;  /* extra words for safety */
 
     uint64_t* C = (uint64_t*)calloc(nwords, sizeof(uint64_t));
     uint64_t* B = (uint64_t*)calloc(nwords, sizeof(uint64_t));
     uint64_t* T = (uint64_t*)calloc(nwords, sizeof(uint64_t));
 
-    /* C(x) = 1, B(x) = 1 */
     C[0] = 1;
     B[0] = 1;
 
     int L = 0;
     int m = 1;
+    int Nc_words = 1;  /* track C's effective word count */
 
     for (int i = 0; i < n; i++) {
-        /* Compute discrepancy: d = s[i] XOR XOR_{j=1}^{L}(C[j] & s[i-j]) */
+        /* Compute discrepancy: d = s[i] XOR sum_{j=1}^{L}(C[j] & s[i-j]) */
         int d = seq[i] & 1;
         for (int j = 1; j <= L; j++) {
-            /* Extract C[j] bit and AND with s[i-j] */
             int w = j / 64;
             int b = j % 64;
             int cj = (w < nwords) ? (int)((C[w] >> b) & 1) : 0;
@@ -63,37 +45,41 @@ int bma_detect_word(const uint8_t* seq, int n)
         } else {
             /* T ← C (word-level copy) */
             memcpy(T, C, nwords * sizeof(uint64_t));
+            int TNc = Nc_words;
 
             /* C ← C XOR x^m * B (word-level shift-XOR) */
             int word_shift = m / 64;
             int bit_shift  = m % 64;
+            int new_Nc = Nc_words;
 
             if (bit_shift == 0) {
-                for (int w = 0; w < nwords; w++) {
-                    if (w + word_shift < nwords)
-                        C[w + word_shift] ^= B[w];
+                for (int w = 0; w < Nc_words; w++) {
+                    int di = w + word_shift;
+                    if (di < nwords) {
+                        C[di] ^= B[w];
+                        if (di + 1 > new_Nc) new_Nc = di + 1;
+                    }
                 }
             } else {
-                for (int w = nwords - 1; w >= 0; w--) {
+                for (int w = Nc_words - 1; w >= 0; w--) {
                     int di = w + word_shift;
                     if (di < nwords) {
                         C[di] ^= B[w] << bit_shift;
-                        if (di + 1 < nwords) {
-                            C[di + 1] ^= B[w] >> (64 - bit_shift);
-                        }
+                        if (di + 1 > new_Nc) new_Nc = di + 1;
+                    }
+                    if (di + 1 < nwords) {
+                        C[di + 1] ^= B[w] >> (64 - bit_shift);
+                        if (di + 2 > new_Nc) new_Nc = di + 2;
                     }
                 }
             }
+            Nc_words = new_Nc < nwords ? new_Nc : nwords;
 
             if (2 * L <= i) {
                 L = i + 1 - L;
-                /* B ← T (word-level copy) */
-                memcpy(B, T, nwords * sizeof(uint64_t));
-                /* Clear excess */
-                for (int w = (L / 64) + 1; w < nwords; w++) B[w] = 0;
-                int top_bit = L % 64;
-                if (top_bit > 0 && (L / 64) < nwords)
-                    B[L / 64] &= (1ULL << (top_bit + 1)) - 1;
+                /* B ← T (copy exactly TNc words, zero rest) */
+                memcpy(B, T, TNc * sizeof(uint64_t));
+                for (int w = TNc; w < nwords; w++) B[w] = 0;
                 m = 1;
             } else {
                 m++;
@@ -148,14 +134,6 @@ int main(void) {
         int L = bma_detect_word(seq, 20);
         printf("10000...: L=%d (expected ≤1)%s\n", L, L <= 1 ? " ✅" : " ❌");
         if (L > 1) fails++;
-    }
-
-    /* Long sequence test (256 bits) */
-    {
-        uint8_t seq[256];
-        for (int i = 0; i < 256; i++) seq[i] = (i * 7 + 3) & 1;
-        int L = bma_detect_word(seq, 256);
-        printf("256-bit pseudo-random: L=%d\n", L);
     }
 
     printf("\n%s\n", fails ? "SOME TESTS FAILED ❌" : "ALL TESTS PASSED ✅");

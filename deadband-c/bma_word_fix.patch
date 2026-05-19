@@ -1,0 +1,3 @@
+The issue: after updating B ← T, the word version clears bits above L, but
+it should clear bits above the OLD polynomial length (like the baseline does with TNc).
+The fix: track the word count of B properly and use it for clearing.
