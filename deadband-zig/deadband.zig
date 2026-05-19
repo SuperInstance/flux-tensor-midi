@@ -25,7 +25,7 @@ pub fn eisenstein_snap(comptime F: type, x: F, y: F) [2]F {
         if (@typeInfo(F) != .float) @compileError("F must be a float type");
     }
     const half: F = 0.5;
-    const sqrt3: F = comptime @floatCast(F, SQRT3);
+    const sqrt3: F = comptime @floatCast(SQRT3);
 
     // Solve: [1, 0.5] [k]   ≈  [x]
     //        [0, sqrt3] [l]      [y]
@@ -43,7 +43,7 @@ pub fn eisenstein_snap(comptime F: type, x: F, y: F) [2]F {
 pub fn eisenstein_snap_coords(comptime F: type, x: F, y: F) struct { x: F, y: F } {
     const kl = eisenstein_snap(F, x, y);
     const half: F = 0.5;
-    const sqrt3: F = comptime @floatCast(F, SQRT3);
+    const sqrt3: F = comptime @floatCast(SQRT3);
     return .{
         .x = kl[0] + half * kl[1],
         .y = sqrt3 * kl[1],
@@ -53,7 +53,7 @@ pub fn eisenstein_snap_coords(comptime F: type, x: F, y: F) struct { x: F, y: F 
 /// Compute Eisenstein norm (distance from lattice origin).
 pub fn eisenstein_norm(comptime F: type, k: i64, l: i64) F {
     const half: F = 0.5;
-    const sqrt3: F = comptime @floatCast(F, SQRT3);
+    const sqrt3: F = comptime @floatCast(SQRT3);
     const kf: F = @floatFromInt(k);
     const lf: F = @floatFromInt(l);
     const rx = kf + half * lf;
@@ -69,7 +69,6 @@ pub fn hpdf_sample(rnd: Random, index: usize, total: usize) f64 {
     const golden_ratio_strat = PHI - 1.0; // ~0.618
     const jitter = rnd.float(f64);
     const strat = @as(f64, @floatFromInt(index)) * golden_ratio_strat;
-    const frac = @as(f64, @floatFromInt(total)) * golden_ratio_strat;
     const base = @mod(strat, 1.0);
     return @mod(base + jitter / @as(f64, @floatFromInt(@max(total, 1))), 1.0);
 }
@@ -105,36 +104,36 @@ pub fn Modular360(comptime T: type) type {
             if (@typeInfo(T) == .int) {
                 return @mod(v, 360);
             }
-            const vf: f64 = @floatCast(f64, v);
+            const vf: f64 = @floatCast(v);
             const norm = @mod(vf, 360.0);
-            return @floatCast(T, if (norm < 0) norm + 360.0 else norm);
+            return @floatCast(if (norm < 0) norm + 360.0 else norm);
         }
 
         pub fn add(a: @This(), b: @This()) @This() {
             if (@typeInfo(T) == .int) {
                 return .{ .value = @mod(a.value + b.value, 360) };
             }
-            const s = @as(f64, @floatCast(f64, a.value)) + @as(f64, @floatCast(f64, b.value));
-            return .{ .value = @floatCast(T, @mod(s, 360.0)) };
+            const s = @as(f64, @floatCast(a.value)) + @as(f64, @floatCast(b.value));
+            return .{ .value = @floatCast(@mod(s, 360.0)) };
         }
 
         pub fn sub(a: @This(), b: @This()) @This() {
             if (@typeInfo(T) == .int) {
                 return .{ .value = @mod(a.value -% b.value + 360, 360) };
             }
-            const d = @as(f64, @floatCast(f64, a.value)) - @as(f64, @floatCast(f64, b.value));
+            const d = @as(f64, @floatCast(a.value)) - @as(f64, @floatCast(b.value));
             const norm = @mod(d, 360.0);
-            return .{ .value = @floatCast(T, if (norm < 0) norm + 360.0 else norm) };
+            return .{ .value = @floatCast(if (norm < 0) norm + 360.0 else norm) };
         }
 
         pub fn distance(a: @This(), b: @This()) T {
-            const diff = sub(a, b);
+            _ = sub(a, b);
             if (@typeInfo(T) == .int) {
                 const d = @abs(a.value -% b.value);
                 return @min(d, 360 - d);
             }
-            const d = @abs(@as(f64, @floatCast(f64, a.value)) - @as(f64, @floatCast(f64, b.value)));
-            return @floatCast(T, @min(d, 360.0 - d));
+            const d = @abs(@as(f64, @floatCast(a.value)) - @as(f64, @floatCast(b.value)));
+            return @floatCast(@min(d, 360.0 - d));
         }
     };
 }
@@ -146,7 +145,7 @@ pub fn Modular360(comptime T: type) type {
 pub fn bma_detect(allocator: std.mem.Allocator, seq: []const u64) !usize {
     if (seq.len == 0) return 0;
 
-    var n = seq.len;
+    const n = seq.len;
     // Current connection polynomial C
     var c = try allocator.alloc(i64, n + 1);
     defer allocator.free(c);
@@ -174,8 +173,8 @@ pub fn bma_detect(allocator: std.mem.Allocator, seq: []const u64) !usize {
             m += 1;
         } else if (2 * l <= i) {
             // Length change needed
-            const len = l;
-            var temp = try allocator.dupe(i64, b);
+            
+            const temp = try allocator.dupe(i64, b);
             defer allocator.free(temp);
 
             // C = C - (d / prev_discrepancy) * x^m * B
@@ -203,14 +202,14 @@ pub fn bma_detect(allocator: std.mem.Allocator, seq: []const u64) !usize {
 /// Simplified BMA for binary sequences — returns linear complexity.
 pub fn bma_binary(seq: []const u1) usize {
     if (seq.len == 0) return 0;
+    const n2 = seq.len;
     var l: usize = 0;
-    var n = seq.len;
 
-    var c = std.ArrayList(usize).initCapacity(std.heap.page_allocator, n + 1) catch return 0;
+    var c = std.ArrayList(usize).initCapacity(std.heap.page_allocator, n2 + 1) catch return 0;
     defer c.deinit();
     c.appendAssumeCapacity(0); // C = {0}
 
-    var b = std.ArrayList(usize).initCapacity(std.heap.page_allocator, n + 1) catch return 0;
+    var b = std.ArrayList(usize).initCapacity(std.heap.page_allocator, n2 + 1) catch return 0;
     defer b.deinit();
     b.appendAssumeCapacity(0);
 
@@ -227,7 +226,7 @@ pub fn bma_binary(seq: []const u1) usize {
         if (d == 0) {
             m += 1;
         } else {
-            var temp = std.ArrayList(usize).initCapacity(std.heap.page_allocator, n + 1) catch return l;
+            var temp = std.ArrayList(usize).initCapacity(std.heap.page_allocator, n2 + 1) catch return l;
             for (b.items) |item| temp.appendAssumeCapacity(item);
 
             for (b.items) |j| {
@@ -357,13 +356,14 @@ pub fn fibonacci_spline_search(
     hi: F,
     tolerance: F,
 ) F {
+    _ = allocator;
     comptime {
         if (@typeInfo(F) != .float) @compileError("F must be a float type");
     }
 
     var a = lo;
     var b = hi;
-    const gr: F = comptime @floatCast(F, PHI);
+    const gr: F = comptime @floatCast(PHI);
 
     // Initial probe points using golden ratio
     var c = b - (b - a) / gr;

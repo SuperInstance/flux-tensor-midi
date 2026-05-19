@@ -151,7 +151,7 @@ contains
     c = 0; b = 0; t = 0
     c(0) = 1; b(0) = 1
     ln = 0
-    m = 0
+    m = -1  ! shift of previous copy
 
     do i = 0, n-1
       ! Compute discrepancy
@@ -161,9 +161,11 @@ contains
       end do
 
       if (delta == 0) then
-        m = m + 1
+        ! no change needed
       else
-        t = c
+        ! T = C copy
+        t(0:ln) = c(0:ln)
+        ! C = C + x^(i-m) * B
         do j = 0, ln
           if (b(j) == 1) then
             c(i - m + j) = ieor(c(i - m + j), 1)
@@ -171,10 +173,11 @@ contains
         end do
         if (2*ln <= i) then
           ln = i + 1 - ln
+          b(0:n) = 0
+          b(0:size(t)-1) = t(0:size(t)-1)
+          ! Copy t into b, keeping track of current b-length
           b = t
-          m = 1
-        else
-          m = m + 1
+          m = i
         end if
       end if
     end do
@@ -255,9 +258,9 @@ contains
     real(8), intent(out) :: similarities(k)
 
     real(8), allocatable :: dists(:)
-    real(8) :: tmp_dist, tmp_sim
-    integer :: i, j, lo, hi, mid, band_size, step, tmp_idx
-    real(8) :: diff, qnorm
+    real(8) :: tmp_dist
+    integer :: i, j, lo, hi, mid, band_size, step
+    real(8) :: diff
 
     allocate(dists(n))
 
@@ -352,7 +355,7 @@ contains
     integer, intent(in) :: i   ! 0-4
     integer :: d
 
-    d = iand(ishft(word, -12*i), int(z'FFF', 8))
+    d = int(iand(ishft(word, -12*i), int(z'FFF', 8)))
   end function
 
 end module deadband

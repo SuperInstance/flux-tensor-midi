@@ -37,7 +37,7 @@ program test_deadband
     call test_approx('Snap (1,0) error=0', sr%error, 0.0d0)
 
     sr = eisenstein_snap(0.5d0, SQRT3/2.0d0)
-    call test_approx('Snap (0.5, √3/2) → (-0.5, √3/2)', sr%x, -0.5d0)
+    call test_approx('Snap (0.5, sqrt3/2) -> (0.5, sqrt3/2)', sr%x, 0.5d0)
     call test_approx('Snap (0.5, √3/2) y', sr%y, SQRT3/2.0d0)
 
     sr = eisenstein_snap(0.3d0, 0.3d0)
