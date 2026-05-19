@@ -294,17 +294,18 @@ contains
       end if
     end do
 
-    ! Golden ratio convergence from F(93)/F(92) (last valid int8 pair)
-    phi_ratio = real(fib(93), 8) / real(fib(92), 8)
+    ! Golden ratio convergence from F(79)/F(78) (safe within int8)
+    phi_ratio = real(fib(79), 8) / real(fib(78), 8)
     phi_err = abs(phi_ratio - PHI)
 
     print '(a)', '  -- Benchmark 5: Fibonacci + Binet --'
     print '(a, f10.3, a)',    '    Time        : ', elapsed, ' s'
-    print '(a, i20)',         '    F(93)       : ', fib(93)
-    print '(a)',              '    (int(8) overflows at F(93))'
+    print '(a, i20)',         '    F(78)       : ', fib(78)
+    print '(a, i20)',         '    F(79)       : ', fib(79)
+    print '(a)',              '    (int(8) overflows around F(93))'
     print '(a, i12)',         '    Binet divg  : F(', divergence_idx, ')'
-    print '(a, f20.16)',      '    F(93)/F(92) : ', phi_ratio
-    print '(a, es12.4)',      '    |ratio - phi|: ', phi_err
+    print '(a, f20.16)',      '    F(79)/F(78) : ', phi_ratio
+    print '(a, es12.4)',      '    |ratio-phi| : ', phi_err
     print '(a)', ''
 
     deallocate(fib, binet_val, fib_err)
