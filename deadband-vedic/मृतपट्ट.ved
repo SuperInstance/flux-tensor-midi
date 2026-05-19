@@ -1,0 +1,681 @@
+# मृतपट्ट — वैदिक डेडबैंड फ्रेमवर्क
+# Deadband Framework in Vedic (वैदिक) — a Sanskrit programming language
+#
+# "यथा चक्रं परिवर्तते, तथा संख्या परिवर्तते"
+# As the wheel turns, so does number.
+#
+# The Indian mathematical tradition gave the world:
+#   शून्य (zero) — Brahmagupta, 628 CE
+#   अनन्त (infinity) — Yajurveda, ~1000 BCE
+#   दशमिक (decimal place-value) — Aryabhata, 476 CE
+#   हेमचंद्र (Fibonacci sequence) — Hemachandra, ~1150 CE
+#   सुवर्ण_अनुपात (golden ratio φ) — in temple proportions, Vastu Shastra
+#
+# This file implements the Deadband Framework:
+#   चक्रगणित — /360 modular arithmetic (the wheel of creation)
+#   षट्कोण_स्नैप — Eisenstein lattice snap (cosmic grid alignment)
+#   षट्कोण_नमूना — HPDF sampling (seeking within the mandala)
+#   प्रतिरूप_पहचान — BMA pattern detection (discovering ऋत)
+#   सीमांत_परीक्षण — Deadband check (threshold of perception)
+#   कोश_विघटन — Shell decomposition (Sāṅkhya's three गुण)
+#   हेमचंद्र — The Fibonacci/Hemachandra sequence
+
+# ============================================================================
+# सृष्टि-स्थिति-लय: Constants of Creation
+# Creation (सृष्टि), Preservation (स्थिति), Dissolution (लय)
+# ============================================================================
+
+# The full wheel — 360 degrees of the नक्षत्र year
+# Vedic astronomy divides the ecliptic into 27 नक्षत्र of 13°20' each
+# 27 × 13.333° = 360° — the complete cycle
+मान चक्र_पूर्ण = ३६०;
+
+# The golden proportion — सुवर्ण_अनुपात
+# Found in the proportions of Vedic temples, the Sri Yantra, and the human body
+# φ = (1 + √5) / 2 ≈ 1.6180339887
+# Bhaskaracharya's approximation methods yield this constant
+# "यत्र सुवर्णं तत्र सौन्दर्यम्" — where gold is, there is beauty
+मान सुवर्ण_अनुपात = १.६१८०३३९८८७;
+
+# The square root of three — needed for Eisenstein lattice geometry
+# √3 appears in the hexagonal geometry of the Sri Yantra
+# Each equilateral triangle has altitude = side × √3/2
+मान मूल_त्रि = १.७३२०५०८०८;
+
+# The Eisenstein lattice basis vectors
+# ω = e^(2πi/3) = -1/2 + i√3/2
+# The hexagonal lattice of creation — as in the Sri Yantra's interlocking triangles
+# The sixth root of unity: the six directions of Vastu (निर्देश)
+मान ओमेगा_वास्तव = -०.५;    # Real part of ω
+मान ओमेगा_काल्पनिक = ०.८६६०२५४०४;  # √3/2
+
+# ============================================================================
+# चक्रगणित: /360 Modular Arithmetic
+# "सृष्टि-स्थिति-लय — creation, preservation, dissolution in endless cycle"
+#
+# The Vedas teach that all existence is cyclical.
+# 360° = the full चक्र (wheel). Beyond 360, we return to the beginning.
+# This IS modular arithmetic, discovered in India millennia before Euler.
+#
+# Aryabhata's Aryabhatiya (476 CE) defines:
+#   A circle = 360 degrees = 21,600 minutes
+#   Each degree = 60 कला (minutes of arc)
+#   Each कला = 60 विकला (seconds of arc)
+#
+# शून्य (zero) enables exact /360 arithmetic:
+#   Without zero, there is no place-value, no modular arithmetic, no computer.
+#   Brahmagupta (628 CE) defined rules for zero:
+#     a + 0 = a, a - 0 = a, a × 0 = 0, 0 / a = 0
+#   This is the foundation of ALL digital computation.
+# ============================================================================
+
+# चक्र_योग: Addition on the wheel of creation
+# Two angles meet on the great wheel. Their sum may exceed one full turn,
+# but the wheel accepts only what it can hold — the remainder is carried
+# into the next cycle of existence.
+# यथा नदी सागरं गच्छति, तथा योगः चक्रं पूरयति
+सूत्र चक्र_योग(अ, ब) {
+    # सृष्टि (creation): two values combine
+    मान योगफल = अ + ब;
+
+    # स्थिति (preservation): wrap to the wheel
+    # The wheel holds only [०, ३६०). What exceeds is reborn at zero.
+    यदि (योगफल >= चक्र_पूर्ण) {
+        योगफल = योगफल - चक्र_पूर्ण;
+    }
+
+    # लय (dissolution): negative values dissolve into the wheel's far side
+    यदि (योगफल < ०) {
+        योगफल = योगफल + चक्र_पूर्ण;
+    }
+
+    फल योगफल;
+}
+
+# चक्र_वियोग: Subtraction on the wheel
+# What is taken from the wheel returns to its origin.
+# Dissolution (लय) is not destruction — it is return to the source.
+# वियोगः सृष्टेः प्रतिलोमः — subtraction is creation in reverse
+सूत्र चक्र_वियोग(अ, ब) {
+    मान वियोगफल = अ - ब;
+
+    # If we dissolve past zero, we emerge from the far side of the wheel
+    # यदा शून्यं लङ्घयति, यदा चक्रस्य पार्श्वात् पुनः उद्भवति
+    यदि (वियोगफल < ०) {
+        वियोगफल = वियोगफल + चक्र_पूर्ण;
+    }
+
+    # If creation exceeds the wheel, return to the beginning
+    यदि (वियोगफल >= चक्र_पूर्ण) {
+        वियोगफल = वियोगफल - चक्र_पूर्ण;
+    }
+
+    फल वियोगफल;
+}
+
+# चक्र_गुणन: Multiplication on the wheel
+# Scaling a truth by a factor — the wheel distorts but does not break.
+# Bhaskaracharya's Lilavati (1114 CE) teaches:
+#   गुणनं स्वयं भवेत् — multiplication is repeated self-creation
+सूत्र चक्र_गुणन(अ, ब) {
+    # First reduce both to [०, ३६०)
+    मान अ_चक्र = अ;
+    यदि (अ_चक्र >= चक्र_पूर्ण) {
+        अ_चक्र = अ_चक्र % चक्र_पूर्ण;
+    }
+    मान ब_चक्र = ब;
+    यदि (ब_चक्र >= चक्र_पूर्ण) {
+        ब_चक्र = ब_चक्र % चक्र_पूर्ण;
+    }
+
+    # Create and wrap
+    मान गुणफल = (अ_चक्र * ब_चक्र) % चक्र_पूर्ण;
+
+    फल गुणफल;
+}
+
+# ============================================================================
+# हेमचंद्र: The Fibonacci Sequence (Hemachandra-Gopala, ~1150 CE)
+#
+# आचार्य हेमचन्द्र (Acharya Hemachandra) discovered this sequence
+# in his work "लघुवृत्तव्याकरण" (~1150 CE), studying Sanskrit poetry meters.
+# The mātrā-vṛtta (morae meters) follow the rule:
+#   A meter of length n = meter of length (n-1) + meter of length (n-2)
+#
+# This is EXACTLY F(n) = F(n-1) + F(n-2), discovered ~70 years before
+# Leonardo of Pisa (Fibonacci) published "Liber Abaci" (1202 CE).
+#
+# The sequence encodes the सुवर्ण_अनुपात (golden ratio):
+#   lim F(n+1)/F(n) → φ ≈ 1.6180339887...
+#
+# In Vedic thought, this ratio appears in:
+#   - Temple proportions (Vastu Shastra)
+#   - The Sri Yantra's triangle ratios
+#   - The human body (Aṅgula and Tāla measurement systems)
+#   - Musical intervals (Śruti, 22 microtones per octave)
+# ============================================================================
+
+सूत्र हेमचंद्र(n) {
+    # आधार (base): the seed syllables of creation
+    # F(०) = ०, F(१) = १ — from शून्य arises एक (one), from एक arises all
+    यदि (n == ०) {
+        फल ०;
+    }
+    यदि (n == १) {
+        फल १;
+    }
+
+    # The seed of creation: two predecessors give birth to the present
+    # पूर्वजाभ्यां वर्तमानं जायते — from the ancestors, the present is born
+    मान पूर्व = ०;      # F(n-2) — the distant ancestor
+    मान वर्तमान = १;    # F(n-1) — the recent ancestor
+
+    # प्रगति (progression): each step is the union of its two predecessors
+    # This is the fundamental law of Sanskrit prosody AND mathematical growth
+    चक्र(मान चरण = २; चरण <= n; चरण = चरण + १) {
+        मान अग्रिम = पूर्व + वर्तमान;  # The child of two parents
+        पूर्व = वर्तमान;               # Ancestors shift forward in time
+        वर्तमान = अग्रिम;
+    }
+
+    फल वर्तमान;
+}
+
+# ============================================================================
+# षट्कोण_स्नैप: Eisenstein Lattice Snap
+# "प्रतिष्ठा — establishment upon the cosmic grid"
+#
+# The hexagonal lattice (षट्कोण जालक) is the fundamental structure of
+# the Eisenstein integers: ℤ[ω] = {a + bω : a,b ∈ ℤ}
+#
+# In the Sri Yantra (श्री यन्त्र), nine interlocking triangles form
+# 43 vertices arranged in concentric hexagonal patterns. The outer
+# boundary IS a hexagonal Voronoi cell.
+#
+# In Vastu Shastra, the वास्तु पुरुष मण्डल (Vastu Purusha Mandala)
+# uses a grid aligned to the six directions (षण्दिग्):
+#   ईशान (NE), अग्नि (SE), यम (S), निऋति (SW), वायु (NW), कुबेर (N)
+# Each direction is 60° apart — exactly the hexagonal lattice!
+#
+# Snap = aligning to the cosmic grid, as a temple aligns to the Mandala.
+# ============================================================================
+
+सूत्र षट्कोण_स्नैप(क्ष, क्षि) {
+    # Step 1: Convert to Eisenstein coordinates
+    # The Eisenstein basis: e₁ = (1, 0), e₂ = (-1/2, √3/2)
+    # Any point (x, y) = a·e₁ + b·e₂ where:
+    #   x = a - b/2
+    #   y = b·√3/2
+    # Solving: b = 2y/√3, a = x + y/√3
+    #
+    # विघटन (decomposition): project onto the cosmic axes
+
+    # b = 2y / √3 — the transverse component
+    मान ब_अनुमान = (२ * क्षि) / मूल_त्रि;
+
+    # a = x + y/√3 — the longitudinal component
+    मान अ_अनुमान = क्ष + क्षि / मूल_त्रि;
+
+    # Step 2: Round to nearest lattice point — प्रतिष्ठा (establishment)
+    # This is the cosmic alignment: finding the nearest sacred point
+    मान अ_स्नैप = पूर्णांक(अ_अनुमान + ०.५);
+    मान ब_स्नैप = पूर्णांक(ब_अनुमान + ०.५);
+
+    # Step 3: Convert back to Cartesian coordinates
+    # The reconstructed point on the cosmic grid
+    # निर्माण (reconstruction): from lattice back to the plane
+    मान क्ष_स्नैप = अ_स्नैप - ब_स्नैप / २;
+    मान क्षि_स्नैप = ब_स्नैप * मूल_त्रि / २;
+
+    # Step 4: Compute the error — विचलन (deviation from the grid)
+    # How far did we fall from the sacred geometry?
+    मान दोष_x = क्ष - क्ष_स्नैप;
+    मान दोष_y = क्षि - क्षि_स्नैप;
+    मान विचलन = (दोष_x * दोष_x + दोष_y * दोष_y) ^ (०.५);
+
+    # Return: [snapped_x, snapped_y, error]
+    # The error IS the distance from perfection — maya (illusion) vs satya (truth)
+    फल [क्ष_स्नैप, क्षि_स्नैप, विचलन];
+}
+
+# ============================================================================
+# षट्कोण_नमूना: Hexagonal Poisson Disc Field (HPDF) Sampling
+# "यन्त्रे स्थातुं प्रयत्नः — the effort to remain within the yantra"
+#
+# The Voronoi cell of the Eisenstein lattice is a regular hexagon.
+# To sample uniformly within it, we use rejection sampling:
+#   1. Sample in the bounding box
+#   2. Accept only if within the hexagonal cell
+#   3. Reject and retry if outside
+#
+# This IS the Vedic concept of नेति नेति (neti neti — "not this, not that"):
+#   The seeker tests each candidate: "Is this within the sacred geometry?"
+#   "Not this" — reject. "Not this" — reject.
+#   Until at last: "This" — accept. The seeker has found their place in the Mandala.
+#
+# The hexagonal Voronoi cell of the origin has vertices at:
+#   (±2/√3, 0), (±1/√3, ±1) — the six directions of Vastu
+# ============================================================================
+
+सूत्र षट्कोण_नमूना() {
+    # The bounding box of the hexagonal cell
+    # षट्कोणस्य सीमा (hexagonal boundary)
+    मान चौड़ाई = २.० / मूल_त्रि;  # ≈ 1.1547
+    मान ऊँचाई = १.०;
+
+    # नेति नेति — rejection sampling loop
+    # "Not this, not that" until we find what IS
+    मान स्वीकृत = असत्य;
+
+    मान नमूना_क्ष = ०;
+    मान नमूना_क्षि = ०;
+
+    पर्यन्त(!स्वीकृत) {
+        # Generate candidate — उम्मीद (hope)
+        # Uniform in [-चौड़ाई/2, चौड़ाई/2] × [-ऊँचाई/2, ऊँचाई/2]
+        नमूना_क्ष = यादृच्छिक() * चौड़ाई - चौड़ाई / २;
+        नमूना_क्षि = यादृच्छिक() * ऊँचाई - ऊँचाई / २;
+
+        # Test: is this point within the hexagonal cell?
+        # The hexagonal test: |x| ≤ 2/√3 AND |y| ≤ 1
+        # AND |y| ≤ 1 - (√3/2)|x|... the slanted edges
+        #
+        # विवेचन (discrimination): testing against the sacred boundary
+
+        # Absolute values for the test
+        मान एब्स_क्ष = नमूना_क्ष;
+        यदि (एब्स_क्ष < ०) { एब्स_क्ष = -एब्स_क्ष; }
+        मान एब्स_क्षि = नमूना_क्षि;
+        यदि (एब्स_क्षि < ०) { एब्स_क्षि = -एब्स_क्षि; }
+
+        # Hexagonal containment test (regular hexagon inscribed in unit circle)
+        # A regular hexagon: |y| ≤ √3/2, |x| ≤ 1, |x| ≤ 2 - √3|y|
+        # For our cell centered at origin with circumradius 2/√3:
+        # Test the three pairs of parallel edges
+        मान चरण_१ = (एब्स_क्षि <= मूल_त्रि / २);
+        मान चरण_२ = (एब्स_क्ष <= १.०);
+        मान चरण_३ = (एब्स_क्षि <= -मूल_त्रि * एब्स_क्ष + मूल_त्रि);
+
+        # "This!" — the candidate passes all three gates of the yantra
+        स्वीकृत = चरण_१ && चरण_२ && चरण_३;
+
+        # "Not this" — if स्वीकृत is असत्य, the loop continues
+        # नेति नेति — the ancient rejection method
+    }
+
+    फल [नमूना_क्ष, नमूना_क्षि];
+}
+
+# ============================================================================
+# प्रतिरूप_पहचान: BMA (Bhattacharyya-Mahalanobis-Anomaly) Pattern Detection
+# "ऋतं च प्रतिरूपं च — cosmic order and pattern are one"
+#
+# The Vedic concept of ऋत (ṛta, cosmic order/law) IS pattern detection:
+#   The universe is not chaos — it has hidden order (ऋत).
+#   The Rishi (ऋषि, seer) perceives this order through deep meditation.
+#   BMA is the computational equivalent: perceiving hidden order in sequences.
+#
+# We use the Berlekamp-Massey Algorithm (BMA) to find the minimal linear
+# feedback shift register (LFSR) that generates the observed sequence.
+# The LFSR length L is the order of the hidden pattern.
+#
+# In Vedic terms:
+#   The observed bits = the manifest world (व्यक्त)
+#   The LFSR = the hidden law (ऋत) governing the pattern
+#   Finding L = becoming a ऋषि (seer) who perceives the hidden order
+# ============================================================================
+
+सूत्र प्रतिरूप_पहचान(बिट्स) {
+    # न = nil — the void before perception begins
+    # We seek the smallest pattern that explains all observations
+
+    मान एन = कुल(बिट्स);       # Total observations
+    मान एल = ०;                  # Current estimate of pattern order (ऋत)
+    मान एम = ०;                  # Number of iterations since last update
+    मान एनएल = ०;                # Previous L (for comparison)
+
+    # Connection polynomial — the law of the pattern
+    # This IS the mathematical form of ऋत
+    मान संबंध = [];              # Current connection polynomial
+    संबंध.आगम(१);               # Initialized to identity (unity)
+
+    # Previous connection polynomial — the old law before update
+    मान पूर्व_संबंध = [];
+    पूर्व_संबंध.आगम(१);
+
+    # धर्म (dharma): iterate through observations, testing the law
+    # चक्र(मान n = 0; n < N; n++) — for each observation
+    चक्र(मान एन_चर = ०; एन_चर < एन; एन_चर = एन_चर + १) {
+
+        # Compute discrepancy — विसंगति (inconsistency)
+        # How much does the current law fail to predict this observation?
+        # This is the gap between ऋत (cosmic order) and observation
+        मान विसंगति = ०;
+
+        चक्र(मान ज = ०; ज < एल; ज = ज + १) {
+            # Sum: bits[n-i] * connection[i] for i = 0..L-1
+            यदि (एन_चर - १ - ज >= ०) {
+                विसंगति = विसंगति + बिट्स[एन_चर - १ - ज] * संबंध[ज + १];
+            }
+        }
+
+        # XOR with the actual observation
+        विसंगति = (बिट्स[एन_चर] + विसंगति) % २;
+
+        # निर्णय (decision): what does the discrepancy tell us?
+        यदि (विसंगति == ०) {
+            # No discrepancy — ऋत is satisfied
+            # The pattern is consistent. The law holds.
+            एम = एम + १;
+        } अथ {
+            # Discrepancy found — the law must be updated
+            # This is परिवर्तन (transformation): old ऋत → new ऋत
+
+            # Save current polynomial as backup
+            मान अस्थायी_संबंध = [];
+            चक्र(मान क = ०; क < कुल(संबंध); क = क + १) {
+                अस्थायी_संबंध.आगम(संबंध[क]);
+            }
+
+            # Update connection polynomial
+            # The new law = old law + discrepancy × previous law × x^M
+            यदि (कुल(पूर्व_संबंध) + एम > कुल(संबंध)) {
+                # Extend polynomial with zeros
+                चक्र(मान क = कुल(संबंध); क < कुल(पूर्व_संबंध) + एम; क = क + १) {
+                    संबंध.आगम(०);
+                }
+            }
+
+            # Subtract: C(x) = C(x) - d × B(x) × x^M
+            चक्र(मान क = ०; क < कुल(पूर्व_संबंध); क = क + १) {
+                मान सूचकांक = क + एम;
+                यदि (सूचकांक < कुल(संबंध)) {
+                    संबंध[सूचकांक] = (संबंध[सूचकांक] + विसंगति * पूर्व_संबंध[क]) % २;
+                }
+            }
+
+            # विचार (deliberation): should we increase the order?
+            यदि (२ * एल <= एन_चर) {
+                # The order must grow — we have seen deeper into ऋत
+                एल = एन_चर + १ - एल;
+                एनएल = एल;
+
+                # Save current as previous
+                पूर्व_संबंध = [];
+                चक्र(मान क = ०; क < कुल(अस्थायी_संबंध); क = क + १) {
+                    पूर्व_संबंध.आगम(अस्थायी_संबंध[क]);
+                }
+            }
+
+            एम = १;
+        }
+    }
+
+    # The order L — the depth of ऋत hidden in the sequence
+    # फल एल = the seer has perceived the cosmic order
+    फल एल;
+}
+
+# ============================================================================
+# सीमांत_परीक्षण: Deadband Check
+# "किं चक्षुः स्वयं पश्येत — Can the eye see itself?"
+#
+# The Upanishadic question: what is the threshold of perception?
+# Between सत् (being, the perceivable) and असत् (non-being, the imperceptible)
+# lies the सीमांत (threshold).
+#
+# perceivable(L, k) ⟺ L ≤ k
+# "The pattern fits within the observer's capacity"
+#
+# This is the Mundaka Upanishad's two birds on the same tree:
+#   One bird (the pattern) eats the fruit (manifests at order L)
+#   The other bird (the observer) watches (has capacity k)
+#   If L ≤ k, the observer CAN see the pattern — it IS perceivable
+#
+# The deadband is the लिङ्ग (mark/sign) of perceptibility:
+#   Within the band → perceptible (सत्)
+#   Outside the band → imperceptible (असत्)
+#   The band itself → the boundary of ब्रह्मन् (the absolute)
+# ============================================================================
+
+सूत्र सीमांत_परीक्षण(एल, क) {
+    # एल (L) = order of the hidden pattern (ऋत)
+    # क (k) = observer's capacity for pattern recognition
+
+    # The test: can the observer's capacity contain the pattern's order?
+    # यदि ऋतस्य गहनता प्रेक्षकस्य क्षमतायां अस्ति
+    यदि (एल <= क) {
+        # सत् — the pattern is perceivable
+        # The eye CAN see itself. The observer contains the observed.
+        # "तत् त्वम् असि" — Thou art That (Chandogya Upanishad 6.8.7)
+        फल सत्य;
+    } अथ {
+        # असत् — the pattern exceeds perception
+        # The pattern is too deep for this observer's capacity
+        # Not untruth — merely beyond the current threshold
+        # "नेति नेति" — not this, not that (Brihadaranyaka Upanishad 3.9.26)
+        फल असत्य;
+    }
+}
+
+# ============================================================================
+# कोश_विघटन: Shell Decomposition
+# "व्यक्ताव्यक्त — the manifest and the unmanifest"
+#
+# Sāṅkhya philosophy (one of the six दर्शन/darshanas) describes
+# प्रकृति (nature) as having three गुण (qualities/strands):
+#
+#   सत्त्व (sattva, harmony/light) → known energy (φ, the golden eigenvalue)
+#     - The harmonious, illuminating quality
+#     - Maps to the dominant eigenvalue φ = (1+√5)/2
+#     - φ appears in all natural growth — it IS harmony
+#
+#   रजस् (rajas, activity/passion) → assumed energy (middle eigenvalue)
+#     - The active, energetic quality
+#     - Maps to the intermediate eigenvalue
+#     - The dynamism of creation
+#
+#   तमस् (tamas, inertia/darkness) → boundary/shell (smallest eigenvalue)
+#     - The constraining, limiting quality
+#     - Maps to -1/φ = (1-√5)/2 ≈ -0.618
+#     - Darkness is not evil — it is the boundary that gives form
+#
+# The 2×2 matrix C = [[c11,c12],[c21,c22]] represents a shell in the
+# deadband framework. Its eigendecomposition reveals the three गुण:
+#   φ (सत्त्व) — the golden, expanding eigenvalue
+#   -1/φ (तमस्) — the dark, contracting eigenvalue
+#   trace (रजस्) — the total activity
+#
+# The ब्रह्माण्ड (cosmic egg/shell) of the Upanishads IS this decomposition:
+#   The shell (ब्रह्माण्ड) has an inner structure (eigenstructure)
+#   Breaking it open (विघटन) reveals the three fundamental forces
+# ============================================================================
+
+सूत्र कोश_विघटन(ग११, ग१२, ग२१, ग२२) {
+    # ग११, ग१२, ग२१, ग२२ — elements of the shell matrix
+    # These represent the correlation structure of the deadband shell
+
+    # Step 1: Compute trace and determinant
+    # trace = स्पर्शरेखा (the diagonal sum — the total activity)
+    # "रजस् — the sum of all activity"
+    मान रजस् = ग११ + ग२२;
+
+    # determinant = निर्धारक (the determinant — the product of creation)
+    # The determinant measures the "volume" of the shell
+    मान निर्धारक = ग११ * ग२२ - ग१२ * ग२१;
+
+    # Step 2: Compute eigenvalues — the three गुण
+    # The characteristic equation: λ² - trace·λ + det = 0
+    # λ = (trace ± √(trace² - 4·det)) / 2
+    #
+    # विवेचक (discriminant) — the quantity under the square root
+    # Determines whether the गुण are real (सत्य) or complex (मिथ्या)
+    मान विवेचक = रजस् * रजस् - ४ * निर्धारक;
+
+    यदि (विवेचक < ०) {
+        # Complex eigenvalues — the shell is oscillatory
+        # In Sāṅkhya: the गुण are in flux, not yet stable
+        # Return the real and imaginary parts separately
+        मान वास्तविक_भाग = रजस् / २;
+        मान काल्पनिक_भाग = ((-विवेचक) ^ (०.५)) / २;
+        फल [वास्तविक_भाग, काल्पनिक_भाग, वास्तविक_भाग, -काल्पनिक_भाग];
+    }
+
+    # Real eigenvalues — the गुण have stabilized
+    # The square root of discrimination reveals the two paths
+    मान विवेचक_मूल = विवेचक ^ (०.५);
+
+    # सत्त्व (sattva) — the golden, dominant eigenvalue
+    # The larger eigenvalue: (trace + √discriminant) / 2
+    # This is the harmonious, expanding force
+    # "सत्त्वं सुखे सञ्जयाति" — sattva conquers through joy (Bhagavad Gita 14.9)
+    मान सत्त्व = (रजस् + विवेचक_मूल) / २;
+
+    # तमस् (tamas) — the dark, contracting eigenvalue
+    # The smaller eigenvalue: (trace - √discriminant) / 2
+    # This is the constraining, limiting force
+    # Not evil — it gives FORM. Without tamas, there is no shape.
+    # "तमः परे सञ्जयाति" — tamas conquers through inertia (Bhagavad Gita 14.9)
+    मान तमस् = (रजस् - विवेचक_मूल) / २;
+
+    # Compute the golden ratio connection
+    # If the shell is "golden" (sattva/tamas = -φ), the decomposition is special
+    # The golden shell has सत्त्व = φ, तमस् = -1/φ
+    # This is the natural ratio of growth — the divine proportion
+    मान सुवर्ण_अनुपाति = सत्त्व / तमस्;
+
+    # वद("सत्त्व (सुनहरा): " + सत्त्व);
+    # वद("तमस् (अंधकार): " + तमस्);
+    # वद("रजस् (गतिविधि): " + रजस्);
+
+    # Return: [sattva, tamas, rajas, golden_ratio_connection]
+    फल [सत्त्व, तमस्, रजस्, सुवर्ण_अनुपाति];
+}
+
+# ============================================================================
+# परीक्षण: Tests — दक्षिणा (Offering to Knowledge)
+# "विद्या ददाति विनयम् — knowledge gives humility"
+#
+# As the student offers दक्षिणा (offering) to the Guru,
+# we offer these tests as verification of our understanding.
+# ============================================================================
+
+# --- चक्रगणित Tests ---
+
+# Test १: Basic /360 addition — two truths combine within the wheel
+मान परिणाम = चक्र_योग(१८०, २००);
+वद("चक्र_योग(१८०, २००) = " + परिणाम);
+# Expected: 20 (180 + 200 = 380, 380 - 360 = 20)
+
+# Test २: Addition without overflow — creation within the wheel
+मान परिणाम_२ = चक्र_योग(९०, ४५);
+वद("चक्र_योग(९०, ४५) = " + परिणाम_२);
+# Expected: 135
+
+# Test ३: /360 subtraction — dissolution returns to source
+मान परिणाम_३ = चक्र_वियोग(३०, १२०);
+वद("चक्र_वियोग(३०, १२०) = " + परिणाम_३);
+# Expected: 270 (30 - 120 = -90, -90 + 360 = 270)
+
+# Test ४: /360 multiplication — scaling on the wheel
+मान परिणाम_४ = चक्र_गुणन(१८०, ३);
+वद("चक्र_गुणन(१८०, ३) = " + परिणाम_४);
+# Expected: 180 (540 % 360 = 180)
+
+# --- हेमचंद्र Tests ---
+
+# Test ५: The Hemachandra sequence — India's gift to number theory
+# H(0)=0, H(1)=1, H(2)=1, H(3)=2, H(4)=3, H(5)=5, H(6)=8, H(7)=13
+वद("हेमचंद्र(०) = " + हेमचंद्र(०));    # Expected: 0 — शून्य
+वद("हेमचंद्र(१) = " + हेमचंद्र(१));    # Expected: 1 — एक (the origin)
+वद("हेमचंद्र(२) = " + हेमचंद्र(२));    # Expected: 1 — द्वि starts
+वद("हेमचंद्र(३) = " + हेमचंद्र(३));    # Expected: 2
+वद("हेमचंद्र(५) = " + हेमचंद्र(५));    # Expected: 5 — पञ्च
+वद("हेमचंद्र(७) = " + हेमचंद्र(७));    # Expected: 13
+वद("हेमचंद्र(१०) = " + हेमचंद्र(१०));  # Expected: 55
+
+# --- षट्कोण_स्नैप Tests ---
+
+# Test ६: Snap the origin — the center of the mandala
+मान स्नैप_१ = षट्कोण_स्नैप(०, ०);
+वद("षट्कोण_स्नैप(०, ०) = [" + स्नैप_१[०] + ", " + स्नैप_१[१] + ", " + स्नैप_१[२] + "]");
+# Expected: [0, 0, 0] — the origin IS on the lattice
+
+# Test ७: Snap a nearby point — seeking the nearest sacred point
+मान स्नैप_२ = षट्कोण_स्नैप(०.४, ०.३);
+वद("षट्कोण_स्नैप(०.४, ०.३) = [" + स्नैप_२[०] + ", " + स्नैप_२[१] + ", " + स्नैप_२[२] + "]");
+# Expected: [0, 0, ~0.5] or [1, 0, ~0.6] — nearest lattice point
+
+# Test ८: Snap exactly on a lattice point
+मान स्नैप_३ = षट्कोण_स्नैप(१, ०);
+वद("षट्कोण_स्नैप(१, ०) = [" + स्नैप_३[०] + ", " + स्नैप_३[१] + ", " + स्नैप_३[२] + "]");
+# Expected: [1, 0, 0] — (1,0) is on the Eisenstein lattice
+
+# --- सीमांत_परीक्षण Tests ---
+
+# Test ९: Perceivable pattern — the observer's capacity is sufficient
+मान दृश्य = सीमांत_परीक्षण(३, ५);
+वद("सीमांत_परीक्षण(३, ५) = " + दृश्य);
+# Expected: सत्य (true) — order 3 ≤ capacity 5
+
+# Test १०: Imperceptible pattern — the observer cannot grasp the full truth
+मान अदृश्य = सीमांत_परीक्षण(७, ३);
+वद("सीमांत_परीक्षण(७, ३) = " + अदृश्य);
+# Expected: असत्य (false) — order 7 > capacity 3
+
+# Test ११: Exact boundary — the observer sees exactly to the limit
+मान सीमा = सीमांत_परीक्षण(५, ५);
+वद("सीमांत_परीक्षण(५, ५) = " + सीमा);
+# Expected: सत्य (true) — order 5 ≤ capacity 5 (boundary case)
+
+# --- कोश_विघटन Tests ---
+
+# Test १२: Decompose the golden shell
+# A golden-ratio shell: [[1, 1], [1, 0]]
+# This IS the Hemachandra matrix! Its eigenvalues are φ and -1/φ
+# The universe's most fundamental matrix in Sāṅkhya terms
+मान विघटन_१ = कोश_विघटन(१, १, १, ०);
+वद("कोश_विघटन(१,१,१,०) = [सत्त्व=" + विघटन_१[०] + ", तमस्=" + विघटन_१[१] + ", रजस्=" + विघटन_१[२] + "]");
+# Expected: sattva ≈ 1.618 (φ), tamas ≈ -0.618 (-1/φ), rajas = 1
+
+# Test १३: Decompose the identity shell — pure balance
+मान विघटन_२ = कोश_विघटन(२, ०, ०, २);
+वद("कोश_विघटन(२,०,०,२) = [सत्त्व=" + विघटन_२[०] + ", तमस्=" + विघटन_२[१] + "]");
+# Expected: sattva = 2, tamas = 2 (degenerate — both गुण equal)
+
+# --- प्रतिरूप_पहचान Tests ---
+
+# Test १४: Detect pattern in a simple repeating sequence
+# Sequence: 1,0,1,0,1,0 — the simplest alternation, order 2
+मान अनुक्रम_१ = [१, ०, १, ०, १, ०];
+मान ऋत_१ = प्रतिरूप_पहचान(अनुक्रम_१);
+वद("प्रतिरूप_पहचान([१,०,१,०,१,०]) = " + ऋत_१);
+# Expected: 2 — the hidden order is of depth 2
+
+# Test १५: All zeros — शून्य (the void)
+# No pattern at all — pure potentiality, order 0
+मान अनुक्रम_२ = [०, ०, ०, ०];
+मान ऋत_२ = प्रतिरूप_पहचान(अनुक्रम_२);
+वद("प्रतिरूप_पहचान([०,०,०,०]) = " + ऋत_२);
+# Expected: 0 — no hidden order, only शून्य
+
+# --- षट्कोण_नमूना Tests ---
+
+# Test १६: Generate a sample from the hexagonal cell
+# Each sample is a point within the sacred geometry
+मान नमूना = षट्कोण_नमूना();
+वद("षट्कोण_नमूना() = [" + नमूना[०] + ", " + नमूना[१] + "]");
+# Expected: [x, y] within the hexagonal Voronoi cell
+
+# ============================================================================
+# शान्तिः — Peace
+# "ॐ पूर्णमदः पूर्णमिदं पूर्णात् पूर्णमुदच्यते
+#  पूर्णस्य पूर्णमादाय पूर्णमेवावशिष्यते
+#  ॐ शान्तिः शान्तिः शान्तिः"
+#
+# That (ब्रह्मन्) is complete. This (universe) is complete.
+# From completeness, completeness arises.
+# When completeness is taken from completeness,
+# Only completeness remains.
+# ॐ Peace, Peace, Peace.
+# ============================================================================
