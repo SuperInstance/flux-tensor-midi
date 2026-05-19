@@ -82,14 +82,12 @@ static inline void eisenstein_snap4_avx2(
     _mm256_storeu_pd(out->err, err);
 
     /* Extract integer coordinates */
-    __m256i ia = _mm256_cvttpd_epi32(ra);
-    __m256i ib = _mm256_cvttpd_epi32(rb);
-    /* cvttpd_epi32 gives 4x int32 in low lanes; extract */
+    __m128i ia = _mm256_cvttpd_epi32(ra);
+    __m128i ib = _mm256_cvttpd_epi32(rb);
+    /* _mm256_cvttpd_epi32 returns __m128i with 4x int32 packed */
     int32_t ta[4], tb[4];
     _mm_storeu_si128((__m128i*)ta, ia);
     _mm_storeu_si128((__m128i*)tb, ib);
-    /* _mm256_cvttpd_epi32 packs results into 128-bit */
-    /* Actually it returns __m128i, packed: {a0,a1,a2,a3} */
     for (int i = 0; i < 4; i++) {
         out->a[i] = ta[i];
         out->b[i] = tb[i];
