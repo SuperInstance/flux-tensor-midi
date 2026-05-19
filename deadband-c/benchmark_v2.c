@@ -7,6 +7,7 @@
  *        div360 arithmetic, shell_decompose, fib_spline_search
  */
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

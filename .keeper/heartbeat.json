@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-05-18T23:21:53-08:00",
+  "timestamp": "2026-05-18T23:31:53-08:00",
   "agent": "forgemaster",
   "status": "alive",
-  "crew_active": 4,
+  "crew_active": 1,
   "proofs_in_progress": 0,
   "disk_free_gb": 856,
   "last_action": "heartbeat",

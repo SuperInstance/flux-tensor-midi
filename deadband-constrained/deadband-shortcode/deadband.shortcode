@@ -1,0 +1,117 @@
+C SHORT CODE (1949) — UNIVAC I
+C THE FIRST COMPILED HIGH-LEVEL LANGUAGE
+C
+C Each line is a number-encoded operation:
+C   1X = negate X
+C   2X = add X
+C   3X = subtract X  
+C   4X = multiply X
+C   5X = divide X
+C   6X = assign to X
+C   7X = print X
+C   8X = goto line X
+C   9X = if X > 0, skip next instruction
+C
+C Variables: X1-X9 (pre-defined)
+C Constants: C1-C9
+C
+C DEADBAND /360 ADDITION IN SHORT CODE:
+C Computes X1 + X2 mod C1 where C1 = 360
+C
+C CONSTRAINT: Short Code has NO modular arithmetic.
+C We compute: result = X1 + X2, then if result >= 360, subtract 360.
+C This IS the deadband — a hard boundary that clips values.
+C The deadband IS the language's fundamental operation.
+C
+C BACK-TRANSLATION INSIGHT: In Short Code, EVERY operation is a 
+C deadband check. The language is BUILT on bounded arithmetic.
+C Modern systems pretend operations are unbounded and add bounds later.
+C Short Code shows: build the bounds IN, and you never need to check.
+C
+C ============================================================
+
+C Constants
+C1 = 360       C modulus
+C2 = 0         C zero
+C3 = 1         C one
+
+C /360 ADDITION: X1 + X2 -> X3 (mod 360)
+C X1 = first operand, X2 = second operand
+2X2             C add X2 to accumulator  
+6X3             C store in X3
+C Now check if X3 >= 360
+1C1             C negate 360 -> -360
+2X3             C add X3: gives X3 - 360
+9X4             C if X3 - 360 > 0 (i.e., X3 > 360), skip next
+8DONE           C else goto DONE (no reduction needed)
+1C1             C negate 360
+2X3             C X3 = X3 - 360 (reduce)
+DONE 7X3        C print result
+
+C /360 SUBTRACTION: X1 - X2 -> X4 (mod 360)
+3X2             C subtract X2 from accumulator
+6X4             C store in X4
+1C1             C negate 360
+2X4             C X4 - 360
+9X5             C if negative, skip
+8DONE2          C positive means no wrap needed
+2C1             C add 360 back (wrap around)
+6X4             C store wrapped result
+DONE2 7X4       C print result
+
+C /360 MULTIPLICATION: X1 * X2 -> X5 (mod 360)
+4X2             C multiply by X2
+6X5             C store in X5
+C Repeated subtraction to compute mod (no mod operator)
+LOOP 1C1        C negate 360
+2X5             C X5 - 360
+9X6             C if still positive
+8LOOP           C continue subtracting
+C When X5 went negative, we subtracted one too many
+2C1             C add 360 back
+6X5             C store final result
+7X5             C print result
+
+C DEADBAND CHECK: X7 = L, X8 = k
+C perceivable iff L <= k
+1X8             C negate k
+2X7             C L - k
+9X9             C if L - k > 0 (L > k), skip (NOT perceivable)
+8PERCEIVABLE    C L <= k, goto perceivable
+1C3             C NOT perceivable: result = 0
+6X9             C store 0
+8DONE3          C goto done
+PERCEIVABLE 6C3  C perceivable: result = 1 (C3 = 1)
+DONE3 7X9       C print perceivability (0 or 1)
+
+C ============================================================
+C EISENSTEIN SNAP IN SHORT CODE (SCALED INTEGER)
+C Using scale factor 10000 to avoid floating point
+C Basis: (10000, 0) and (-5000, 8660)
+C 
+C Snap (X1, X2) to lattice:
+C v = X2 * 10000 / 8660
+C u = X1 + 5000 * v / 10000  [note: -0.5 = -5000/10000, but we handle sign]
+C round u, v -> integer
+C x_snap = u - (-5000) * v / 10000 = u + 5000*v/10000
+C y_snap = 8660 * v / 10000
+C ============================================================
+
+C Compute v = y * 10000 / 8660
+C3 = 10000
+6ACC X2         C ACC = y
+4C3             C ACC = y * 10000
+C4 = 8660
+5C4             C ACC = y * 10000 / 8660 = v (scaled)
+6X3             C X3 = v
+
+C Compute u = x + 5000 * v / 10000  
+C5 = 5000
+6ACC X3         C ACC = v
+4C5             C ACC = 5000 * v
+5C3             C ACC = 5000 * v / 10000
+2X1             C ACC = x + 5000*v/10000 = u (scaled)
+6X4             C X4 = u
+
+C Round u and v (add 5000 and truncate... simplified)
+C In Short Code, rounding = add half-scale then integer divide
