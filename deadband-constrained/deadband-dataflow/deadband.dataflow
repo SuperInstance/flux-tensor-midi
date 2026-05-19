@@ -1,0 +1,104 @@
+C ====================================================================
+C DEADBAND FRAMEWORK — DATAFLOW ARCHITECTURE IMPLEMENTATION
+C ====================================================================
+C
+C Dataflow (Dennis, 1960s): NO PROGRAM COUNTER. Instructions execute
+C when ALL INPUTS ARE READY. Values flow as TOKENS along arcs.
+C
+C This is the OPPOSITE of von Neumann:
+C   Von Neumann: control-driven (PC tells what to do next)
+C   Dataflow:    data-driven (data tells what's ready to do)
+C
+C KEY INSIGHT FOR DEADBAND:
+C The BMA convergence at n=2L is a DATAFLOW THRESHOLD.
+C At n=2L, enough tokens have arrived to FIRE the complexity detection.
+C Before 2L: not enough data → operator waits.
+C At 2L: all inputs ready → FIRE → output L.
+C
+C THIS IS THE SAME PROCESS described differently:
+C   Von Neumann: "loop until n=2L, then return L"
+C   Dataflow:    "wait for 2L tokens, then fire"
+C
+C The "snap" in BMA is literally a dataflow firing condition.
+C
+C ====================================================================
+C DATAFLOW GRAPH FOR /360 ARITHMETIC
+C ====================================================================
+C
+C   (a) -----> [ADD] -----> [MOD 360] -----> (result)
+C   (b) -----> [   ]            
+C
+C The MOD 360 operator fires when ADD produces output.
+C No program counter needed. Data flows naturally.
+C
+C ====================================================================
+C DATAFLOW GRAPH FOR EISENSTEIN SNAP
+C ====================================================================
+C
+C   (x) ---+--> [COMPUTE V] ---> [ROUND V] ---+
+C          |                                   |
+C   (y) ---+--> [COMPUTE U] ---> [ROUND U] ---+--> [CONVERT BACK] ---> (sx, sy)
+C                                              |
+C                         (sqrt3/2) -----------+
+C
+C Each node fires when its inputs arrive.
+C No sequencing needed — the data dependencies ARE the sequence.
+C
+C ====================================================================
+C DATAFLOW GRAPH FOR BMA
+C ====================================================================
+C
+C   (seq[n]) --> [COMPUTE DISCREPANCY] --> [UPDATE C] --> [CHECK CONVERGENCE]
+C                     ^                         |              |
+C                     |   (C polynomial)        |              v
+C                     +-------------------------+        (L if converged)
+C
+C The BMA dataflow graph is a CYCLE:
+C   Each new sequence element triggers discrepancy computation.
+C   Discrepancy triggers polynomial update.
+C   After 2L elements, convergence fires.
+C
+C THIS IS WHY BMA CONVERGES AT EXACTLY 2L:
+C   In dataflow, a cycle with L state variables needs 2L firings
+C   to fully propagate information through the cycle.
+C   The "2L threshold" is the GRAPH DIAMETER of the BMA dataflow network.
+C
+C ====================================================================
+C DATAFLOW GRAPH FOR DEADBAND CHECK
+C ====================================================================
+C
+C   (L) ---+--> [COMPARE L<=K] --> (perceivable: 0 or 1)
+C   (K) ---+
+C
+C Single operator. Fires when both L and K arrive.
+C This is the SIMPLEST possible dataflow graph.
+C
+C ====================================================================
+C BACK-TRANSLATION INSIGHTS
+C ====================================================================
+C
+C 1. BMA AS GRAPH DIAMETER
+C    The 2L convergence = the diameter of the BMA dataflow graph.
+C    This gives a TOPOLOGICAL explanation for why BMA needs 2L samples.
+C    It's not arbitrary — it's the graph distance.
+C
+C    Back-translate: Document the BMA as a dataflow graph.
+C    The graph structure explains the convergence guarantee.
+C
+C 2. DEADBAND AS FIRING CONDITION
+C    In dataflow, operators fire when inputs are ready.
+C    The deadband IS the firing condition: "fire when L <= k".
+C    Before that, the operator waits (pattern not perceivable).
+C    After that, the operator fires (pattern perceivable).
+C
+C    Back-translate: Deadband check is not a comparison — it's a GUARD.
+C    In Rust, this becomes: if L <= k { Some(result) } else { None }
+C    The Option type IS the deadband firing condition.
+C
+C 3. ASYNCHRONOUS BY DEFAULT
+C    Dataflow is naturally asynchronous — operators fire independently.
+C    Deadband checking doesn't need a clock or synchronization.
+C    Each receiver checks independently, fires when ready.
+C
+C    Back-translate: The API should be async-native:
+C      async fn deadband_check(stream: impl Stream) -> Option<i32>

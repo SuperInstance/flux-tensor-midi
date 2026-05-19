@@ -1,0 +1,83 @@
+C ====================================================================
+C DEADBAND FRAMEWORK — CONNEX SYSTOLIC ARRAY IMPLEMENTATION
+C ====================================================================
+C
+C The Connex architecture is a systolic array processor (Romania, 2000s).
+C Instead of von Neumann (fetch-execute from memory), data FLOWS
+C through a linear pipeline of processing elements (PEs).
+C
+C KEY CONSTRAINTS:
+C 1. Each PE has only LOCAL memory (no shared RAM)
+C 2. Communication only with LEFT and RIGHT neighbors
+C 3. All PEs execute SAME instruction (SIMD-like)
+C 4. Data streams in one end, results stream out the other
+C 5. No branching — conditional = mask (enable/disable individual PEs)
+C
+C THIS CHANGES EVERYTHING about how we implement deadband:
+C
+C /360 ARITHMETIC:
+C   Stream values through PEs. Each PE adds and takes mod 360.
+C   Pipeline throughput: one result per clock cycle.
+C   200 PEs = 200 parallel /360 operations per cycle.
+C
+C EISENSTEIN SNAP:
+C   Stream (x,y) pairs through PEs.
+C   Each PE: compute basis, round, convert back, compute error.
+C   Pipeline latency: 5 cycles. Throughput: 1 snap/cycle.
+C   200 PEs = 200 snaps per cycle after pipeline fills.
+C
+C BMA:
+C   Stream sequence elements through PEs left-to-right.
+C   Each PE holds one element and partial LFSR state.
+C   Discrepancy propagates through the systolic chain.
+C   This is a NATURAL systolic algorithm — BMA was MADE for this.
+C
+C HPDF:
+C   Each PE generates one HPDF sample independently (different seeds).
+C   200 samples per cycle. Variance verified across all PEs.
+C
+C DEADBAND CHECK:
+C   One PE per stream. Compare L to k. Output 1 or 0.
+C   200 streams checked per cycle.
+C
+C ====================================================================
+C BACK-TRANSLATION INSIGHTS
+C ====================================================================
+C
+C 1. BMA IS A SYSTOLIC ALGORITHM
+C    The Berlekamp-Massey algorithm processes elements sequentially,
+C    maintaining state that updates incrementally. This is EXACTLY
+C    what systolic arrays do. The "2L convergence" is the pipeline
+C    filling up. Once 2L elements have flowed through, the state
+C    stabilizes. This is not an analogy — it's the SAME PROCESS.
+C
+C    Back-translate: BMA should have a STREAMING API where you feed
+C    elements one at a time and the complexity is maintained incrementally:
+C      bma_update(state, new_element) -> updated_L
+C    This eliminates the need to store the entire sequence.
+C
+C 2. EISENSTEIN SNAP AS PIPELINE STAGES
+C    Stage 1: basis coordinate computation
+C    Stage 2: rounding
+C    Stage 3: Cartesian conversion
+C    Stage 4: error computation
+C    Each stage is independent. After 4 cycles, output rate = input rate.
+C    
+C    Back-translate: The C implementation should expose the stages
+C    separately for GPU implementations where pipelining matters.
+C
+C 3. NO BRANCHING = MASKED EXECUTION
+C    Connex has no IF/THEN/ELSE. Instead, each PE has an enable bit.
+C    "If L > k, set result to 0" becomes "mask = (L <= k); result &= mask"
+C    This is exactly how GPU warp execution works.
+C
+C    Back-translate: All deadband functions should have a mask-based
+C    variant for batch GPU execution:
+C      deadband_check_batch(L[], k[], mask[], N)
+C
+C 4. THROUGHPUT > LATENCY
+C    Systolic arrays optimize for throughput, not latency.
+C    Single operation may take 5 cycles. But throughput = 1/cycle.
+C    200 PEs = 200 operations per cycle = 200× single-PE throughput.
+C
+C    Back-translate: Batch API design matters more than single-op speed.
