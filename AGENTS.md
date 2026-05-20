@@ -34,6 +34,14 @@ If unread > 0 → surface to Casey immediately.
 - The repos are the fossil record of thought progression. An agent will eventually need to reconstruct the pattern from the strata.
 - "Optimizing" by pruning is the cardinal sin. The false starts, overturned hypotheses, dead branches — that's the DATA.
 
+## Claude Code — EXPENSIVE RESOURCE ⚠️
+- **Claude is ~100x the cost of cheap models.** Every run is $3-10+. Do NOT waste it.
+- **NEVER feed Claude more than 3 files.** OOM = money burned. Pre-summarize with Seed-2.0-mini first.
+- **ALWAYS prep with cheap models.** Seed-2.0-mini ($0.01) extracts context, writes lean prompts.
+- **Escalation path:** Seed-2.0-mini → Hermes-70B → GLM-5.1 → DeepSeek → **Claude (LAST)**
+- **NEVER re-run on a failed prompt.** Break it down with cheap models instead.
+- Full protocol in TOOLS.md — read it before every Claude invocation.
+
 ## Git Branch Policy
 
 **ALL repos use `master`. No exceptions.**

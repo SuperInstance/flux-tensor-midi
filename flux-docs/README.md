@@ -1,29 +1,99 @@
-# flux-docs: Documentation for the FLUX Constraint Compiler
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+# Flux Docs — What the Constraint Engine Is and How to Navigate It
 
-This repository is the official single-source documentation hub for the FLUX constraint compiler, an open-source tool for declarative constraint specification, formal verification, and deployment across hardware, embedded systems, and security compliance workflows. Designed for hardware engineers, formal verification specialists, security teams, and DevOps engineers building reliable, auditable constraint pipelines, this repo aggregates all official learning materials, reference guides, and workflow resources.
+This is the documentation site for the Flux Constraint Engine — a system for validating bounded constraints with fracture-coalesce parallelism, accumulated sediment layers, and thermodynamic formalism. Start here, then follow the reading order.
 
-## Tutorials
-Hands-on guided learning paths to master FLUX’s full feature set:
-- **Quickstart**: Get up and running in 10 minutes, including installing the FLUX CLI, writing your first hardware constraint, and running a basic formal verification check.
-- **Hardware Constraint Design**: Build and validate constraints for custom RTL IP blocks and system-on-chip integrations.
-- **Temporal Constraints**: Write and validate safety and liveness specifications for real-time embedded systems.
-- **Security Compliance**: Map FLUX constraints to GDPR, PCI DSS, and ISO 27001 requirements for auditable system policy enforcement.
-- **Formal Verification**: Integrate FLUX with SMT solvers to prove design correctness and eliminate edge-case bugs.
-- **AST Deep Dive**: Inspect and manipulate FLUX’s abstract syntax tree to build custom tooling and extend the compiler’s functionality.
+## What's In This Repo
 
-## Practical Resources
-### Cookbooks
-Reusable, production-ready workflows: Package FLUX constraints in CI/CD pipelines, generate Verilog assertion files, migrate legacy constraint sets, and integrate FLUX with industry tools like Verilator and Cadence JasperGold.
-### Runbooks
-Step-by-step incident response playbooks for common FLUX tooling issues: solver timeouts, syntax errors, cross-compilation failures, and more.
-### Error Guides
-Comprehensive reference for every FLUX CLI error code, with troubleshooting tips and root-cause analysis for pitfalls like over-constraining designs or missing type annotations.
+### Start Here
 
-## Get Started & Contribute
-Clone this repo locally to browse documentation offline, or serve it via MkDocs with `mkdocs serve` after installing dependencies. Start with the [Quickstart Tutorial](./tutorials/quickstart.md) for immediate hands-on practice. All community contributions—typo fixes, new cookbooks, expanded error guides—are welcome under the Apache 2.0 License; see [CONTRIBUTING.md](./CONTRIBUTING.md) for submission guidelines.
+| Page | What You'll Learn |
+|------|-------------------|
+| [Index](index.md) | What is FLUX? Why constraint engines? The 60-second pitch. |
+| [Getting Started](getting-started.md) | 5-minute tutorial in Python, Rust, JavaScript, and C. Run your first constraint check. |
 
-## License & Pairings
-This project is licensed under the Apache License 2.0; see the [LICENSE](./LICENSE) file for full terms. This documentation pairs with the official [FLUX compiler repository](https://github.com/flux-constraint-compiler/flux) for tooling downloads and source code.
+### Core Concepts (Read in Order)
 
-(Word count: 397)
+| Page | What You'll Learn |
+|------|-------------------|
+| [Error Masks](concepts/error-mask.md) | 1 bit per constraint. The fundamental data structure. Why 8 constraints fit in 1 byte. |
+| [NaN Trap](concepts/nan-trap.md) | IEEE 754's dirty secret: NaN always violates. Every language hits this. How we handle it. |
+| [Fracture-Coalesce](concepts/fracture-coalesce.md) | Independent constraints → parallel blocks → bitwise OR merge. Zero false negatives, provable. |
+| [Sediment](concepts/sediment.md) | Immutable correction layers. Correctness only grows. The geological metaphor made precise. |
+| [Thermodynamics](concepts/thermodynamics.md) | Constraints as ideal gases. The partition function factorizes. Why the math works. |
+
+### Language Implementations
+
+| Page | What You'll Learn |
+|------|-------------------|
+| [96 Languages](languages/index.md) | What each language taught us about the constraint engine's architecture. |
+| [Old Architecture](languages/old-architecture.md) | Why implementing in COBOL, RPG, PL/I, ALGOL, SNOBOL4, and MUMPS revealed the optimal shape. |
+
+The six old-language repos each teach a specific lesson:
+
+- **flux-cobol** — Fixed-format records force you to design data before logic. OCCURS is a schema constraint.
+- **flux-rpg** — The cycle model (read → check → write) IS the hot path. Indicators are error mask bits.
+- **flux-pli** — Native `BIT(8)` type. The error mask isn't simulated — it's a language primitive.
+- **flux-algol** — `own` variables are sediment. Parallel arrays are columnar storage. The ancestor of everything.
+- **flux-snobol** — Pattern match success/failure IS constraint pass/fail. The Maybe monad before monads.
+- **flux-mumps** — Globals persist across sessions. MUMPS is where sediment actually lives. COBOL computes, MUMPS remembers.
+
+### GPU
+
+| Page | What You'll Learn |
+|------|-------------------|
+| [GPU Benchmarks](gpu/index.md) | 24.9B checks/sec. Why error masks are the ideal GPU workload. |
+
+### API Reference
+
+| Page | What You'll Learn |
+|------|-------------------|
+| [Python](api/python.md) | `flux-lib` — `pip install flux-lib` |
+| [Rust](api/rust.md) | `flux-fracture` — `cargo add flux-fracture` |
+| [JavaScript](api/javascript.md) | `@flux/check` — `npm install @flux/check` |
+| [C](api/c.md) | `flux_fracture.h` — single-header, no dependencies |
+
+### Tutorials
+
+| Page | What You'll Learn |
+|------|-------------------|
+| [Sensor Dashboard](tutorials/sensor-dashboard.md) | Build a complete 8-sensor monitoring system: batch validation, drift detection, sediment, save/load config. |
+
+### FAQ
+
+| Page | What You'll Find |
+|------|------------------|
+| [FAQ](faq.md) | Common questions about error masks, NaN, fracture-coalesce, sediment, thermodynamics, and practical usage. |
+
+### Research
+
+| Page | What You'll Learn |
+|------|-------------------|
+| [31 Modules](research/index.md) | What we asked, what died, what survived, what's new. The experimental record. |
+| [Grand Synthesis](research/grand-synthesis.md) | Full analysis: 7 agents, 4 models, 2 rounds. What the data says. |
+
+## Reading Order
+
+1. **Start**: [Index](index.md) → [Getting Started](getting-started.md)
+2. **Tutorial**: [Sensor Dashboard](tutorials/sensor-dashboard.md)
+3. **Core concepts**: [Error Masks](concepts/error-mask.md) → [NaN Trap](concepts/nan-trap.md) → [Fracture-Coalesce](concepts/fracture-coalesce.md)
+4. **Deeper theory**: [Sediment](concepts/sediment.md) → [Thermodynamics](concepts/thermodynamics.md)
+5. **Language insights**: [96 Languages](languages/index.md) → [Old Architecture](languages/old-architecture.md)
+6. **Performance**: [GPU Benchmarks](gpu/index.md)
+7. **Integration**: API for your language
+8. **Full picture**: [Research](research/index.md) → [Grand Synthesis](research/grand-synthesis.md)
+9. **Questions**: [FAQ](faq.md)
+
+## Build
+
+```bash
+# Serve raw markdown locally
+cd flux-docs
+python3 -m http.server 8080
+
+# Or convert to HTML
+make html
+```
+
+## License
+
+MIT — Part of the [SuperInstance](https://github.com/SuperInstance) constraint-theory ecosystem.

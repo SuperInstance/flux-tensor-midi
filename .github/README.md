@@ -1,57 +1,95 @@
 # SuperInstance
 
-**A research lab exploring constraint theory, distributed AI, and collective intelligence.**
-
-We're early-stage and experimental. The results are real — but we're not a product company. We build tools to make software verification mathematically exact and AI systems work together more intelligently.
+Research into exact numeric computing. Floating-point comparison has known failure modes — NaN passes all bounds checks, ULP drift compounds across operations, and quantized bounds introduce false negatives. This org builds tools that sidestep those problems by checking numeric bounds with exact integer arithmetic.
 
 ---
 
-## What We Work On
+## What We Build
 
-**Constraint Theory** — Software verification doesn't have to be approximate. We're building the math to make it exact: every check either passes or fails, with zero ambiguity. The constraint engine runs in 96 programming languages and processes 654 million checks per second.
+The core engine is called **FLUX**. It checks numeric bounds and produces an 8-bit error mask — one bit per constraint, PASS or FAIL with no intermediate states. NaN is trapped explicitly (`v != v` before comparison). The comparison uses IEEE 754 monotonicity, which means the float comparison itself is exact; the bug in traditional approaches is quantizing the *bounds*, not the comparison.
 
-**PLATO** — A system where AI models write procedures that other models execute. Think of it like Mayo Clinic: elite specialists codify their knowledge into protocols so general surgeons in the field can deliver specialist-level care. PLATO tiles carry the same structure — pre-conditions, steps, decision trees, post-conditions, provenance. The intelligence transfers through the procedure, not the person.
-
-**Collective Inference** — No single model is the best at everything. We run fleets of models that predict independently, compare results, identify gaps, and learn from disagreements. The glitches *are* the research agenda.
-
-**Application-First** — We don't build capability for capability's sake. We identify the jobs that need doing, then cast the right models for each role. Like the military's ASVAB: the role defines the requirements, the system finds who meets them.
+The engine has been implemented in 96 languages (each one chosen to learn what that paradigm forces you to think about) and reaches 654 million checks/sec in C with AVX2. See the [ecosystem repo](https://github.com/SuperInstance/constraint-theory-ecosystem) for the full implementation matrix and benchmarks.
 
 ---
 
-## Key Projects
+## Quick Start
 
-| Repo | What It Does |
-|------|-------------|
-| [constraint-theory-ecosystem](https://github.com/SuperInstance/constraint-theory-ecosystem) | 96 languages, 31 research modules, 654M checks/sec |
-| [flux-vm-v3](https://github.com/SuperInstance/flux-vm-v3) | Rust VM with 60 opcodes and JIT compilation |
-| [tensor-spline](https://github.com/SuperInstance/tensor-spline) | Eisenstein lattice weight parameterization — 20× compression at same accuracy |
-| [plato-training](https://github.com/SuperInstance/plato-training) | Micro models, GPT-2 training, hardware deployment pipeline |
-| [plato-types](https://github.com/SuperInstance/plato-types) | Tile lifecycle, Lamport clocks, room protocol |
-| [plato-data](https://github.com/SuperInstance/plato-data) | Data loading for CSV, JSONL, PLATO tiles, fleet sources |
+Pick your language:
 
-### Published Crates
+| Language | Repo | Install |
+|----------|------|---------|
+| **Python** | [flux-lib-py](https://github.com/SuperInstance/flux-lib-py) | Clone & import |
+| **JavaScript** | [flux-check-js](https://github.com/SuperInstance/flux-check-js) | Clone & import |
+| **C** | [flux-engine-c](https://github.com/SuperInstance/flux-engine-c) | Single header, no deps |
 
-- **[`constraint-theory-core`](https://crates.io/crates/constraint-theory-core)** v2.0.0 — core verification engine
-- **[`spectral-conservation`](https://crates.io/crates/spectral-conservation)** v0.1.0 — spectral conservation laws for constraint systems
+Full ecosystem → [constraint-theory-ecosystem](https://github.com/SuperInstance/constraint-theory-ecosystem)
 
 ---
 
-## By The Numbers
+## The Stack
 
-- **6 repos** across the org
-- **700+ tests** passing
-- **96 language implementations** of the constraint engine
-- **Real hardware benchmarks** — CPU, GPU, NPU targets
-- **Published to [crates.io](https://crates.io/search?q=SuperInstance)**
+```
+GUARD DSL          Write constraints: "coolant_temp: -40.0 <= x <= 150.0"
+    ↓
+FLUX Engine        Integer bounds check → u8 error mask (8 constraints, 1 bit each)
+    ↓
+Fracture-Coalesce  Split independent constraints into parallel blocks
+    ↓
+Sediment Layers    Append-only correction history (immutable audit trail)
+    ↓
+Proof Certificate  SHA-256 hash of inputs + results — tamper-evident, formally verified
+```
+
+| Component | Repo |
+|-----------|------|
+| GUARD compiler | [guardc-v3](https://github.com/SuperInstance/guardc-v3) |
+| FLUX VM (Rust) | [flux-vm-v3](https://github.com/SuperInstance/flux-vm-v3) |
+| Fracture (Rust) | [flux-fracture](https://github.com/SuperInstance/flux-fracture) |
+| Documentation | [flux-docs](https://github.com/SuperInstance/flux-docs) |
+| CUDA acceleration | [constraint-cuda](https://github.com/SuperInstance/constraint-cuda) |
+
+---
+
+## Language Implementations
+
+96 ports. Each one taught us something. A few highlights:
+
+| Language | Repo | What it taught us |
+|----------|------|-------------------|
+| COBOL | [flux-cobol](https://github.com/SuperInstance/flux-cobol) | OCCURS is a schema constraint, not a runtime check |
+| RPG | [flux-rpg](https://github.com/SuperInstance/flux-rpg) | Bitmask error flags since 1959 — our error mask is RPG's indicator array |
+| MUMPS | [flux-mumps](https://github.com/SuperInstance/flux-mumps) | Global persistence is where sediment layers actually live |
+| Fortran | [flux-fortran](https://github.com/SuperInstance/flux-fortran) | Packed decimal = exact arithmetic, zero rounding error |
+| CUDA | [constraint-cuda](https://github.com/SuperInstance/constraint-cuda) | GPU parallelism for batch constraint evaluation |
+| WASM | [constraint-wasm](https://github.com/SuperInstance/constraint-wasm) | Browser-native bounds checking |
+
+The old language repos each explore what that paradigm teaches about constraint processing.
+
+---
+
+## Research
+
+**[constraint-theory-math](https://github.com/SuperInstance/constraint-theory-math)** — The mathematical foundations. Eisenstein integers (complex numbers on a hexagonal lattice) give us exact arithmetic without floating-point. Spectral conservation laws prove that constraint density is bounded.
+
+**[tensor-spline](https://github.com/SuperInstance/tensor-spline)** — Eisenstein lattice weight parameterization. 20× compression at the same accuracy. Built for deploying micro models to NPU/CPU/GPU targets.
+
+**[flux-research](https://github.com/SuperInstance/flux-research)** — Cross-domain connections: thermodynamics, Galois theory, information geometry. The partition function maps directly to constraint satisfaction.
+
+**[flux-papers](https://github.com/SuperInstance/flux-papers)** — Published work and working papers.
+
+---
+
+## Other Projects
+
+| Project | Repo | What |
+|---------|------|------|
+| PLATO | [plato-training](https://github.com/SuperInstance/plato-training) | Micro models for AI agents — deploy to any hardware |
+| Casting Call | [casting-call](https://github.com/SuperInstance/casting-call) | Which model plays which role — fleet-wide capability database |
 
 ---
 
 ## Who We Are
 
-Built by the **Cocapn fleet** — a collective of AI agents working together under human direction. Led by **Casey Digennaro**.
+Built by the **Cocapn fleet** — AI agents working together under human direction. Led by **[Casey Digennaro](https://github.com/caseydt)**.
 
-We ship first and iterate. If you're into constraint systems, distributed AI, or making verification mathematically rigorous — pull up a chair.
-
----
-
-*Open source. Research-driven. Alaska-based.*
+We ship first and iterate. Open source. Research-driven. Alaska-based.

@@ -1,18 +1,45 @@
 # TOOLS.md — Quick Reference
 
-## Architecture: Forgemaster Orchestrates Coding Agents
+## Architecture: Delegation Pyramid
 
 ```
-Forgemaster (GLM-5.1 via z.ai)
-  ├── Claude Code (claude — best for boilerplate, architecture docs)
-  ├── OpenCode (z.ai GLM — paid plan)
-  ├── Droid Factory (z.ai GLM — paid plan)
-  └── Kimi CLI (kimi — paid plan)
+Casey (CEO) — decisions, direction, "is this worth doing?"
+  │
+  Forgemaster (GLM-5.1) — senior partner, orchestrator
+    │
+    ├── GLM-5.1 subagents (associates) — code, research, building
+    │     │
+    │     ├── Seed-2.0-mini ($0.01) — paralegal
+    │     │     Context extraction, summaries, arithmetic, formatting
+    │     │
+    │     ├── Hermes-70B ($0.03) — paralegal, different specialty
+    │     │     Second opinions, critiques, brainstorming
+    │     │
+    │     └── Qwen3.6-35B ($0.01) — file clerk
+    │           Quick lookups, routing, simple generation
+    │
+    ├── Seed-2.0-pro / DeepSeek Reasoner — senior associates
+    │     Heavy reasoning, novel math, deep analysis
+    │
+    └── Claude Opus (partner) — ONLY what requires that intelligence
+          Novel cross-paradigm synthesis, proofs no other model can produce
+          NEVER gets work a junior could prep first
 ```
 
-I (Forgemaster) am the **orchestrator**. I run on `GLM-5.1` and delegate coding work to agents below.
+### The Delegation Rule
+**Every level only sees work that requires their specific intelligence.**
 
-**Claude Code**: Good for CLI boilerplate (470-line CLI in one pass). Times out on novel math. Use `--print --permission-mode bypassPermissions`.
+- Seed-2.0-mini preps context → GLM-5.1 builds code → I review
+- Hermes critiques → I synthesize the best of both
+- Seed-2.0-mini distills files → lean prompt → THEN Claude sees it
+- Nobody upstream does work that belongs downstream
+
+This is the law firm model: paralegals research, associates draft, partners argue.
+Each level costs 3-10x more than the one below. Waste is disrespecting the pyramid.
+
+I (Forgemaster) am the **senior partner**. I orchestrate, I review, I decide what escalates.
+
+**Claude Code**: Reserved for synthesis that genuinely requires it. `--print --permission-mode bypassPermissions`.
 
 ## Agent Priority (Delegation Order)
 1. **OpenCode** (`opencode`) — z.ai GLM models (paid plan), best for complex coding tasks
@@ -56,8 +83,9 @@ When z.ai (GLM-5.1) or other providers hit rate limits:
   - Models: `ByteDance/Seed-2.0-code`, `ByteDance/Seed-2.0-pro`, `ByteDance/Seed-2.0-mini`, `NousResearch/Hermes-3-Llama-3.1-405B`, `NousResearch/Hermes-3-Llama-3.1-70B`, `Qwen/Qwen3.6-35B-A3B`, `Qwen/Qwen3.5-397B-A17B`, `Qwen/Qwen3-235B-A22B-Instruct-2507`
   - Endpoint: `https://api.deepinfra.com/v1/openai`
 - **DeepSeek:** `~/.openclaw/workspace/.credentials/deepseek-api-key.txt`
-  - Models: `deepseek-chat` (fast), `deepseek-reasoner` (slow)
+  - Models: `deepseek-v4-flash` (fast, large context, cheap — GREAT for research), `deepseek-v4-pro` (deep reasoning, slow), `deepseek-chat` (R1 legacy)
   - Endpoint: `https://api.deepseek.com/v1`
+  - Cost: v4-flash is very cheap, large context window, fast iteration for research rounds
 
 ## Agent Wrappers (Backup/Secondary — use only when z.ai/kimi unavailable)
 All use Aider with isolated temp dirs (no repo-map overhead).
@@ -155,44 +183,59 @@ Each independently installable. plato-training orchestrates.
 
 See `references/tools-detail.md` for full agent configs.
 
-## Claude Code Timeout + Effort Rules
+## Claude Code — EXPENSIVE RESOURCE PROTOCOL ⚠️
 
-**Settings:** `effortLevel: high` (set in ~/.claude/settings.json)
+**Claude is ~100x more expensive than Seed-2.0-mini ($0.01). Every Claude run costs $3-10+.**
+A wasted Claude run = burning 100 cheap model calls. **Be surgical.**
 
-**Model selection:**
-- `claude --model opus` — for the hardest architectural/theoretical work
-- `claude --model sonnet` — default for code generation, good balance
-- Default (sonnet) is fine for most tasks
+### HARD RULES (no exceptions)
 
-**Timeout protocol:**
-- **Simple generation** (README, docs): `timeout 300 claude --print`
-- **Architecture design** (API specs, system design): `timeout 600 claude --print`
-- **Deep analysis** (comparative analysis, strategic docs): `timeout 900 claude --print`
-- **Complex multi-file generation** (full packages, integrations): `timeout 1200 claude --print`
-- **Highest level work** (ARCHITECTURE.md, theory synthesis): `timeout 1800 claude --model opus --print`
-- **Max think** (when challenged, novel synthesis): `timeout 2400 claude --model opus --print`
-- **Absolute max**: 2400s (40 min) — only for world-class output on novel problems
-- **Rule of thumb**: If Opus timed out at X, retry at 3X
+1. **NEVER feed Claude more than 3 files directly.** OOM = wasted money. Pre-summarize with Seed-2.0-mini.
+2. **NEVER run Claude without a timeout.** Minimum 600s.
+3. **ALWAYS prep with cheap models first.** Use Seed-2.0-mini ($0.01) to:
+   - Extract and summarize relevant context from large files
+   - Write a lean, self-contained prompt with only distilled info
+   - Pre-compute arithmetic, format data, trim boilerplate
+4. **NEVER use Claude for something a cheaper model can do.** Escalation path:
+   - Seed-2.0-mini → Hermes-70B → GLM-5.1 subagent → DeepSeek Reasoner → **Claude (last resort)**
+5. **NEVER re-run Claude on the same failed prompt.** If it OOMs or times out, use Seed-2.0-mini to break the task into smaller pieces.
 
-**Effort flags:**
-- `--effort-level high` — per-invocation override for hard problems
-- Settings already at `high` — Claude thinks longer before responding
+### Preparation Protocol (MANDATORY before every Claude run)
 
-**When to use Claude Code (vs GLM-5.1 subagents):**
-- Architecture documents that need to synthesize MANY files
-- Deep analysis requiring reading + reasoning about the whole system
-- Novel theoretical synthesis that benefits from extended thinking
-- When GLM-5.1 agents keep failing on the same problem
-
-**Claude Code pattern for highest-level work:**
 ```bash
-timeout 2400 claude --model opus --print --permission-mode bypassPermissions << 'PROMPT'
-[Read these files first, then synthesize]
-PROMPT
+# Step 1: Use Seed-2.0-mini to distill context
+DEEPINFRA_KEY=$(cat ~/.openclaw/workspace/.credentials/deepinfra-api-key.txt)
+curl -s https://api.deepinfra.com/v1/openai/chat/completions \
+  -H "Authorization: Bearer $DEEPINFRA_KEY" -H "Content-Type: application/json" \
+  -d '{"model":"ByteDance/Seed-2.0-mini","messages":[{"role":"user","content":"Read these files and prepare a concise context summary for Claude Opus: [DESCRIBE TASK]. Output ONLY the distilled context, no meta-commentary."}],"max_tokens":2048}'
+
+# Step 2: Write the prepared prompt to a file — lean, surgical, no raw dumps
+# Step 3: Run Claude with the lean prompt
 ```
 
-**Key: don't feed Claude too many files at once.** Read 5-10 max, or it OOMs.
-For large synthesis, read files in the prompt via shell commands, not all at once.
+### Timeout Rules
+- **Minimum**: 600s (10 min)
+- **Standard**: 1200s (20 min)
+- **Max**: 2400s (40 min) — ONLY for novel synthesis that no other model can handle
+- **If OOM**: You fed it too much. Reduce context by 50%, prep with cheap model first.
+- **If timeout**: Do NOT retry at higher timeout. Break into smaller pieces with Seed-2.0-mini.
+
+### Model Selection
+- **Opus**: ONLY for novel theoretical synthesis beyond all other models
+- **Sonnet**: Only when GLM-5.1 agents have genuinely failed on the same task
+- **Default**: GLM-5.1 (paid plan) or Seed-2.0-mini. Claude is the exception, not the rule.
+
+### Settings
+- `effortLevel: high` (set in ~/.claude/settings.json)
+- `--print --permission-mode bypassPermissions` — always non-interactive
+
+### Anti-Patterns (DO NOT)
+- ❌ Dumping files into a Claude prompt without pre-summarizing
+- ❌ Running Claude without a timeout
+- ❌ Using Claude for boilerplate, standard code, or docs
+- ❌ Re-running Claude on the same failed prompt
+- ❌ "Let me try Claude" before trying Seed-2.0-mini or GLM-5.1
+- ❌ Feeding raw file contents instead of summaries
 
 ## Fleet Model Routing (Updated 2026-05-15)
 
@@ -218,11 +261,18 @@ For large synthesis, read files in the prompt via shell commands, not all at onc
 ### Routing Rules
 
 ```
-Code/architecture/docs → glm-5.1 (z.ai, paid plan)
-Domain computation → Seed-2.0-mini (Stage 4, immune to vocabulary wall)
-Reasoning about math → Seed-2.0-mini (only Stage 4 that answers correctly)
-Content generation → glm-5-turbo (z.ai, paid plan)
-Simple arithmetic on ANY model → fleet_translator.translate() first
+EVERYTHING → GLM-5.1 (z.ai, paid plan, MAX IT OUT)
+  ↓ only when rate-limited or genuinely insufficient
+Domain computation / math reasoning → Seed-2.0-mini (Stage 4)
+Research rounds (large context, fast iteration) → DeepSeek v4-flash (cheap, huge context)
+Second opinions / large context → Hermes-70B
+Quick routing / fast lookups → Qwen3.6-35B
+Heavy novel reasoning → DeepSeek v4-pro (reasoner)
+NOVEL SYNTHESIS ONLY → Claude Opus (last resort, 100x cost)
 ```
 
-### Key: z.ai is PAID — burn it for everything that doesn't need Stage 4
+### Key: GLM-5.1 IS THE DEFAULT. z.ai is PAID — burn it for EVERYTHING.
+"Education isn't something you finish" — GLM-5.1 stays hot, forging the system.
+Only delegate downstream when GLM-5.1 hits limits or a cheaper model is genuinely sufficient for a trivial task.
+Seed/Hermes/Qwen/DeepSeek are SUPPLEMENTS, not replacements. GLM-5.1 is the workhorse.
+DeepSeek v4-flash is the research workbench — large context, fast, cheap, good for iterative exploration.

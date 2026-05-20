@@ -52,8 +52,9 @@ mod tests {
 
     #[test]
     fn variance_approx_5_over_36() {
-        // For a regular hexagon with circumradius 1, the variance of x (or y) is 5/36.
-        // (Area = 3√3/2, moment of inertia derivable analytically.)
+        // The sampled region is {(x,y): |y|<=1, |x|<=1, (sqrt(3)*|x|+|y|)/2 <= 1}
+        // The sampling box clips at x in [-1,1], truncating the hex.
+        // Exact Var(x) = (11 - sqrt(3)) / 36 ≈ 0.25744
         let mut rng = StdRng::seed_from_u64(123);
         let n = 100_000;
         let mut sum_x2 = 0.0_f64;
@@ -65,7 +66,7 @@ mod tests {
         }
         let mean = sum_x / n as f64;
         let var = sum_x2 / n as f64 - mean * mean;
-        let expected = 5.0 / 36.0;
+        let expected = (11.0 - 3.0_f64.sqrt()) / 36.0;
         // Allow 2% relative tolerance at 100k samples
         assert!(
             (var - expected).abs() / expected < 0.02,

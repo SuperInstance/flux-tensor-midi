@@ -109,9 +109,9 @@ mod tests {
         for &angle in &test_angles {
             let q = (angle.cos(), angle.sin());
             let (idx, dot) = nearest_direction(q, &candidates);
-            // The best match should have dot product >= cos(π/n) ≈ cos(0.006) ≈ 0.99998
-            // With 500 points on a circle, worst-case angular gap ≈ 2π/500 ≈ 0.01257 rad
-            let min_dot = (std::f64::consts::PI / n as f64).cos();
+            // The best match should have dot product >= cos(2π/n) ≈ cos(0.01257) ≈ 0.99992
+            // Worst-case angular gap is 2π/n (halfway between two consecutive points)
+            let min_dot = (2.0 * std::f64::consts::PI / n as f64).cos();
             assert!(
                 dot >= min_dot,
                 "poor recall at angle {angle:.3}: dot={dot:.6} < {min_dot:.6} (idx={idx})"

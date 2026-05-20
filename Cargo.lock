@@ -777,6 +777,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "flux-vm-v3"
+version = "0.1.0"
+dependencies = [
+ "criterion",
+ "rayon",
+ "sha2",
+]
+
+[[package]]
 name = "fnv"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
