@@ -1,12 +1,9 @@
 [workspace]
 resolver = "2"
 members = [
-    "constraint-theory-llvm",
-    "holonomy-consensus",
-    "flux-lucid",
     "snapkit-rust", "plato-mud", "zeitgeist-protocol",
     "flux-verify-api",
-    "spectral-conservation", "flux-vm-v3",
+    "spectral-conservation",
 ]
 exclude = ["lighthouse-cli"]
 

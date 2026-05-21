@@ -1,9 +1,6 @@
 use crate::signing::{self, Signature, SigningError};
 use std::collections::HashSet;
 use tracing::{error, info, warn};
-use std::collections::HashSet;
-use tracing::{info, warn, error};
-use crate::signing::{self, Signature, SigningError};
 
 /// Middleware that verifies bytecode signatures before allowing execution.
 pub struct VerificationMiddleware {
@@ -120,11 +117,6 @@ impl VerificationMiddleware {
     }
 
     /// Verify bytecode or return an error message suitable for API responses.
-    pub fn verify_or_reject(
-        &self,
-        bytecode: &[u8],
-        signature: &Signature,
-    ) -> Result<usize, String> {
     pub fn verify_or_reject(&self, bytecode: &[u8], signature: &Signature) -> Result<usize, String> {
         let result = self.verify(bytecode, signature);
         if result.allowed {
