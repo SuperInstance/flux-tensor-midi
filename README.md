@@ -1,199 +1,191 @@
-# Forgemaster Workspace
+# Forgemaster ⚒️
 
-Monorepo for the Forgemaster ⚒️ constraint-theory fleet agent (Cocapn). 57 repos, 57+ submodules, 9 AI agents.
-**Formally verified, GPU-accelerated constraint satisfaction for safety-critical systems.**
+**Orchestrator vessel for the Cocapn fleet's constraint-theory specialist.**
 
-[![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![crates.io](https://img.shields.io/crates/v/flux-isa.svg?label=flux-isa)](https://crates.io/crates/flux-isa)
-[![crates.io](https://img.shields.io/crates/v/flux-ast.svg?label=flux-ast)](https://crates.io/crates/flux-ast)
-[![crates.io](https://img.shields.io/crates/v/guard2mask.svg?label=guard2mask)](https://crates.io/crates/guard2mask)
-[![npm](https://img.shields.io/npm/v/@superinstance/ct-bridge.svg)](https://www.npmjs.com/package/@superinstance/ct-bridge)
+Forgemaster is the historical monorepo that seeded the entire Cocapn ecosystem. Over 160 modules have been extracted to standalone repositories under [SuperInstance](https://github.com/SuperInstance?tab=repositories). This repo now serves as the **coordinator** — a table of contents, architectural reference, and historical archive.
+
+> "Forging proofs in the fires of computation."
 
 ---
 
-## Overview
+## What Lives Here
 
-FLUX is a constraint specification and execution platform built for aerospace, automotive, and industrial safety systems. It compiles GUARD DSL constraints through a formally verified pipeline to GPU, FPGA, and CPU backends — with zero drift across 278M+ evaluated test cases.
-
-```
-GUARD DSL → flux-ast → guardc → FLUX-C → guard2mask
-                                        ↓
-                              GPU (CUDA/Vulkan/WebGPU)
-                              FPGA (SystemVerilog)
-                              CPU (flux-vm)
-```
-
----
-
-## Published Crates
-
-| Crate | Version | Description |
-|-------|---------|-------------|
-| [flux-isa](https://crates.io/crates/flux-isa) | ![](https://img.shields.io/crates/v/flux-isa.svg) | Stack-based constraint VM — bytecode encoding and ISA spec |
-| [flux-ast](https://crates.io/crates/flux-ast) | ![](https://img.shields.io/crates/v/flux-ast.svg) | Universal Constraint AST — canonical semantics across all representations |
-| [flux-provenance](https://crates.io/crates/flux-provenance) | ![](https://img.shields.io/crates/v/flux-provenance.svg) | Merkle provenance service for fleet verification traces |
-| [flux-bridge](https://crates.io/crates/flux-bridge) | ![](https://img.shields.io/crates/v/flux-bridge.svg) | Cross-tier bridge between FLUX ISA and execution backends |
-| [flux-hdc](https://crates.io/crates/flux-hdc) | ![](https://img.shields.io/crates/v/flux-hdc.svg) | Hyperdimensional computing integration for constraint encoding |
-| [flux-verify-api](https://crates.io/crates/flux-verify-api) | ![](https://img.shields.io/crates/v/flux-verify-api.svg) | Natural Language Verification API with mathematical traces |
-| [guard2mask](https://crates.io/crates/guard2mask) | ![](https://img.shields.io/crates/v/guard2mask.svg) | GUARD DSL → GDSII mask compiler — constraints to silicon patterns |
-| [guardc](https://crates.io/crates/guardc) | ![](https://img.shields.io/crates/v/guardc.svg) | GUARD → FLUX verified compiler |
-| [cocapn-cli](https://crates.io/crates/cocapn-cli) | ![](https://img.shields.io/crates/v/cocapn-cli.svg) | Fleet CLI — Abyssal Terminal output formatting |
-| [cocapn-glue-core](https://crates.io/crates/cocapn-glue-core) | ![](https://img.shields.io/crates/v/cocapn-glue-core.svg) | Cross-tier wire protocol unifying all FLUX ISA packages |
-| [flux-lucid](https://crates.io/crates/flux-lucid) | ![](https://img.shields.io/crates/v/flux-lucid.svg) | Unified constraint theory ecosystem — CDCL, LLVM, AVX-512, GL(9) consensus |
-| [eisenstein](https://crates.io/crates/eisenstein) | ![](https://img.shields.io/crates/v/eisenstein.svg) | Zero-drift hexagonal lattice constraints via Eisenstein integers |
-| [holonomy-consensus](https://crates.io/crates/holonomy-consensus) | ![](https://img.shields.io/crates/v/holonomy-consensus.svg) | Zero-holonomy consensus for fleet coordination — GL(9) intent alignment |
-
-### npm Package
-
-| Package | Version | Description |
-|---------|---------|-------------|
-| [@superinstance/ct-bridge](https://www.npmjs.com/package/@superinstance/ct-bridge) | ![](https://img.shields.io/npm/v/@superinstance/ct-bridge.svg) | Constraint Theory solver bridge for Node.js — CSP compilation and FLUX execution |
-
----
-
-## GitHub Repositories
-
-| Repository | Description |
-|------------|-------------|
-| [flux-compiler](https://github.com/SuperInstance/flux-compiler) | Core compiler with Coq formal verification |
-| [flux-vm](https://github.com/SuperInstance/flux-vm) | Virtual machine runtime for FLUX bytecode |
-| [flux-hardware](https://github.com/SuperInstance/flux-hardware) | CUDA / Vulkan / WebGPU / SystemVerilog backends |
-| [flux-hdc](https://github.com/SuperInstance/flux-hdc) | Hyperdimensional computing integration |
-| [flux-papers](https://github.com/SuperInstance/flux-papers) | Research papers and formal write-ups |
-| [flux-site](https://github.com/SuperInstance/flux-site) | Project website |
-| [flux-docs](https://github.com/SuperInstance/flux-docs) | Technical documentation |
-
----
-
-## Formal Verification
-
-8 Coq theorems covering:
-
-- Constraint soundness and completeness
-- Bitmask encoding correctness (guard2mask)
-- ISA operational semantics
-- Provenance chain integrity
-
-30 English mathematical proofs accompany the Coq development as readable counterparts. The full EMSOFT paper (methodology + evaluation, 864 lines) is in [`flux-papers`](https://github.com/SuperInstance/flux-papers).
-
----
-
-## Hardware Backends
-
-### GPU (CUDA / Vulkan / WebGPU)
-
-Constraint checking kernels in [`flux-hardware`](https://github.com/SuperInstance/flux-hardware) and [`constraint-theory-core-cuda`](./constraint-theory-core-cuda/). Zero mismatches across 278M+ evaluations.
-
-### FPGA (SystemVerilog)
-
-DO-254 compliant SystemVerilog implementation targeting DAL-A airborne hardware. See [`flux-hardware`](https://github.com/SuperInstance/flux-hardware).
-
----
-
-## Benchmarks
-
-**Safe-TOPS/W** — a benchmark specification for safety-critical compute efficiency.
-
-Defined in [`docs/`](./docs/) with evaluation methodology described in the EMSOFT paper.
-
----
-
-## PLATO Integration
-
-6500+ tiles integrating FLUX constraint checking into the PLATO tile ecosystem. Adapters and client code in [`plato-adapters/`](./plato-adapters/) and [`plato-client/`](./plato-client/).
+| Layer | Description |
+|-------|-------------|
+| **Top-level docs** | Architecture specs, essays, fleet protocols, decomposition docs |
+| **In-place modules** | ~53 directories not yet extracted (see [MODULE-MAP.md](./MODULE-MAP.md)) |
+| **Historical copies** | ~162 directories preserved after extraction (with extraction notices) |
+| **Fleet comms** | `for-fleet/`, `from-fleet/`, `i2i/` — inter-agent communication |
 
 ---
 
 ## Architecture
 
 ```
-GUARD DSL
-    │
-    ▼
-guardc  ─── GUARD → FLUX verified compiler
-    │
-    ▼
-FLUX ISA ── stack-based bytecode VM
-    │
-    ├──▶ CPU  (flux-vm runtime)
-    ├──▶ GPU  (CUDA / Vulkan / WebGPU)
-    └──▶ FPGA (SystemVerilog, DO-254)
-```
-
-Fleet consensus and orchestration layer:
-
-```
-holonomy-consensus ── zero-holonomy fleet state
-flux-lucid         ── ecosystem orchestrator / head-direction
-flux-contracts     ── frozen trait definitions (stable ABI)
-flux-verify-api    ── Ed25519-signed verification traces
-zeitgeist-protocol ── FLUX transference specification
+┌──────────────────────────────────────────────────────────────────┐
+│                        APPLICATION LAYER                         │
+│   platoclaw │ plato-mcp │ cocapn-cli │ cocapn-ai-web            │
+├──────────────────────────────────────────────────────────────────┤
+│                      INTELLIGENCE LAYER                          │
+│   plato-model-ocean │ plato-escalation-gate │ plato-room-intel  │
+│   plato-training │ plato-soul-fingerprint │ fleet-calibrator    │
+├──────────────────────────────────────────────────────────────────┤
+│                       RUNTIME LAYER                              │
+│   plato-engine │ plato-mud │ flux-vm │ flux-lucid │ flux-isa   │
+│   flux-ast │ flux-compiler │ flux-hardware │ flux-verify-api    │
+├──────────────────────────────────────────────────────────────────┤
+│                      CONSTRAINT LAYER                            │
+│   constraint-theory-core │ spectral-conservation │ eisenstein    │
+│   dodecet-encoder │ penrose-memory │ guardc │ guard2mask        │
+│   holonomy-consensus │ pbft-rust │ snapkit (multi-lang)        │
+├──────────────────────────────────────────────────────────────────┤
+│                        DATA LAYER                                │
+│   plato-types │ plato-data │ tensor-spline │ flux-provenance    │
+│   tile-memory │ plato-tiles │ plato-kernel-constraints          │
+├──────────────────────────────────────────────────────────────────┤
+│                      INFRASTRUCTURE                              │
+│   fleet-router │ fleet-health-monitor │ fleet-murmur            │
+│   fleet-resonance │ zeitgeist-protocol │ fleet-gateway          │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Published Crates (16 on crates.io)
+## Extracted Module Index
 
-| Crate | Version | Role |
-|-------|---------|------|
-| [eisenstein](https://crates.io/crates/eisenstein) | 0.3.1 | Hex integer math (ℤ[ω] lattice) |
-| [dodecet-encoder](https://crates.io/crates/dodecet-encoder) | 1.1.0 | 12-bit constraint state encoding |
-| [holonomy-consensus](https://crates.io/crates/holonomy-consensus) | 0.1.2 | Fleet consensus protocol |
-| [flux-lucid](https://crates.io/crates/flux-lucid) | 0.1.7 | Ecosystem orchestrator |
-| [flux-isa](https://crates.io/crates/flux-isa) | 0.1.2 | Bytecode VM / ISA spec |
-| [guardc](https://crates.io/crates/guardc) | 0.1.0 | GUARD → FLUX compiler |
-| [flux-verify-api](https://crates.io/crates/flux-verify-api) | 0.1.2 | Verification API with Ed25519 |
-| [flux-contracts](https://crates.io/crates/flux-contracts) | 0.1.0 | Frozen trait definitions |
-| [zeitgeist-protocol](https://crates.io/crates/zeitgeist-protocol) | 0.1.0 | Transference protocol |
-| [snapkit](https://crates.io/crates/snapkit) | 0.1.0 | Eisenstein snap toolkit |
-| [constraint-theory-core](https://crates.io/crates/constraint-theory-core) | 2.2.0 | Core constraint library |
-| [constraint-theory-llvm](https://crates.io/crates/constraint-theory-llvm) | 0.1.1 | LLVM backend |
-| [constraint-theory](https://crates.io/crates/constraint-theory) | 0.1.0 | Python bindings |
-| [ct-demo](https://crates.io/crates/ct-demo) | 0.3.0 | Demo / integration tests |
-| flux-compiler | — | Core compiler pipeline |
-| pythagorean48-codes | — | Error-correcting codes |
+**162 modules** have been extracted to standalone repos. Full details in [MODULE-MAP.md](./MODULE-MAP.md).
 
-## PyPI (4 packages)
+### Core Constraint Theory (Rust)
+| Module | Repo |
+|--------|------|
+| [constraint-theory-core](./constraint-theory-core-cuda/) | [SuperInstance/constraint-theory-core](https://github.com/SuperInstance/constraint-theory-core) |
+| [constraint-theory-ecosystem](./constraint-theory-ecosystem/) | [SuperInstance/constraint-theory-ecosystem](https://github.com/SuperInstance/constraint-theory-ecosystem) |
+| [constraint-theory-py](./constraint-theory-py/) | [SuperInstance/constraint-theory-py](https://github.com/SuperInstance/constraint-theory-py) |
+| [constraint-theory-math](./constraint-theory-math/) | [SuperInstance/constraint-theory-math](https://github.com/SuperInstance/constraint-theory-math) |
+| [constraint-demos](./constraint-demos/) | [SuperInstance/constraint-demos](https://github.com/SuperInstance/constraint-demos) |
+| [eisenstein](./eisenstein/) | [SuperInstance/eisenstein](https://github.com/SuperInstance/eisenstein) |
+| [spectral-conservation](./spectral-conservation/) | [SuperInstance/spectral-conservation](https://github.com/SuperInstance/spectral-conservation) |
+| [dodecet-encoder](./dodecet-encoder/) | [SuperInstance/dodecet-encoder](https://github.com/SuperInstance/dodecet-encoder) |
+| [guardc](./guardc/) | [SuperInstance/guardc](https://github.com/SuperInstance/guardc) |
+| [guard2mask](./guard2mask/) | [SuperInstance/guard2mask](https://github.com/SuperInstance/guard2mask) |
+| [pbft-rust](./pbft-rust/) | [SuperInstance/pbft-rust](https://github.com/SuperInstance/pbft-rust) |
+| [holonomy-consensus](./holonomy-consensus/) | [SuperInstance/holonomy-consensus](https://github.com/SuperInstance/holonomy-consensus) |
 
-| Package | Version |
-|---------|---------|
-| constraint-theory | 0.2.0 |
-| cocapn-snapkit | blocked (rate limit) |
-| fleet-automation | blocked (rate limit) |
-| polyformalism-a2a | pending |
+### FLUX Compiler & VM
+| Module | Repo |
+|--------|------|
+| [flux-compiler](./flux-compiler/) | [SuperInstance/flux-compiler](https://github.com/SuperInstance/flux-compiler) |
+| [flux-vm](./flux-vm/) | [SuperInstance/flux-vm](https://github.com/SuperInstance/flux-vm) |
+| [flux-isa](./flux-isa/) | [SuperInstance/flux-isa](https://github.com/SuperInstance/flux-isa) |
+| [flux-ast](./flux-ast/) | [SuperInstance/flux-ast](https://github.com/SuperInstance/flux-ast) |
+| [flux-lucid](./flux-lucid/) | [SuperInstance/flux-lucid](https://github.com/SuperInstance/flux-lucid) |
+| [flux-hardware](./flux-hardware/) | [SuperInstance/flux-hardware](https://github.com/SuperInstance/flux-hardware) |
+| [flux-verify-api](./flux-verify-api/) | [SuperInstance/flux-verify-api](https://github.com/SuperInstance/flux-verify-api) |
+| [flux-provenance](./flux-provenance/) | [SuperInstance/flux-provenance](https://github.com/SuperInstance/flux-provenance) |
+| [flux-docs](./flux-docs/) | [SuperInstance/flux-docs](https://github.com/SuperInstance/flux-docs) |
 
-## npm (1 ready, blocked)
+### PLATO Intelligence Platform
+| Module | Repo |
+|--------|------|
+| [plato-engine](./plato-engine/) | [SuperInstance/plato-engine](https://github.com/SuperInstance/plato-engine) |
+| [plato-client](./plato-client/) | [SuperInstance/plato-client](https://github.com/SuperInstance/plato-client) |
+| [plato-types](./plato-types/) | [SuperInstance/plato-types](https://github.com/SuperInstance/plato-types) |
+| [plato-data](./plato-data/) | [SuperInstance/plato-data](https://github.com/SuperInstance/plato-data) |
+| [plato-training](./plato-training/) | [SuperInstance/plato-training](https://github.com/SuperInstance/plato-training) |
+| [plato-mcp](./plato-mcp/) | [SuperInstance/plato-mcp](https://github.com/SuperInstance/plato-mcp) |
+| [plato-model-ocean](./plato-model-ocean/) | [SuperInstance/plato-model-ocean](https://github.com/SuperInstance/plato-model-ocean) |
+| [plato-escalation-gate](./plato-escalation-gate/) | [SuperInstance/plato-escalation-gate](https://github.com/SuperInstance/plato-escalation-gate) |
+| [plato-room-intelligence](./plato-room-intelligence/) | [SuperInstance/plato-room-intelligence](https://github.com/SuperInstance/plato-room-intelligence) |
+| [plato-adapters](./plato-adapters/) | [SuperInstance/plato-adapters](https://github.com/SuperInstance/plato-adapters) |
+| [plato-soul-fingerprint](./plato-soul-fingerprint/) | [SuperInstance/plato-soul-fingerprint](https://github.com/SuperInstance/plato-soul-fingerprint) |
+| [plato-tiles](./plato-tiles/) | [SuperInstance/plato-tiles](https://github.com/SuperInstance/plato-tiles) |
+| [plato-kernel-constraints](./plato-kernel-constraints/) | [SuperInstance/plato-kernel-constraints](https://github.com/SuperInstance/plato-kernel-constraints) |
 
-| Package | Status |
-|---------|--------|
-| snapkit-js | Ready — needs OTP |
+### Snapkit (Multi-Language)
+| Module | Repo |
+|--------|------|
+| [snapkit-c](./snapkit-c/) | [SuperInstance/snapkit-c](https://github.com/SuperInstance/snapkit-c) |
+| [snapkit-cuda](./snapkit-cuda/) | [SuperInstance/snapkit-cuda](https://github.com/SuperInstance/snapkit-cuda) |
+| [snapkit-rust](./snapkit-rust/) | [SuperInstance/snapkit-rust](https://github.com/SuperInstance/snapkit-rust) |
+| [snapkit-js](./snapkit-js/) | [SuperInstance/snapkit-js](https://github.com/SuperInstance/snapkit-js) |
+| [snapkit-python](./snapkit-python/) | [SuperInstance/snapkit-python](https://github.com/SuperInstance/snapkit-python) |
+| [snapkit-fortran](./snapkit-fortran/) | [SuperInstance/snapkit-fortran](https://github.com/SuperInstance/snapkit-fortran) |
+| [snapkit-zig](./snapkit-zig/) | [SuperInstance/snapkit-zig](https://github.com/SuperInstance/snapkit-zig) |
+| [snapkit-v2](./snapkit-v2/) | [SuperInstance/snapkit-v2](https://github.com/SuperInstance/snapkit-v2) |
+| [snapkit-rs](./snapkit-rs/) | [SuperInstance/snapkit-rs](https://github.com/SuperInstance/snapkit-rs) |
+
+### Fleet Infrastructure
+| Module | Repo |
+|--------|------|
+| [fleet-router](./fleet-router/) | [SuperInstance/fleet-router](https://github.com/SuperInstance/fleet-router) |
+| [fleet-calibrator](./fleet-calibrator/) | [SuperInstance/fleet-calibrator](https://github.com/SuperInstance/fleet-calibrator) |
+| [fleet-health-monitor](./fleet-health-monitor/) | [SuperInstance/fleet-health-monitor](https://github.com/SuperInstance/fleet-health-monitor) |
+| [fleet-murmur](./fleet-murmur/) | [SuperInstance/fleet-murmur](https://github.com/SuperInstance/fleet-murmur) |
+| [fleet-gateway](./fleet-gateway/) | [SuperInstance/fleet-gateway](https://github.com/SuperInstance/fleet-gateway) |
+| [fleet-math-c](./fleet-math-c/) | [SuperInstance/fleet-math-c](https://github.com/SuperInstance/fleet-math-c) |
+| [fleet-math-py](./fleet-math-py/) | [SuperInstance/fleet-math-py](https://github.com/SuperInstance/fleet-math-py) |
+| [fleet-resonance](./fleet-resonance/) | [SuperInstance/fleet-resonance](https://github.com/SuperInstance/fleet-resonance) |
+| [fleet-stack](./fleet-stack/) | [SuperInstance/fleet-stack](https://github.com/SuperInstance/fleet-stack) |
+| [zeitgeist-protocol](./zeitgeist-protocol/) | [SuperInstance/zeitgeist-protocol](https://github.com/SuperInstance/zeitgeist-protocol) |
+
+### Flux Language Ports
+| Module | Repo |
+|--------|------|
+| [flux-algol](./flux-algol/) | [SuperInstance/flux-algol](https://github.com/SuperInstance/flux-algol) |
+| [flux-cobol](./flux-cobol/) | [SuperInstance/flux-cobol](https://github.com/SuperInstance/flux-cobol) |
+| [flux-fortran](./flux-fortran/) | [SuperInstance/flux-fortran](https://github.com/SuperInstance/flux-fortran) |
+| [flux-chapel](./flux-chapel/) | [SuperInstance/flux-chapel](https://github.com/SuperInstance/flux-chapel) |
+| [flux-mumps](./flux-mumps/) | [SuperInstance/flux-mumps](https://github.com/SuperInstance/flux-mumps) |
+| [flux-snobol](./flux-snobol/) | [SuperInstance/flux-snobol](https://github.com/SuperInstance/flux-snobol) |
+| [flux-pli](./flux-pli/) | [SuperInstance/flux-pli](https://github.com/SuperInstance/flux-pli) |
+
+### Deadband Implementations
+| Module | Repo |
+|--------|------|
+| [deadband-constrained](./deadband-constrained/) | [SuperInstance/deadband-constrained](https://github.com/SuperInstance/deadband-constrained) |
+| [deadband-python](./deadband-python/) | [SuperInstance/deadband-python](https://github.com/SuperInstance/deadband-python) |
+| [deadband-rs](./deadband-rs/) | [SuperInstance/deadband-rs](https://github.com/SuperInstance/deadband-rs) |
+
+### Research & Documentation
+| Module | Repo |
+|--------|------|
+| [research](./research/) | [SuperInstance/research](https://github.com/SuperInstance/research) |
+| [papers](./papers/) | [SuperInstance/papers](https://github.com/SuperInstance/papers) |
+| [dissertation](./dissertation/) | [SuperInstance/dissertation](https://github.com/SuperInstance/dissertation) |
+| [docs](./docs/) | [SuperInstance/docs](https://github.com/SuperInstance/docs) |
+| [wiki](./wiki/) | [SuperInstance/wiki](https://github.com/SuperInstance/wiki) |
+| [proofs](./proofs/) | [SuperInstance/proofs](https://github.com/SuperInstance/proofs) |
+| [reviews](./reviews/) | [SuperInstance/reviews](https://github.com/SuperInstance/reviews) |
+| [proposals](./proposals/) | [SuperInstance/proposals](https://github.com/SuperInstance/proposals) |
+
+### And 80+ More
+See [MODULE-MAP.md](./MODULE-MAP.md) for the complete registry of all 162 extracted + 53 in-place modules.
 
 ---
 
-## Tests
+## In-Place Modules
 
-279 tests passing across 7 Rust crates.
+These directories are still actively maintained here (not yet extracted):
 
-| Crate | Tests |
-|-------|-------|
-| dodecet-encoder | 98 |
-| flux-lucid | 86 |
-| plato-mud | 32 |
-| holonomy-consensus | 30 |
-| flux-verify-api | 19 |
-| zeitgeist-protocol | 9 |
-| flux-contracts | 5 |
-
-```bash
-cargo test --workspace
-```
+- `core/` — Core shared utilities
+- `bin/` — Binary scripts and tools
+- `build/` — Build artifacts
+- `forgemaster/` — Forgemaster agent identity
+- `fluxile/` — Fluxile tools
+- `lighthouse-runtime/` — Lighthouse runtime service
+- `plato-mud/` — PLATO MUD engine
+- `plato-mud-rooms/` — PLATO MUD room definitions
+- `platoclaw-coord/` — Platoclaw coordination
+- `deadband-*` (non-extracted languages: algol, c, cobol, cuda, fortran, mojo, tutor, vedic, wenyan, zig)
+- `constraint-*` (non-extracted: avx512, cuda, mt, wasm)
+- `fleet-optimization/`, `fleet-registry/` — Fleet ops
+- `flux-programs/`, `flux-tools/`, `flux-transport/` — Flux utilities
 
 ---
 
 ## Fleet
 
-9 agents active in the Cocapn fleet: Forgemaster, Oracle1, and others.
-Forgemaster is the constraint-theory specialist — compiles GUARD, manages the FLUX ISA, publishes crates.
+Forgemaster is one of **9 agents** in the [Cocapn fleet](https://github.com/SuperInstance?tab=repositories). It serves as the constraint-theory specialist — compiling GUARD DSL, managing the FLUX ISA, and publishing crates.
 
 ---
 
