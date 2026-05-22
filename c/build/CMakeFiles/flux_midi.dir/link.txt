@@ -1,0 +1,2 @@
+/usr/bin/ar qc libflux_midi.a CMakeFiles/flux_midi.dir/src/flux.c.o CMakeFiles/flux_midi.dir/src/clock.c.o CMakeFiles/flux_midi.dir/src/snap.c.o CMakeFiles/flux_midi.dir/src/room.c.o CMakeFiles/flux_midi.dir/src/midi_event.c.o CMakeFiles/flux_midi.dir/src/sidechannel.c.o CMakeFiles/flux_midi.dir/src/harmony.c.o CMakeFiles/flux_midi.dir/src/ensemble.c.o
+/usr/bin/ranlib libflux_midi.a

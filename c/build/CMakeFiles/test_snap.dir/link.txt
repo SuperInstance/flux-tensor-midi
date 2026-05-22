@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/test_snap.dir/tests/test_snap.c.o -o test_snap  libflux_midi.a -lm 

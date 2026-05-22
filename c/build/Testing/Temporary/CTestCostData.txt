@@ -1,0 +1,5 @@
+test_flux 2 0.000748402
+test_clock 2 0.000783718
+test_snap 1 0.00170699
+test_room 1 0.00108542
+---

@@ -1,0 +1,94 @@
+Start testing: May 11 02:11 AKDT
+----------------------------------------------------------
+1/4 Testing: test_flux
+1/4 Test: test_flux
+Command: "/home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build/test_flux"
+Directory: /home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build
+"test_flux" start time: May 11 02:11 AKDT
+Output:
+----------------------------------------------------------
+=== FLUX Vector Tests ===
+  PASS test_zero
+  PASS test_uniform
+  PASS test_distance
+  PASS test_jaccard
+  PASS test_cosine
+  PASS test_blend
+  PASS test_decay
+  PASS test_set_get
+All tests passed.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test_flux" end time: May 11 02:11 AKDT
+"test_flux" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/4 Testing: test_clock
+2/4 Test: test_clock
+Command: "/home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build/test_clock"
+Directory: /home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build
+"test_clock" start time: May 11 02:11 AKDT
+Output:
+----------------------------------------------------------
+=== T-Zero Clock Tests ===
+  PASS test_init
+  PASS test_observe
+  PASS test_check_states
+  PASS test_delta
+  PASS test_missed_ticks
+  PASS test_effective_interval
+All tests passed.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test_clock" end time: May 11 02:11 AKDT
+"test_clock" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/4 Testing: test_snap
+3/4 Test: test_snap
+Command: "/home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build/test_snap"
+Directory: /home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build
+"test_snap" start time: May 11 02:11 AKDT
+Output:
+----------------------------------------------------------
+=== Eisenstein Snap Tests ===
+  PASS test_steady (shape=steady, norm=3.0)
+  PASS test_burst (ratio=10.00)
+  PASS test_collapse (ratio=0.05)
+  PASS test_grid_snap
+  PASS test_shape_names
+All tests passed.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test_snap" end time: May 11 02:11 AKDT
+"test_snap" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/4 Testing: test_room
+4/4 Test: test_room
+Command: "/home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build/test_room"
+Directory: /home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build
+"test_room" start time: May 11 02:11 AKDT
+Output:
+----------------------------------------------------------
+=== Room & Ensemble Tests ===
+  PASS test_room_init
+  PASS test_room_listen
+  PASS test_room_start_stop
+  PASS test_ensemble
+All tests passed.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test_room" end time: May 11 02:11 AKDT
+"test_room" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 11 02:11 AKDT

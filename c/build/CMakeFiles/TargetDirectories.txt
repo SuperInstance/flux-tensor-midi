@@ -1,0 +1,8 @@
+/home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build/CMakeFiles/flux_midi.dir
+/home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build/CMakeFiles/test_flux.dir
+/home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build/CMakeFiles/test_clock.dir
+/home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build/CMakeFiles/test_snap.dir
+/home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build/CMakeFiles/test_room.dir
+/home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build/CMakeFiles/test.dir
+/home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build/CMakeFiles/edit_cache.dir
+/home/phoenix/.openclaw/workspace/flux-tensor-midi/c/build/CMakeFiles/rebuild_cache.dir

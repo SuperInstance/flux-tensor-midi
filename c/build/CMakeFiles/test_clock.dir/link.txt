@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/test_clock.dir/tests/test_clock.c.o -o test_clock  libflux_midi.a -lm 

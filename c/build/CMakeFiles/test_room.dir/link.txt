@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/test_room.dir/tests/test_room.c.o -o test_room  libflux_midi.a -lm 
