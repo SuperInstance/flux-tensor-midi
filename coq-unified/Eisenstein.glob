@@ -1,0 +1,345 @@
+DIGEST dca8161a38cc2910d736cec6b1e7f685
+FCoqUnified.Eisenstein
+R684:688 Coq.Reals.Reals <> <> lib
+R706:711 Coq.ZArith.ZArith <> <> lib
+R729:731 Coq.micromega.Lra <> <> lib
+R749:753 Coq.setoid_ring.Field <> <> lib
+R771:784 Coq.Lists.List <> <> lib
+R794:806 Coq.Lists.List ListNotations <> mod
+def 1169:1175 <> A2Point
+R1182:1184 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R1181:1181 Coq.Numbers.BinNums <> Z ind
+R1185:1185 Coq.Numbers.BinNums <> Z ind
+def 1230:1237 <> omega_re
+R1241:1241 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R1248:1248 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+def 1302:1309 <> omega_im
+R1313:1313 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R1324:1326 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R1318:1321 Coq.Reals.R_sqrt <> sqrt def
+def 1381:1390 <> to_complex
+R1397:1403 CoqUnified.Eisenstein <> A2Point def
+binder 1393:1393 <> p:1
+R1410:1412 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R1409:1409 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R1413:1413 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R1435:1435 CoqUnified.Eisenstein <> p:1 var
+binder 1426:1426 <> a:2
+binder 1429:1429 <> b:3
+R1442:1442 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1467:1468 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1485:1485 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1448:1450 Coq.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R1443:1445 Coq.Reals.Rdefinitions <> IZR def
+R1447:1447 CoqUnified.Eisenstein <> a:2 var
+R1456:1458 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R1451:1453 Coq.Reals.Rdefinitions <> IZR def
+R1455:1455 CoqUnified.Eisenstein <> b:3 var
+R1459:1466 CoqUnified.Eisenstein <> omega_re def
+R1474:1476 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R1469:1471 Coq.Reals.Rdefinitions <> IZR def
+R1473:1473 CoqUnified.Eisenstein <> b:3 var
+R1477:1484 CoqUnified.Eisenstein <> omega_im def
+def 1809:1813 <> dist2
+R1823:1825 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R1822:1822 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R1826:1826 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 1816:1816 <> p:4
+binder 1818:1818 <> q:5
+R1831:1831 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R1854:1854 CoqUnified.Eisenstein <> p:4 var
+binder 1843:1844 <> px:6
+binder 1847:1848 <> py:7
+R1877:1877 CoqUnified.Eisenstein <> q:5 var
+binder 1866:1867 <> qx:8
+binder 1870:1871 <> qy:9
+R1895:1897 Coq.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R1884:1884 Coq.Reals.RIneq <> ::R_scope:x_'²' not
+R1892:1894 Coq.Reals.RIneq <> ::R_scope:x_'²' not
+R1887:1889 Coq.Reals.Rdefinitions <> ::R_scope:x_'-'_x not
+R1885:1886 CoqUnified.Eisenstein <> px:6 var
+R1890:1891 CoqUnified.Eisenstein <> qx:8 var
+R1898:1898 Coq.Reals.RIneq <> ::R_scope:x_'²' not
+R1906:1908 Coq.Reals.RIneq <> ::R_scope:x_'²' not
+R1901:1903 Coq.Reals.Rdefinitions <> ::R_scope:x_'-'_x not
+R1899:1900 CoqUnified.Eisenstein <> py:7 var
+R1904:1905 CoqUnified.Eisenstein <> qy:9 var
+def 1950:1953 <> dist
+R1963:1965 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R1962:1962 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R1966:1966 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 1956:1956 <> p:10
+binder 1958:1958 <> q:11
+R1971:1971 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R1978:1981 Coq.Reals.R_sqrt <> sqrt def
+R1984:1988 CoqUnified.Eisenstein <> dist2 def
+R1990:1990 CoqUnified.Eisenstein <> p:10 var
+R1992:1992 CoqUnified.Eisenstein <> q:11 var
+def 2065:2079 <> covering_radius
+R2083:2083 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R2089:2091 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R2092:2095 Coq.Reals.R_sqrt <> sqrt def
+def 2709:2715 <> round_Z
+R2722:2722 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 2718:2718 <> r:12
+R2727:2727 Coq.Numbers.BinNums <> Z ind
+R2743:2751 Coq.Reals.R_Ifp <> frac_part def
+R2753:2753 CoqUnified.Eisenstein <> r:12 var
+binder 2738:2738 <> f:13
+R2763:2769 Coq.Reals.RIneq <> Rle_dec thm
+R2771:2771 CoqUnified.Eisenstein <> f:13 var
+R2775:2775 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R2811:2813 Coq.ZArith.BinInt <> ::Z_scope:x_'+'_x not
+R2801:2808 Coq.Reals.R_Ifp <> Int_part def
+R2810:2810 CoqUnified.Eisenstein <> r:12 var
+R2784:2791 Coq.Reals.R_Ifp <> Int_part def
+R2793:2793 CoqUnified.Eisenstein <> r:12 var
+def 2832:2841 <> candidates
+R2850:2850 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 2844:2844 <> x:14
+binder 2846:2846 <> y:15
+R2855:2858 Coq.Init.Datatypes <> list ind
+R2860:2866 CoqUnified.Eisenstein <> A2Point def
+R2883:2889 CoqUnified.Eisenstein <> round_Z def
+R2893:2895 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R2892:2892 CoqUnified.Eisenstein <> y:15 var
+R2896:2903 CoqUnified.Eisenstein <> omega_im def
+binder 2877:2878 <> b0:16
+R2921:2927 CoqUnified.Eisenstein <> round_Z def
+R2931:2933 Coq.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R2930:2930 CoqUnified.Eisenstein <> x:14 var
+R2940:2943 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R2947:2947 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R2934:2936 Coq.Reals.Rdefinitions <> IZR def
+R2938:2939 CoqUnified.Eisenstein <> b0:16 var
+R2945:2945 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+binder 2915:2916 <> a0:17
+R2955:2956 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2989:2994 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R3027:3032 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R3065:3070 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R3103:3108 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R3141:3146 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R3179:3184 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R3217:3218 Coq.Lists.List ListNotations ::list_scope:'['_x_';'_x_';'_'..'_';'_x_']' not
+R2957:2957 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2960:2973 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2976:2988 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2958:2959 CoqUnified.Eisenstein <> a0:17 var
+R2974:2975 CoqUnified.Eisenstein <> b0:16 var
+R2995:2995 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3008:3011 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3014:3026 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2996:3000 Coq.ZArith.BinInt Z add def
+R3002:3003 CoqUnified.Eisenstein <> a0:17 var
+R3012:3013 CoqUnified.Eisenstein <> b0:16 var
+R3033:3033 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3046:3049 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3052:3064 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3034:3038 Coq.ZArith.BinInt Z sub def
+R3040:3041 CoqUnified.Eisenstein <> a0:17 var
+R3050:3051 CoqUnified.Eisenstein <> b0:16 var
+R3071:3071 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3074:3087 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3100:3102 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3072:3073 CoqUnified.Eisenstein <> a0:17 var
+R3088:3092 Coq.ZArith.BinInt Z add def
+R3094:3095 CoqUnified.Eisenstein <> b0:16 var
+R3109:3109 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3112:3125 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3138:3140 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3110:3111 CoqUnified.Eisenstein <> a0:17 var
+R3126:3130 Coq.ZArith.BinInt Z sub def
+R3132:3133 CoqUnified.Eisenstein <> b0:16 var
+R3147:3147 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3160:3163 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3176:3178 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3148:3152 Coq.ZArith.BinInt Z add def
+R3154:3155 CoqUnified.Eisenstein <> a0:17 var
+R3164:3168 Coq.ZArith.BinInt Z sub def
+R3170:3171 CoqUnified.Eisenstein <> b0:16 var
+R3185:3185 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3198:3201 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3214:3216 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3186:3190 Coq.ZArith.BinInt Z sub def
+R3192:3193 CoqUnified.Eisenstein <> a0:17 var
+R3202:3206 Coq.ZArith.BinInt Z add def
+R3208:3209 CoqUnified.Eisenstein <> b0:16 var
+def 3622:3627 <> min_by
+binder 3630:3630 <> A:18
+R3640:3643 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3639:3639 CoqUnified.Eisenstein <> A:18 var
+R3645:3648 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3644:3644 CoqUnified.Eisenstein <> A:18 var
+R3649:3652 Coq.Init.Datatypes <> bool ind
+binder 3634:3635 <> le:19
+R3661:3664 Coq.Init.Datatypes <> list ind
+R3666:3666 CoqUnified.Eisenstein <> A:18 var
+binder 3656:3657 <> xs:20
+R3680:3680 CoqUnified.Eisenstein <> A:18 var
+binder 3670:3676 <> default:21
+R3685:3685 CoqUnified.Eisenstein <> A:18 var
+R3698:3699 CoqUnified.Eisenstein <> xs:20 var
+R3710:3711 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R3716:3722 CoqUnified.Eisenstein <> default:21 var
+R3729:3732 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R3755:3760 CoqUnified.Eisenstein <> min_by:22 def
+R3769:3775 CoqUnified.Eisenstein <> default:21 var
+R3762:3763 CoqUnified.Eisenstein <> le:19 var
+binder 3750:3750 <> m:24
+R3789:3790 CoqUnified.Eisenstein <> le:19 var
+R3794:3794 CoqUnified.Eisenstein <> m:24 var
+R3808:3808 CoqUnified.Eisenstein <> m:24 var
+def 3829:3835 <> closest
+R3844:3844 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 3838:3838 <> x:25
+binder 3840:3840 <> y:26
+R3854:3857 Coq.Init.Datatypes <> list ind
+R3859:3865 CoqUnified.Eisenstein <> A2Point def
+binder 3848:3850 <> pts:27
+R3870:3876 CoqUnified.Eisenstein <> A2Point def
+R3883:3888 CoqUnified.Eisenstein <> min_by def
+R4037:4037 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4041:4042 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4046:4046 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4024:4026 CoqUnified.Eisenstein <> pts:27 var
+binder 3895:3895 <> p:28
+binder 3897:3897 <> q:29
+R3917:3923 Coq.Reals.RIneq <> Rle_dec thm
+R3926:3929 CoqUnified.Eisenstein <> dist def
+R3932:3941 CoqUnified.Eisenstein <> to_complex def
+R3943:3943 CoqUnified.Eisenstein <> p:28 var
+R3946:3946 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3948:3948 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3950:3950 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3947:3947 CoqUnified.Eisenstein <> x:25 var
+R3949:3949 CoqUnified.Eisenstein <> y:26 var
+R3954:3957 CoqUnified.Eisenstein <> dist def
+R3960:3969 CoqUnified.Eisenstein <> to_complex def
+R3971:3971 CoqUnified.Eisenstein <> q:29 var
+R3974:3974 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3976:3976 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3978:3978 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R3975:3975 CoqUnified.Eisenstein <> x:25 var
+R3977:3977 CoqUnified.Eisenstein <> y:26 var
+R4008:4012 Coq.Init.Datatypes <> false constr
+R3998:4001 Coq.Init.Datatypes <> true constr
+def 4061:4064 <> snap
+R4073:4073 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 4067:4067 <> x:30
+binder 4069:4069 <> y:31
+R4078:4084 CoqUnified.Eisenstein <> A2Point def
+R4091:4097 CoqUnified.Eisenstein <> closest def
+R4099:4099 CoqUnified.Eisenstein <> x:30 var
+R4101:4101 CoqUnified.Eisenstein <> y:31 var
+R4104:4113 CoqUnified.Eisenstein <> candidates def
+R4115:4115 CoqUnified.Eisenstein <> x:30 var
+R4117:4117 CoqUnified.Eisenstein <> y:31 var
+prf 5024:5035 <> dist2_nonneg
+binder 5046:5046 <> p:32
+binder 5048:5048 <> q:33
+R5052:5055 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R5056:5060 CoqUnified.Eisenstein <> dist2 def
+R5062:5062 CoqUnified.Eisenstein <> p:32 var
+R5064:5064 CoqUnified.Eisenstein <> q:33 var
+R5107:5111 CoqUnified.Eisenstein <> dist2 def
+R5129:5148 Coq.Reals.RIneq <> Rplus_le_le_0_compat thm
+R5157:5165 Coq.Reals.RIneq <> Rle_0_sqr thm
+R5129:5148 Coq.Reals.RIneq <> Rplus_le_le_0_compat thm
+R5157:5165 Coq.Reals.RIneq <> Rle_0_sqr thm
+R5157:5165 Coq.Reals.RIneq <> Rle_0_sqr thm
+prf 5180:5187 <> sqrt_pos
+binder 5198:5198 <> r:34
+R5206:5209 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5202:5204 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R5205:5205 CoqUnified.Eisenstein <> r:34 var
+R5211:5213 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R5214:5217 Coq.Reals.R_sqrt <> sqrt def
+R5219:5219 CoqUnified.Eisenstein <> r:34 var
+R5245:5254 Coq.Reals.R_sqrt <> sqrt_lt_R0 thm
+R5245:5254 Coq.Reals.R_sqrt <> sqrt_lt_R0 thm
+prf 5281:5288 <> Rdiv_pos
+binder 5299:5299 <> a:35
+binder 5301:5301 <> b:36
+R5309:5312 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5305:5307 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R5308:5308 CoqUnified.Eisenstein <> a:35 var
+R5318:5321 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5314:5316 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R5317:5317 CoqUnified.Eisenstein <> b:36 var
+R5323:5325 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R5327:5329 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R5326:5326 CoqUnified.Eisenstein <> a:35 var
+R5330:5330 CoqUnified.Eisenstein <> b:36 var
+R5357:5360 Coq.Reals.Rdefinitions <> Rdiv def
+R5369:5385 Coq.Reals.RIneq <> Rmult_lt_0_compat thm
+R5413:5428 Coq.Reals.RIneq <> Rinv_0_lt_compat thm
+R5369:5385 Coq.Reals.RIneq <> Rmult_lt_0_compat thm
+R5413:5428 Coq.Reals.RIneq <> Rinv_0_lt_compat thm
+prf 5457:5465 <> sqrt3_pos
+R5470:5472 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R5473:5476 Coq.Reals.R_sqrt <> sqrt def
+R5494:5503 Coq.Reals.R_sqrt <> sqrt_lt_R0 thm
+R5494:5503 Coq.Reals.R_sqrt <> sqrt_lt_R0 thm
+prf 5523:5541 <> covering_radius_pos
+R5546:5548 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R5549:5563 CoqUnified.Eisenstein <> covering_radius def
+R5582:5596 CoqUnified.Eisenstein <> covering_radius def
+R5607:5614 CoqUnified.Eisenstein <> Rdiv_pos thm
+R5631:5639 CoqUnified.Eisenstein <> sqrt3_pos thm
+R5607:5614 CoqUnified.Eisenstein <> Rdiv_pos thm
+R5631:5639 CoqUnified.Eisenstein <> sqrt3_pos thm
+prf 5883:5902 <> centroid_distance_sq
+binder 5913:5913 <> p:37
+R5941:5948 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5921:5923 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5920:5920 CoqUnified.Eisenstein <> p:37 var
+R5924:5924 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5928:5929 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5940:5940 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5926:5926 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R5936:5938 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R5930:5933 Coq.Reals.R_sqrt <> sqrt def
+R5963:5965 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5949:5953 CoqUnified.Eisenstein <> dist2 def
+R5955:5955 CoqUnified.Eisenstein <> p:37 var
+R5957:5957 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5959:5960 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5962:5962 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5967:5967 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R6032:6036 CoqUnified.Eisenstein <> dist2 def
+R6086:6088 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6077:6079 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6071:6074 Coq.Reals.R_sqrt <> sqrt def
+R6080:6083 Coq.Reals.R_sqrt <> sqrt def
+R6086:6088 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R6077:6079 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6071:6074 Coq.Reals.R_sqrt <> sqrt def
+R6080:6083 Coq.Reals.R_sqrt <> sqrt def
+R6104:6111 Coq.Reals.R_sqrt <> sqrt_def thm
+R6104:6111 Coq.Reals.R_sqrt <> sqrt_def thm
+R6133:6136 Coq.Reals.RIneq <> Rsqr def
+prf 6408:6430 <> covering_radius_bounded
+R6449:6449 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 6443:6443 <> x:38
+binder 6445:6445 <> y:39
+R6454:6460 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R6468:6473 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R6467:6467 Coq.Numbers.BinNums <> Z ind
+binder 6461:6461 <> a:40
+R6467:6467 Coq.Numbers.BinNums <> Z ind
+binder 6463:6463 <> b:41
+R6505:6508 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R6474:6477 CoqUnified.Eisenstein <> dist def
+R6479:6479 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6481:6482 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6484:6484 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6480:6480 CoqUnified.Eisenstein <> x:38 var
+R6483:6483 CoqUnified.Eisenstein <> y:39 var
+R6487:6496 CoqUnified.Eisenstein <> to_complex def
+R6498:6498 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6500:6501 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6503:6503 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6499:6499 CoqUnified.Eisenstein <> a:40 var
+R6502:6502 CoqUnified.Eisenstein <> b:41 var
+R6509:6523 CoqUnified.Eisenstein <> covering_radius def
