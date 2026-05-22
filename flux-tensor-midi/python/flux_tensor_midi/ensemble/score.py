@@ -7,6 +7,7 @@ playback/analysis capabilities.
 
 from __future__ import annotations
 from typing import Any
+import mido
 from flux_tensor_midi.core.flux import FluxVector
 from flux_tensor_midi.midi.events import MidiEvent
 from flux_tensor_midi.harmony.chord import HarmonyState
@@ -241,6 +242,90 @@ class Score:
                 )
         midi_events.sort(key=lambda e: e.start_ms)
         return midi_events
+
+    def to_midi(self, bpm: float | None = None, ppqn: int = 480, velocity_scale: int = 100) -> mido.MidiFile:
+        """Convert the score to a mido.MidiFile.
+
+        Parameters
+        ----------
+        bpm : float | None
+            Tempo for the MIDI file. Defaults to 120.
+        ppqn : int, default=480
+            Pulses per quarter note.
+        velocity_scale : int, default=100
+            Scaling factor for note velocities.
+
+        Returns
+        -------
+        mido.MidiFile
+            A standard MIDI file object.
+        """
+        midi_events = self.to_midi_events(velocity_scale=velocity_scale)
+        tempo_bpm = bpm or 120.0
+
+        mid = mido.MidiFile(ticks_per_beat=ppqn)
+        tempo_us = mido.bpm2tempo(tempo_bpm)
+
+        # Group events by MIDI channel
+        channels: dict[int, list[MidiEvent]] = {}
+        for ev in midi_events:
+            channels.setdefault(ev.channel, []).append(ev)
+
+        # Always create a tempo track
+        tempo_track = mido.MidiTrack()
+        tempo_track.append(mido.MetaMessage("set_tempo", tempo=tempo_us, time=0))
+        tempo_track.append(mido.MetaMessage("track_name", name=self._title, time=0))
+        mid.tracks.append(tempo_track)
+
+        # Create one track per channel
+        for ch, events in sorted(channels.items()):
+            track = mido.MidiTrack()
+            track.append(mido.MetaMessage("track_name", name=f"Channel {ch}", time=0))
+
+            # Sort events by start time
+            events.sort(key=lambda e: e.start_ms)
+
+            # Convert ms to ticks
+            ms_per_tick = tempo_us / (ppqn * 1000.0)
+
+            # Build a timeline of note_on / note_off absolute tick positions
+            timeline: list[tuple[int, str, int, int]] = []  # (abs_tick, type, note, velocity)
+            for ev in events:
+                start_tick = round(ev.start_ms / ms_per_tick)
+                end_tick = round(ev.end_ms / ms_per_tick)
+                timeline.append((start_tick, "note_on", ev.note, ev.velocity))
+                timeline.append((end_tick, "note_off", ev.note, 0))
+
+            # Sort: note_off before note_on at same tick
+            timeline.sort(key=lambda x: (x[0], 0 if x[1] == "note_off" else 1))
+
+            # Convert to delta ticks and append
+            prev_tick = 0
+            for abs_tick, msg_type, note, vel in timeline:
+                delta = max(0, abs_tick - prev_tick)
+                track.append(mido.Message(msg_type, channel=ch, note=note, velocity=vel, time=delta))
+                prev_tick = abs_tick
+
+            mid.tracks.append(track)
+
+        return mid
+
+    def to_midi_file(self, filename: str, bpm: float | None = None, ppqn: int = 480, velocity_scale: int = 100) -> None:
+        """Write the score to a .mid file.
+
+        Parameters
+        ----------
+        filename : str
+            Output file path.
+        bpm : float | None
+            Tempo for the MIDI file. Defaults to 120.
+        ppqn : int, default=480
+            Pulses per quarter note.
+        velocity_scale : int, default=100
+            Scaling factor for note velocities.
+        """
+        mid = self.to_midi(bpm=bpm, ppqn=ppqn, velocity_scale=velocity_scale)
+        mid.save(filename)
 
     def summary(self) -> dict[str, Any]:
         """Get a summary dict for the score.
