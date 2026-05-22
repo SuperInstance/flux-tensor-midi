@@ -6,6 +6,7 @@ Maps musician roles to MIDI channels for ensemble coordination.
 
 from __future__ import annotations
 from enum import IntEnum
+
 from flux_tensor_midi.core.snap import RhythmicRole
 
 
@@ -58,10 +59,41 @@ ROLE_PROGRAM_MAP: dict[RhythmicRole, int] = {
 
 
 def channel_for_role(role: RhythmicRole) -> MidiChannel:
-    """Get the MIDI channel for a rhythmic role."""
+    """Get the MIDI channel for a rhythmic role.
+
+    Parameters
+    ----------
+    role : RhythmicRole
+        The rhythmic role to map.
+
+    Returns
+    -------
+    MidiChannel
+        Assigned MIDI channel (defaults to CHANNEL_1).
+    """
     return ROLE_CHANNEL_MAP.get(role, MidiChannel.CHANNEL_1)
 
 
 def program_for_role(role: RhythmicRole) -> int:
-    """Get the GM program number for a rhythmic role."""
+    """Get the GM program number for a rhythmic role.
+
+    Parameters
+    ----------
+    role : RhythmicRole
+        The rhythmic role to map.
+
+    Returns
+    -------
+    int
+        General MIDI program number (defaults to 0).
+    """
     return ROLE_PROGRAM_MAP.get(role, 0)
+
+
+__all__ = [
+    "MidiChannel",
+    "ROLE_CHANNEL_MAP",
+    "ROLE_PROGRAM_MAP",
+    "channel_for_role",
+    "program_for_role",
+]

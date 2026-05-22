@@ -7,7 +7,7 @@ content shares.
 """
 
 from __future__ import annotations
-import math
+
 from flux_tensor_midi.core.flux import FluxVector
 
 
@@ -23,8 +23,9 @@ def jaccard_index(
     Parameters
     ----------
     a, b : FluxVector
+        Vectors to compare.
     threshold : float, default=0.01
-        Minimum value to consider a channel active.
+        Minimum absolute value to consider a channel active.
 
     Returns
     -------
@@ -53,6 +54,16 @@ def weighted_jaccard(
     sum(min(a_i, b_i)) / sum(max(a_i, b_i)).
 
     Returns 1.0 if both are all-zero.
+
+    Parameters
+    ----------
+    a, b : FluxVector
+        Vectors to compare.
+
+    Returns
+    -------
+    float
+        Weighted Jaccard index in [0, 1].
     """
     a_vals = [v * s for v, s in zip(a.values, a.salience)]
     b_vals = [v * s for v, s in zip(b.values, b.salience)]
@@ -67,5 +78,21 @@ def weighted_jaccard(
 
 
 def jaccard_distance(a: FluxVector, b: FluxVector, threshold: float = 0.01) -> float:
-    """Jaccard distance = 1 - Jaccard index."""
+    """Jaccard distance = 1 - Jaccard index.
+
+    Parameters
+    ----------
+    a, b : FluxVector
+        Vectors to compare.
+    threshold : float, default=0.01
+        Minimum absolute value to consider a channel active.
+
+    Returns
+    -------
+    float
+        Distance in [0, 1].
+    """
     return 1.0 - jaccard_index(a, b, threshold)
+
+
+__all__ = ["jaccard_index", "weighted_jaccard", "jaccard_distance"]

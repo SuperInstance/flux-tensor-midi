@@ -6,7 +6,6 @@ consonance, quality (major/minor/dim/aug), and voice leading cost.
 """
 
 from __future__ import annotations
-import math
 from typing import Sequence
 from flux_tensor_midi.core.flux import FluxVector
 
@@ -57,10 +56,12 @@ class HarmonyState:
 
     @property
     def vectors(self) -> tuple[FluxVector, ...]:
+        """Tuple of FluxVectors in this harmony state."""
         return self._vectors
 
     @property
     def size(self) -> int:
+        """Number of vectors in this harmony state."""
         return len(self._vectors)
 
     # ---- consonance ----
@@ -70,6 +71,11 @@ class HarmonyState:
 
         Computes pairwise interval consonance based on
         the most active channel in each vector.
+
+        Returns
+        -------
+        float
+            Consonance score in [0, 1].
         """
         if len(self._vectors) < 2:
             return 1.0
@@ -99,7 +105,13 @@ class HarmonyState:
     # ---- quality ----
 
     def quality(self) -> str:
-        """Classify the chord quality from the active channels."""
+        """Classify the chord quality from the active channels.
+
+        Returns
+        -------
+        str
+            ChordQuality constant.
+        """
         active = self._active_channels()
         if len(active) < 2:
             return ChordQuality.UNKNOWN
@@ -135,6 +147,16 @@ class HarmonyState:
 
         Uses the minimum sum of salience-weighted distances
         between the two sets of active vectors.
+
+        Parameters
+        ----------
+        target : HarmonyState
+            Target harmony state.
+
+        Returns
+        -------
+        float
+            Total voice-leading cost.
         """
         if not self._vectors or not target._vectors:
             return 0.0
@@ -152,7 +174,18 @@ class HarmonyState:
     # ---- helpers ----
 
     def _active_channels(self, threshold: float = 0.01) -> set[int]:
-        """Get the set of active channel indices across all vectors."""
+        """Get the set of active channel indices across all vectors.
+
+        Parameters
+        ----------
+        threshold : float, default=0.01
+            Minimum absolute value to consider a channel active.
+
+        Returns
+        -------
+        set[int]
+            Set of active channel indices.
+        """
         active: set[int] = set()
         for v in self._vectors:
             for i, val in enumerate(v.values):
@@ -161,7 +194,13 @@ class HarmonyState:
         return active
 
     def correlation(self) -> float:
-        """Mean pairwise cosine correlation between vectors."""
+        """Mean pairwise cosine correlation between vectors.
+
+        Returns
+        -------
+        float
+            Mean correlation in [-1, 1].
+        """
         if len(self._vectors) < 2:
             return 1.0
 
@@ -181,3 +220,6 @@ class HarmonyState:
             f"consonance={self.consonance():.3f}, "
             f"correlation={self.correlation():.3f})"
         )
+
+
+__all__ = ["HarmonyState", "ChordQuality", "INTERVAL_CONSONANCE"]

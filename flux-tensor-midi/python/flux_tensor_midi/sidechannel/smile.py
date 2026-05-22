@@ -31,30 +31,70 @@ class Smile:
 
     @property
     def intensity(self) -> float:
+        """Warmth of the smile (0–1)."""
         return self._intensity
+
+    @intensity.setter
+    def intensity(self, value: float) -> None:
+        """Set smile intensity, clamped to [0, 1]."""
+        if not 0 <= value <= 1:
+            raise ValueError(f"intensity must be 0–1, got {value}")
+        self._intensity = value
 
     @property
     def count(self) -> int:
+        """Total number of smiles sent."""
         return len(self._timestamps)
 
     @property
     def timestamps(self) -> list[float]:
+        """Copy of all smile timestamps."""
         return list(self._timestamps)
 
     def send(self, target: RoomMusician) -> None:
-        """Send a smile to a target musician."""
+        """Send a smile to a target musician.
+
+        Parameters
+        ----------
+        target : RoomMusician
+            The musician to smile at.
+        """
         self._sent_to.add(target.room_id)
         self._timestamps.append(time.monotonic())
 
     def has_sent_to(self, room_id: str) -> bool:
-        """Check if a smile was sent to a specific room."""
+        """Check if a smile was sent to a specific room.
+
+        Parameters
+        ----------
+        room_id : str
+            Room ID to check.
+
+        Returns
+        -------
+        bool
+            True if a smile was sent to this room.
+        """
         return room_id in self._sent_to
 
     def rate(self, window_seconds: float = 10.0) -> float:
-        """Smiles per second in the given time window."""
+        """Smiles per second in the given time window.
+
+        Parameters
+        ----------
+        window_seconds : float, default=10.0
+            Time window in seconds.
+
+        Returns
+        -------
+        float
+            Rate of smiles per second.
+        """
+        if window_seconds <= 0:
+            return 0.0
         now = time.monotonic()
         recent = [t for t in self._timestamps if now - t <= window_seconds]
-        return len(recent) / max(window_seconds, 0.001)
+        return len(recent) / window_seconds
 
     def reset(self) -> None:
         """Clear smile history."""

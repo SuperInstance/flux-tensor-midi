@@ -58,14 +58,17 @@ class FluxVector:
 
     @property
     def values(self) -> tuple[float, ...]:
+        """Tuple of 9 channel values."""
         return self._values
 
     @property
     def salience(self) -> tuple[float, ...]:
+        """Tuple of 9 salience values in [0, 1]."""
         return self._salience
 
     @property
     def tolerance(self) -> tuple[float, ...]:
+        """Tuple of 9 tolerance values in milliseconds."""
         return self._tolerance
 
     def __getitem__(self, idx: int) -> float:
@@ -99,7 +102,6 @@ class FluxVector:
         """Element-wise addition, weighting by minimum salience."""
         if not isinstance(other, FluxVector):
             return NotImplemented
-        w = tuple(min(a, b) for a, b in zip(self._salience, other._salience))
         v = tuple(self._values[i] + other._values[i] for i in range(self._CHANNELS))
         s = tuple(max(a, b) for a, b in zip(self._salience, other._salience))
         t = tuple(max(a, b) for a, b in zip(self._tolerance, other._tolerance))
@@ -190,3 +192,6 @@ class FluxVector:
         v = [0.0] * cls._CHANNELS
         v[channel] = 1.0
         return cls(v, salience=salience)
+
+
+__all__ = ["FluxVector"]

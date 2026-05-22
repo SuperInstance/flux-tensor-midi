@@ -7,8 +7,8 @@ spectral flux, and autocorrelation.
 """
 
 from __future__ import annotations
-import math
 from typing import Sequence
+
 from flux_tensor_midi.core.flux import FluxVector
 
 
@@ -46,6 +46,16 @@ def spectral_flux(vectors: Sequence[FluxVector]) -> float:
     """Spectral flux: average rate of change across all channels.
 
     Higher flux = more harmonic motion.
+
+    Parameters
+    ----------
+    vectors : Sequence[FluxVector]
+        Ordered sequence of FluxVectors.
+
+    Returns
+    -------
+    float
+        Average Euclidean distance between consecutive vectors.
     """
     if len(vectors) < 2:
         return 0.0
@@ -58,7 +68,18 @@ def spectral_flux(vectors: Sequence[FluxVector]) -> float:
 
 
 def salience_weighted_flux(vectors: Sequence[FluxVector]) -> float:
-    """Spectral flux weighted by salience."""
+    """Spectral flux weighted by salience.
+
+    Parameters
+    ----------
+    vectors : Sequence[FluxVector]
+        Ordered sequence of FluxVectors.
+
+    Returns
+    -------
+    float
+        Average salience-weighted distance between consecutive vectors.
+    """
     if len(vectors) < 2:
         return 0.0
 
@@ -72,7 +93,15 @@ def salience_weighted_flux(vectors: Sequence[FluxVector]) -> float:
 def dominant_channel(vectors: Sequence[FluxVector]) -> int:
     """Find the channel with the highest mean absolute value.
 
-    Returns -1 if no vectors.
+    Parameters
+    ----------
+    vectors : Sequence[FluxVector]
+        Ordered sequence of FluxVectors.
+
+    Returns
+    -------
+    int
+        Channel index (0–8), or -1 if no vectors.
     """
     if not vectors:
         return -1
@@ -101,6 +130,7 @@ def autocorrelation(vectors: Sequence[FluxVector], max_lag: int = 4) -> list[flo
     Parameters
     ----------
     vectors : Sequence[FluxVector]
+        Ordered sequence of FluxVectors.
     max_lag : int, default=4
         Maximum lag to compute.
 
@@ -136,3 +166,12 @@ def autocorrelation(vectors: Sequence[FluxVector], max_lag: int = 4) -> list[flo
         results.append(0.0)
 
     return results
+
+
+__all__ = [
+    "spectral_centroid",
+    "spectral_flux",
+    "salience_weighted_flux",
+    "dominant_channel",
+    "autocorrelation",
+]

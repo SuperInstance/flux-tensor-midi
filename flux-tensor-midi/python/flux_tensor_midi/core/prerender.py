@@ -13,13 +13,15 @@ Three zones:
   - Sketch: rough, scrappable (2-8 beats)
 """
 
+from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 from enum import IntEnum
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable
 
 
 class Zone(IntEnum):
+    """Planning zone for pre-rendered beats."""
     COMMITTED = 0
     TENTATIVE = 1
     SKETCH = 2
@@ -27,32 +29,68 @@ class Zone(IntEnum):
 
 @dataclass
 class PreRenderedBeat:
-    """A single pre-rendered beat in the forward buffer."""
+    """A single pre-rendered beat in the forward buffer.
+
+    Parameters
+    ----------
+    beat : float
+        Beat number.
+    zone : Zone
+        Planning zone.
+    tile : Any
+        The pre-rendered content.
+    confidence : float, default=1.0
+        How confident we are (1.0 = locked, 0.0 = wild guess).
+    created_at : float
+        Wall-clock timestamp when this beat was created.
+    adjusted : int
+        How many times this was adjusted.
+    """
     beat: float
     zone: Zone
     tile: Any  # The pre-rendered content
-    confidence: float = 1.0  # How confident we are (1.0 = locked, 0.0 = wild guess)
+    confidence: float = 1.0
     created_at: float = field(default_factory=time.time)
-    adjusted: int = 0  # How many times this was adjusted
-    
+    adjusted: int = 0
+
     def is_locked(self) -> bool:
+        """Return True if this beat is committed."""
         return self.zone == Zone.COMMITTED
-    
+
     def is_adjustable(self) -> bool:
+        """Return True if this beat can still be adjusted."""
         return self.zone in (Zone.TENTATIVE, Zone.SKETCH)
+
+    def __repr__(self) -> str:
+        return (
+            f"PreRenderedBeat(beat={self.beat}, zone={self.zone.name}, "
+            f"confidence={self.confidence:.2f}, adjusted={self.adjusted})"
+        )
 
 
 class PreRenderBuffer:
-    """
-    A room's forward-looking script buffer.
-    
+    """A room's forward-looking script buffer.
+
     Like a Rubik's cube speed-solver, the room:
     - Plans several beats ahead while executing current beats
     - Commits to near-term beats (can't change)
     - Keeps far-term beats tentative (can adjust based on new info)
     - Sketches very-far-term beats (can scrap entirely)
+
+    Parameters
+    ----------
+    room_id : str
+        Identifier for the room owning this buffer.
+    depth : int, default=6
+        How many beats ahead to plan.
+    commit_window : int, default=1
+        Number of beats ahead to commit.
+    tentative_window : int, default=3
+        Number of beats ahead to keep tentative.
+    sketch_window : int, default=2
+        Number of beats ahead to keep as sketches.
     """
-    
+
     def __init__(
         self,
         room_id: str,
@@ -66,35 +104,39 @@ class PreRenderBuffer:
         self.commit_window = commit_window
         self.tentative_window = tentative_window
         self.sketch_window = sketch_window
-        
+
         # The three zones
-        self.committed: Dict[float, PreRenderedBeat] = {}
-        self.tentative: Dict[float, PreRenderedBeat] = {}
-        self.sketch: Dict[float, PreRenderedBeat] = {}
-        
+        self.committed: dict[float, PreRenderedBeat] = {}
+        self.tentative: dict[float, PreRenderedBeat] = {}
+        self.sketch: dict[float, PreRenderedBeat] = {}
+
         # Planning function (injected by the room)
-        self.plan_fn: Optional[Callable] = None
-        self.render_fn: Optional[Callable] = None
-        
+        self.plan_fn: Callable[[float], Any] | None = None
+        self.render_fn: Callable[[Any], Any] | None = None
+
         # Statistics
         self.total_planned = 0
         self.total_adjusted = 0
         self.total_scrapped = 0
         self.cache_hits = 0
         self.cache_misses = 0
-    
-    def advance(self, current_beat: float):
-        """
-        Advance the buffer forward. Called every tick.
-        
+
+    def advance(self, current_beat: float) -> None:
+        """Advance the buffer forward. Called every tick.
+
         Promotes: sketch → tentative → committed → played (removed)
         Fills: new sketch beats at the far end
+
+        Parameters
+        ----------
+        current_beat : float
+            The current beat number.
         """
         # 1. Remove played committed beats
         played = [b for b in self.committed if b < current_beat]
         for b in played:
             del self.committed[b]
-        
+
         # 2. Promote tentative → committed (entering commit window)
         commit_threshold = current_beat + self.commit_window
         entering = [b for b in self.tentative if b <= commit_threshold]
@@ -103,7 +145,7 @@ class PreRenderBuffer:
             beat.zone = Zone.COMMITTED
             beat.confidence = 1.0
             self.committed[b] = beat
-        
+
         # 3. Promote sketch → tentative (entering tentative window)
         tentative_threshold = current_beat + self.commit_window + self.tentative_window
         entering = [b for b in self.sketch if b <= tentative_threshold]
@@ -118,7 +160,7 @@ class PreRenderBuffer:
                 confidence=0.7,
             )
             self.total_planned += 1
-        
+
         # 4. Fill sketch zone with new plans
         sketch_start = current_beat + self.commit_window + self.tentative_window + 1
         sketch_end = current_beat + self.depth
@@ -132,9 +174,20 @@ class PreRenderBuffer:
                     confidence=0.3,
                 )
                 self.total_planned += 1
-    
-    def get_beat(self, beat: float) -> Optional[PreRenderedBeat]:
-        """Get a pre-rendered beat (cache lookup)."""
+
+    def get_beat(self, beat: float) -> PreRenderedBeat | None:
+        """Get a pre-rendered beat (cache lookup).
+
+        Parameters
+        ----------
+        beat : float
+            Beat number to look up.
+
+        Returns
+        -------
+        PreRenderedBeat | None
+            The beat if found, else None.
+        """
         if beat in self.committed:
             self.cache_hits += 1
             return self.committed[beat]
@@ -146,34 +199,57 @@ class PreRenderBuffer:
             return self.sketch[beat]
         self.cache_misses += 1
         return None
-    
+
     def adjust(self, beat: float, new_tile: Any) -> bool:
-        """Adjust a tentative or sketch beat. Returns False if beat is committed."""
+        """Adjust a tentative or sketch beat.
+
+        Parameters
+        ----------
+        beat : float
+            Beat number to adjust.
+        new_tile : Any
+            New content for the beat.
+
+        Returns
+        -------
+        bool
+            False if the beat is committed and cannot be adjusted.
+        """
         if beat in self.committed:
-            return False  # Can't adjust committed beats
-        
+            return False
+
         if beat in self.tentative:
             self.tentative[beat].tile = new_tile
             self.tentative[beat].adjusted += 1
             self.total_adjusted += 1
             return True
-        
+
         if beat in self.sketch:
             self.sketch[beat].tile = new_tile
             self.sketch[beat].adjusted += 1
             self.total_adjusted += 1
             return True
-        
+
         return False
-    
-    def react_to_signal(self, signal_beat: float, signal_type: str, signal_data: Any = None):
-        """
-        React to a side-channel signal by adjusting the forward buffer.
-        
-        nod: "I'm ready" → confirm plans, maybe commit further
-        smile: "that was good" → extend commit window, increase confidence
-        frown: "something's off" → drop tentative plans, re-plan from signal
-        breath: "about to act" → prepare for change, pause sketch zone
+
+    def react_to_signal(self, signal_beat: float, signal_type: str, signal_data: Any = None) -> None:
+        """React to a side-channel signal by adjusting the forward buffer.
+
+        Parameters
+        ----------
+        signal_beat : float
+            Beat at which the signal was received.
+        signal_type : str
+            Type of signal ("nod", "smile", "frown", "breath").
+        signal_data : Any, optional
+            Additional signal payload.
+
+        Notes
+        -----
+        - nod: "I'm ready" → confirm plans, maybe commit further
+        - smile: "that was good" → extend commit window, increase confidence
+        - frown: "something's off" → drop tentative plans, re-plan from signal
+        - breath: "about to act" → prepare for change, pause sketch zone
         """
         if signal_type == "nod":
             # Confirm: promote one more sketch → tentative
@@ -186,12 +262,12 @@ class PreRenderBuffer:
                     tile=self._render(sketch.tile) if self.render_fn else sketch.tile,
                     confidence=0.8,
                 )
-        
+
         elif signal_type == "smile":
             # Extend confidence on tentative beats
             for b in self.tentative:
                 self.tentative[b].confidence = min(1.0, self.tentative[b].confidence + 0.1)
-        
+
         elif signal_type == "frown":
             # Drop and re-plan tentative beats after the signal
             to_drop = [b for b in self.tentative if b > signal_beat]
@@ -202,25 +278,31 @@ class PreRenderBuffer:
                     beat=b, zone=Zone.SKETCH, tile=new_plan, confidence=0.2
                 )
                 del self.tentative[b]
-        
+
         elif signal_type == "breath":
             # Pause sketch planning — keep what we have but don't extend
             pass  # No new sketches until we see what happens
-    
+
     def _plan(self, beat: float) -> Any:
         """Generate a rough plan for a future beat."""
         if self.plan_fn:
             return self.plan_fn(beat)
         return {"beat": beat, "room": self.room_id, "status": "planned"}
-    
+
     def _render(self, sketch: Any) -> Any:
         """Render a sketch into a proper tile."""
         if self.render_fn:
             return self.render_fn(sketch)
         return sketch
-    
-    def stats(self) -> dict:
-        """Buffer statistics."""
+
+    def stats(self) -> dict[str, Any]:
+        """Buffer statistics.
+
+        Returns
+        -------
+        dict[str, Any]
+            Statistics including counts and hit rate.
+        """
         return {
             "room_id": self.room_id,
             "committed": len(self.committed),
@@ -233,13 +315,26 @@ class PreRenderBuffer:
             "cache_misses": self.cache_misses,
             "hit_rate": self.cache_hits / max(1, self.cache_hits + self.cache_misses),
         }
-    
+
     def visualize(self, current_beat: float, width: int = 60) -> str:
-        """ASCII visualization of the forward buffer."""
+        """ASCII visualization of the forward buffer.
+
+        Parameters
+        ----------
+        current_beat : float
+            Current beat number for the marker.
+        width : int, default=60
+            Width of the separator lines.
+
+        Returns
+        -------
+        str
+            Multi-line ASCII visualization.
+        """
         lines = []
         lines.append(f"Pre-Render Buffer: {self.room_id} (current beat: {current_beat:.0f})")
         lines.append("─" * width)
-        
+
         for beat in range(int(current_beat), int(current_beat + self.depth) + 1):
             b = float(beat)
             if b in self.committed:
@@ -260,14 +355,21 @@ class PreRenderBuffer:
                 zone = "EMPTY    "
                 tile = ""
                 conf = "░" * 10
-            
+
             now_marker = "→ " if beat == int(current_beat) else "  "
             lines.append(f"{now_marker}Beat {beat:3d} │ {zone} │ {conf} │ {tile}")
-        
+
         lines.append("─" * width)
         s = self.stats()
         lines.append(f"Hit rate: {s['hit_rate']:.0%} | Adjusted: {s['total_adjusted']} | Scrapped: {s['total_scrapped']}")
         return "\n".join(lines)
+
+    def __repr__(self) -> str:
+        return (
+            f"PreRenderBuffer(room_id={self.room_id!r}, depth={self.depth}, "
+            f"committed={len(self.committed)}, tentative={len(self.tentative)}, "
+            f"sketch={len(self.sketch)})"
+        )
 
 
 # ── Demo ──────────────────────────────────────────────────────────────────────
@@ -277,7 +379,7 @@ if __name__ == "__main__":
     print("  🧩 PRE-RENDER FORWARD BUFFER — Rubik's Cube Model")
     print("=" * 60)
     print()
-    
+
     # Create a buffer for a game NPC
     def plan_dialogue(beat):
         """Plan what the NPC might say at a future beat."""
@@ -287,7 +389,7 @@ if __name__ == "__main__":
             "farewell", "idle", "idle", "idle",
         ]
         return {"beat": beat, "dialogue": lines[int(beat) % len(lines)]}
-    
+
     def render_dialogue(sketch):
         """Render a dialogue sketch into a concrete line."""
         dialogue_map = {
@@ -301,7 +403,7 @@ if __name__ == "__main__":
             "beat": sketch["beat"],
             "line": dialogue_map.get(sketch.get("dialogue", "idle"), "..."),
         }
-    
+
     buffer = PreRenderBuffer(
         room_id="npc_guard",
         depth=8,
@@ -311,34 +413,34 @@ if __name__ == "__main__":
     )
     buffer.plan_fn = plan_dialogue
     buffer.render_fn = render_dialogue
-    
+
     # Simulate 12 beats
     for beat in range(12):
         print(f"\n{'='*60}")
         print(f"  BEAT {beat}")
         print(f"{'='*60}")
-        
+
         buffer.advance(float(beat))
         print(buffer.visualize(float(beat)))
-        
+
         # Simulate side-channel signals
         if beat == 4:
             print("\n  📨 Signal: FROWN from player (unexpected question)")
             buffer.react_to_signal(float(beat), "frown", {"type": "interruption"})
             print("  → Dropped tentative plans, re-planning...")
-        
+
         if beat == 7:
             print("\n  📨 Signal: NOD from npc_bard (your turn)")
             buffer.react_to_signal(float(beat), "nod")
             print("  → Promoted one sketch → tentative")
-        
+
         if beat == 10:
             print("\n  📨 Signal: SMILE from player (good dialogue)")
             buffer.react_to_signal(float(beat), "smile")
             print("  → Boosted confidence on tentative beats")
-    
+
     print(f"\n{'='*60}")
-    print(f"  FINAL STATS")
+    print("  FINAL STATS")
     print(f"{'='*60}")
     stats = buffer.stats()
     for k, v in stats.items():

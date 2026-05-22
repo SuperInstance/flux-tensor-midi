@@ -15,7 +15,22 @@ import math
 import struct
 import socket
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Saturation helpers
+# ──────────────────────────────────────────────────────────────────────────────
+
+
+def _saturate_u7(value: int) -> int:
+    """Saturate to unsigned 7-bit range (0–127), used for MIDI bytes."""
+    return max(0, min(127, value))
+
+
+def _saturate_int8(value: int) -> int:
+    """Saturate to signed 8-bit range (–128–127)."""
+    return max(-128, min(127, value))
+
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Constants
@@ -132,29 +147,39 @@ def _track_name_meta(delta: int, name: str) -> bytes:
 
 def _note_on(delta: int, channel: int, note: int, velocity: int) -> bytes:
     """MIDI Note On event."""
-    return _write_var_len(max(delta, 0)) + bytes([0x90 | (channel & 0x0F), note & 0x7F, velocity & 0x7F])
+    if not 0 <= channel <= 15:
+        raise ValueError(f"channel must be 0–15, got {channel}")
+    return _write_var_len(max(delta, 0)) + bytes([0x90 | channel, _saturate_u7(note), _saturate_u7(velocity)])
 
 
 def _note_off(delta: int, channel: int, note: int, velocity: int = 0) -> bytes:
     """MIDI Note Off event."""
-    return _write_var_len(max(delta, 0)) + bytes([0x80 | (channel & 0x0F), note & 0x7F, velocity & 0x7F])
+    if not 0 <= channel <= 15:
+        raise ValueError(f"channel must be 0–15, got {channel}")
+    return _write_var_len(max(delta, 0)) + bytes([0x80 | channel, _saturate_u7(note), _saturate_u7(velocity)])
 
 
 def _control_change(delta: int, channel: int, controller: int, value: int) -> bytes:
     """MIDI Control Change event."""
-    return _write_var_len(max(delta, 0)) + bytes([0xB0 | (channel & 0x0F), controller & 0x7F, value & 0x7F])
+    if not 0 <= channel <= 15:
+        raise ValueError(f"channel must be 0–15, got {channel}")
+    return _write_var_len(max(delta, 0)) + bytes([0xB0 | channel, _saturate_u7(controller), _saturate_u7(value)])
 
 
 def _program_change(delta: int, channel: int, program: int) -> bytes:
     """MIDI Program Change event."""
-    return _write_var_len(max(delta, 0)) + bytes([0xC0 | (channel & 0x0F), program & 0x7F])
+    if not 0 <= channel <= 15:
+        raise ValueError(f"channel must be 0–15, got {channel}")
+    return _write_var_len(max(delta, 0)) + bytes([0xC0 | channel, _saturate_u7(program)])
 
 
 def _pitch_bend(delta: int, channel: int, value: int) -> bytes:
     """MIDI Pitch Bend event (14-bit value, centered at 8192)."""
+    if not 0 <= channel <= 15:
+        raise ValueError(f"channel must be 0–15, got {channel}")
     lsb = value & 0x7F
     msb = (value >> 7) & 0x7F
-    return _write_var_len(max(delta, 0)) + bytes([0xE0 | (channel & 0x0F), lsb, msb])
+    return _write_var_len(max(delta, 0)) + bytes([0xE0 | channel, lsb, msb])
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -168,13 +193,13 @@ class TrackConfig:
     name: str
     channel: int         # 0-15
     program: int = 0     # General MIDI program number
-    notes: List[Tuple[int, int, int, int]] = field(default_factory=list)
+    notes: list[tuple[int, int, int, int]] = field(default_factory=list)
     # Each note: (start_tick, duration_ticks, note, velocity)
 
-    controllers: List[Tuple[int, int, int]] = field(default_factory=list)
+    controllers: list[tuple[int, int, int]] = field(default_factory=list)
     # Each CC: (tick, controller, value)
 
-    markers: List[Tuple[int, str]] = field(default_factory=list)
+    markers: list[tuple[int, str]] = field(default_factory=list)
     # Each marker: (tick, text)
 
 
@@ -186,7 +211,7 @@ class MidiExportConfig:
     tempo_bpm: float = 120.0
     time_sig_num: int = 4
     time_sig_den: int = 4
-    tracks: List[TrackConfig] = field(default_factory=list)
+    tracks: list[TrackConfig] = field(default_factory=list)
 
     # Meta track (index 0) is auto-generated with tempo/time-sig
 
@@ -203,7 +228,7 @@ def build_midi_file(config: MidiExportConfig) -> bytes:
     meta_track += _time_sig_meta(0, config.time_sig_num, config.time_sig_den)
 
     # Add markers from all tracks grouped onto the conductor track for DAW cue points
-    all_markers: List[Tuple[int, str]] = []
+    all_markers: list[tuple[int, str]] = []
     for t in config.tracks:
         all_markers.extend(t.markers)
     all_markers.sort(key=lambda m: m[0])
@@ -224,7 +249,7 @@ def build_midi_file(config: MidiExportConfig) -> bytes:
         track_data += _program_change(0, track.channel, track.program)
 
         # Merge note on/off and CC events sorted by tick
-        events: List[Tuple[int, bytes]] = []
+        events: list[tuple[int, bytes]] = []
 
         # Note On events
         for start_tick, dur_ticks, note, vel in track.notes:
@@ -285,14 +310,14 @@ def vms_to_tracks(score_data: dict, ppqn: int = PPQN) -> MidiExportConfig:
     config = MidiExportConfig(tempo_bpm=bpm, ppqn=ppqn)
 
     # Group events by their channel
-    channel_events: Dict[int, List[dict]] = {}
+    channel_events: dict[int, list[dict]] = {}
     for ev in score_data.get("events", []):
         ch = ev.get("channel", 1)
         channel_events.setdefault(ch, []).append(ev)
 
     # Group side-channel events under a dedicated channel
-    all_note_events: List[dict] = []
-    sidechannel_events: List[dict] = []
+    all_note_events: list[dict] = []
+    sidechannel_events: list[dict] = []
 
     for ch, events in sorted(channel_events.items()):
         if ch == 8:  # SIDECHANNEL
@@ -304,7 +329,7 @@ def vms_to_tracks(score_data: dict, ppqn: int = PPQN) -> MidiExportConfig:
     all_note_events.sort(key=lambda e: e.get("beat", 0))
 
     # Build one track per scene type (for visual layering in DAW)
-    scene_grouped: Dict[str, List[dict]] = {}
+    scene_grouped: dict[str, list[dict]] = {}
     for ev in all_note_events:
         scene_type_num = ev.get("scene_type", 60)
         scene_name = _scene_type_name(scene_type_num)
@@ -323,7 +348,7 @@ def vms_to_tracks(score_data: dict, ppqn: int = PPQN) -> MidiExportConfig:
 
         # Pick a GM program based on scene type feel
         program = _scene_program(scene_name)
-        ch_idx = min((_channel_for_scene(scene_name) - 1) % 16, 15)
+        ch_idx = _saturate_u7((_channel_for_scene(scene_name) - 1) % 16)
 
         track = TrackConfig(
             name=scene_name,
@@ -347,8 +372,8 @@ def vms_to_tracks(score_data: dict, ppqn: int = PPQN) -> MidiExportConfig:
                 note_offset = 2
 
             track.notes.append((start_tick, max(1, dur_ticks),
-                                min(127, base_note + note_offset),
-                                min(127, max(1, vel))))
+                                _saturate_u7(base_note + note_offset),
+                                max(1, _saturate_u7(vel))))
 
             # Markers for important events
             if ev.get("meta"):
@@ -364,10 +389,10 @@ def vms_to_tracks(score_data: dict, ppqn: int = PPQN) -> MidiExportConfig:
                 # Map first 8 FLUX channels to CC 1-8
                 for i, s in enumerate(salience[:8]):
                     cc_val = int(s * 127) if s is not None else 64
-                    track.controllers.append((start_tick, i + 1, min(127, max(0, cc_val))))
+                    track.controllers.append((start_tick, i + 1, _saturate_u7(cc_val)))
                 for i, t in enumerate(tolerance[:4]):
                     cc_val = int(t * 127) if t is not None else 64
-                    track.controllers.append((start_tick, 21 + i, min(127, max(0, cc_val))))
+                    track.controllers.append((start_tick, 21 + i, _saturate_u7(cc_val)))
 
         config.tracks.append(track)
 
@@ -532,13 +557,13 @@ class OscBridge:
 
     # ---- FLUX vector update ----
 
-    def flux_packet(self, room_id: str, values: List[float]) -> bytes:
+    def flux_packet(self, room_id: str, values: list[float]) -> bytes:
         """OSC: /flux/room/{room_id}/flux  (9 float args)"""
         addr = f"/flux/room/{room_id}/flux"
         fmt = "f" * len(values)
         return build_osc_msg(addr, fmt, *values)
 
-    def flux(self, room_id: str, values: List[float]) -> int:
+    def flux(self, room_id: str, values: list[float]) -> int:
         return _send_osc(self.flux_packet(room_id, values),
                          self.host, self.port)
 
@@ -563,7 +588,7 @@ class OscBridge:
 
     # ---- Batch send multiple packets ----
 
-    def send_batch(self, packets: List[bytes]) -> List[int]:
+    def send_batch(self, packets: list[bytes]) -> list[int]:
         """Send multiple OSC packets. Returns list of byte counts."""
         results = []
         for pkt in packets:
@@ -571,7 +596,7 @@ class OscBridge:
                 results.append(
                     _send_osc(pkt, self.host, self.port)
                 )
-            except OSError as e:
+            except OSError:
                 results.append(0)
         return results
 
@@ -586,8 +611,8 @@ class DawPreset:
     """A mapping preset describing how FLUX-Tensor-MIDI maps to a DAW."""
     name: str
     description: str
-    channel_map: Dict[str, int]     # scene type → MIDI channel (0-15)
-    cc_map: Dict[str, int]          # FLUX channel → CC number
+    channel_map: dict[str, int]     # scene type → MIDI channel (0-15)
+    cc_map: dict[str, int]          # FLUX channel → CC number
     osc_port: int                   # Default OSC receive port
     osc_host: str = "127.0.0.1"
 
@@ -715,7 +740,7 @@ RESOLUME_PRESET = DawPreset(
 )
 
 # Registry
-ALL_PRESETS: Dict[str, DawPreset] = {
+ALL_PRESETS: dict[str, DawPreset] = {
     "ableton": ABLETON_PRESET,
     "touchdesigner": TOUCHDESIGNER_PRESET,
     "resolume": RESOLUME_PRESET,
@@ -777,7 +802,7 @@ class DawBridge:
         else:
             raise ValueError(f"Unknown side-channel type: {msg_type}")
 
-    def send_flux(self, room_id: str, values: List[float]) -> int:
+    def send_flux(self, room_id: str, values: list[float]) -> int:
         """Send a FluxVector update via OSC."""
         return self.osc.flux(room_id, values)
 
@@ -1068,7 +1093,7 @@ def main():
         # Also print diagnostic
         print(f"  File size: {size} bytes")
         print(f"  PPQN: {PPQN}")
-        print(f"  Header: format 1 multi-track")
+        print("  Header: format 1 multi-track")
         print(f"  Valid MIDI? Size ≥ 14 bytes: {size >= 14}")
 
     elif args.cmd == "osc-send":
@@ -1088,6 +1113,29 @@ def main():
 
     else:
         parser.print_help()
+
+
+__all__ = [
+    "PPQN",
+    "TrackConfig",
+    "MidiExportConfig",
+    "build_midi_file",
+    "vms_to_tracks",
+    "vms_file_to_midi",
+    "vms_data_to_midi",
+    "build_osc_msg",
+    "OscBridge",
+    "DawPreset",
+    "ABLETON_PRESET",
+    "TOUCHDESIGNER_PRESET",
+    "RESOLUME_PRESET",
+    "ALL_PRESETS",
+    "get_preset",
+    "apply_preset",
+    "DawBridge",
+    "create_demo_vms_data",
+    "test_export",
+]
 
 
 if __name__ == "__main__":

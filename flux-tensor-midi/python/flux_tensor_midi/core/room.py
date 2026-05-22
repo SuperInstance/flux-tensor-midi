@@ -8,10 +8,10 @@ Eisenstein rhythm snapping.
 
 from __future__ import annotations
 import uuid
-from typing import Callable
+
 from flux_tensor_midi.core.flux import FluxVector
 from flux_tensor_midi.core.clock import TZeroClock
-from flux_tensor_midi.core.snap import EisensteinSnap, EisensteinRatio, RhythmicRole
+from flux_tensor_midi.core.snap import EisensteinSnap, RhythmicRole
 from flux_tensor_midi.sidechannel.nod import Nod
 from flux_tensor_midi.sidechannel.smile import Smile
 from flux_tensor_midi.sidechannel.frown import Frown
@@ -43,7 +43,7 @@ class RoomMusician:
         self._snap = EisensteinSnap()
 
         # Listeners (other rooms this room pays attention to)
-        self._listeners: dict[str, "RoomMusician"] = {}
+        self._listeners: dict[str, RoomMusician] = {}
 
         # Event history for harmony computation
         self._event_history: list[tuple[float, FluxVector]] = []
@@ -60,60 +60,88 @@ class RoomMusician:
 
     @property
     def name(self) -> str:
+        """Room/musician name."""
         return self._name
 
     @property
     def room_id(self) -> str:
+        """Unique 8-character room identifier."""
         return self._id
 
     @property
     def role(self) -> RhythmicRole:
+        """Rhythmic role for Eisenstein snapping."""
         return self._role
 
     @role.setter
     def role(self, value: RhythmicRole) -> None:
+        """Set the rhythmic role."""
+        if not isinstance(value, RhythmicRole):
+            raise TypeError(f"role must be RhythmicRole, got {type(value).__name__}")
         self._role = value
 
     @property
     def clock(self) -> TZeroClock:
+        """The room's TZeroClock."""
         return self._clock
 
     @property
     def state(self) -> FluxVector:
+        """Current room state vector."""
         return self._state
 
     @state.setter
     def state(self, value: FluxVector) -> None:
+        """Set the room's state vector."""
+        if not isinstance(value, FluxVector):
+            raise TypeError(f"state must be FluxVector, got {type(value).__name__}")
         self._state = value
 
     @property
     def event_history(self) -> list[tuple[float, FluxVector]]:
+        """Copy of the event history as (timestamp_ms, vector) pairs."""
         return list(self._event_history)
 
     @property
     def nod(self) -> Nod:
+        """Nod side-channel state."""
         return self._nod
 
     @property
     def smile(self) -> Smile:
+        """Smile side-channel state."""
         return self._smile
 
     @property
     def frown(self) -> Frown:
+        """Frown side-channel state."""
         return self._frown
 
     # ---- listeners ----
 
     def listen_to(self, other: RoomMusician) -> None:
-        """Start listening to another room's events."""
+        """Start listening to another room's events.
+
+        Parameters
+        ----------
+        other : RoomMusician
+            The room to listen to.
+        """
         self._listeners[other.room_id] = other
 
     def stop_listening(self, other: RoomMusician) -> None:
-        """Stop listening to another room."""
+        """Stop listening to another room.
+
+        Parameters
+        ----------
+        other : RoomMusician
+            The room to stop listening to.
+        """
         self._listeners.pop(other.room_id, None)
 
     @property
     def listeners(self) -> dict[str, RoomMusician]:
+        """Copy of the listener map (room_id → RoomMusician)."""
         return dict(self._listeners)
 
     # ---- events ----
@@ -125,6 +153,16 @@ class RoomMusician:
         stores the event, and returns (timestamp_ms, vector).
 
         If no vector is given, uses the current room state.
+
+        Parameters
+        ----------
+        vector : FluxVector | None
+            Optional vector to emit. Defaults to current state.
+
+        Returns
+        -------
+        tuple[float, FluxVector]
+            (timestamp_ms, vector) of the emitted event.
         """
         raw_ts = self._clock.tick()
         snapped_ts = self._snap.snap(raw_ts, role=self._role)
@@ -133,7 +171,13 @@ class RoomMusician:
         return snapped_ts, vec
 
     def listen(self) -> list[tuple[str, float, FluxVector]]:
-        """Listen to all tracked rooms.  Returns [(name, ts, vector), ...]."""
+        """Listen to all tracked rooms.
+
+        Returns
+        -------
+        list[tuple[str, float, FluxVector]]
+            [(name, ts, vector), ...] for each tracked room's latest event.
+        """
         events = []
         for rid, musician in self._listeners.items():
             if musician.event_history:
@@ -144,19 +188,58 @@ class RoomMusician:
     # ---- side-channels ----
 
     def send_nod(self, target: RoomMusician, intensity: float = 0.5) -> None:
-        """Send a nod to another musician (agreement/acknowledgment)."""
+        """Send a nod to another musician (agreement/acknowledgment).
+
+        Parameters
+        ----------
+        target : RoomMusician
+            Recipient of the nod.
+        intensity : float, default=0.5
+            Nod intensity in [0, 1].
+        """
+        if not 0 <= intensity <= 1:
+            raise ValueError(f"intensity must be 0–1, got {intensity}")
+        self._nod.intensity = intensity
         self._nod.send(target)
 
     def send_smile(self, target: RoomMusician, intensity: float = 0.5) -> None:
-        """Send a smile to another musician (positive affect)."""
+        """Send a smile to another musician (positive affect).
+
+        Parameters
+        ----------
+        target : RoomMusician
+            Recipient of the smile.
+        intensity : float, default=0.5
+            Smile intensity in [0, 1].
+        """
+        if not 0 <= intensity <= 1:
+            raise ValueError(f"intensity must be 0–1, got {intensity}")
+        self._smile.intensity = intensity
         self._smile.send(target)
 
     def send_frown(self, target: RoomMusician, intensity: float = 0.5) -> None:
-        """Send a frown to another musician (disagreement/concern)."""
+        """Send a frown to another musician (disagreement/concern).
+
+        Parameters
+        ----------
+        target : RoomMusician
+            Recipient of the frown.
+        intensity : float, default=0.5
+            Frown intensity in [0, 1].
+        """
+        if not 0 <= intensity <= 1:
+            raise ValueError(f"intensity must be 0–1, got {intensity}")
+        self._frown.intensity = intensity
         self._frown.send(target)
 
     def receive_sidechannels(self) -> dict[str, list[str]]:
-        """Collect all side-channel messages addressed to this room."""
+        """Collect all side-channel messages addressed to this room.
+
+        Returns
+        -------
+        dict[str, list[str]]
+            {"nods": [...], "smiles": [...], "frowns": [...]}
+        """
         messages: dict[str, list[str]] = {
             "nods": [],
             "smiles": [],
@@ -174,17 +257,40 @@ class RoomMusician:
     # ---- state ----
 
     def update_state(self, vector: FluxVector) -> None:
-        """Set the room's state vector."""
+        """Set the room's state vector.
+
+        Parameters
+        ----------
+        vector : FluxVector
+            New state vector.
+        """
         self._state = vector
 
     def coherence_with(self, other: RoomMusician) -> float:
-        """Cosine similarity between this room's state and another's."""
+        """Cosine similarity between this room's state and another's.
+
+        Parameters
+        ----------
+        other : RoomMusician
+            The other room to compare with.
+
+        Returns
+        -------
+        float
+            Cosine similarity in [-1, 1].
+        """
         return self._state.cosine_similarity(other._state)
 
     # ---- ensemble ----
 
     def join_ensemble(self, conductor: RoomMusician) -> None:
-        """Listen to the conductor and sync clock drift."""
+        """Listen to the conductor and sync clock drift.
+
+        Parameters
+        ----------
+        conductor : RoomMusician
+            The ensemble conductor.
+        """
         self.listen_to(conductor)
         self._clock.synchronize_to(conductor._clock)
 
@@ -199,3 +305,6 @@ class RoomMusician:
             f"RoomMusician(name={self._name!r}, id={self._id!r}, "
             f"role={self._role.name}, ticks={self._clock.ticks})"
         )
+
+
+__all__ = ["RoomMusician"]

@@ -6,7 +6,7 @@ playback/analysis capabilities.
 """
 
 from __future__ import annotations
-from typing import Sequence
+from typing import Any
 from flux_tensor_midi.core.flux import FluxVector
 from flux_tensor_midi.midi.events import MidiEvent
 from flux_tensor_midi.harmony.chord import HarmonyState
@@ -18,6 +18,11 @@ class Score:
 
     Stores timestamped events from multiple musicians and
     provides analysis and export utilities.
+
+    Parameters
+    ----------
+    title : str, default="Untitled"
+        Score title.
     """
 
     def __init__(self, title: str = "Untitled"):
@@ -27,26 +32,51 @@ class Score:
 
     @property
     def title(self) -> str:
+        """Score title."""
         return self._title
 
     @title.setter
     def title(self, value: str) -> None:
+        """Set the score title."""
+        if not isinstance(value, str):
+            raise TypeError(f"title must be str, got {type(value).__name__}")
         self._title = value
 
     @property
     def musician_names(self) -> list[str]:
+        """List of all musician names that have recorded events."""
         return list(self._events.keys())
 
     # ---- recording ----
 
     def record_event(self, musician: str, timestamp: float, vector: FluxVector) -> None:
-        """Record an event from a musician."""
+        """Record an event from a musician.
+
+        Parameters
+        ----------
+        musician : str
+            Musician name.
+        timestamp : float
+            Event timestamp in milliseconds.
+        vector : FluxVector
+            The event vector.
+        """
         if musician not in self._events:
             self._events[musician] = []
         self._events[musician].append((timestamp, vector))
 
     def record_side_channel(self, musician: str, channel: str, timestamp: float) -> None:
-        """Record a side-channel event."""
+        """Record a side-channel event.
+
+        Parameters
+        ----------
+        musician : str
+            Musician name.
+        channel : str
+            Side-channel type (e.g., "nod", "smile", "frown").
+        timestamp : float
+            Event timestamp.
+        """
         if musician not in self._side_channels:
             self._side_channels[musician] = {}
         if channel not in self._side_channels[musician]:
@@ -56,15 +86,43 @@ class Score:
     # ---- access ----
 
     def events_for(self, musician: str) -> list[tuple[float, FluxVector]]:
-        """Get all events for a musician."""
+        """Get all events for a musician.
+
+        Parameters
+        ----------
+        musician : str
+            Musician name.
+
+        Returns
+        -------
+        list[tuple[float, FluxVector]]
+            All recorded events for that musician.
+        """
         return list(self._events.get(musician, []))
 
     def vectors_for(self, musician: str) -> list[FluxVector]:
-        """Get all FluxVectors for a musician."""
+        """Get all FluxVectors for a musician.
+
+        Parameters
+        ----------
+        musician : str
+            Musician name.
+
+        Returns
+        -------
+        list[FluxVector]
+            All vectors recorded for that musician.
+        """
         return [v for _, v in self._events.get(musician, [])]
 
     def all_events(self) -> list[tuple[str, float, FluxVector]]:
-        """Get all events across all musicians, sorted by timestamp."""
+        """Get all events across all musicians, sorted by timestamp.
+
+        Returns
+        -------
+        list[tuple[str, float, FluxVector]]
+            [(musician, timestamp, vector), ...] sorted by timestamp.
+        """
         flat: list[tuple[str, float, FluxVector]] = []
         for musician, events in self._events.items():
             for ts, vec in events:
@@ -75,18 +133,41 @@ class Score:
     # ---- analysis ----
 
     def total_events(self) -> int:
-        """Total number of events across all musicians."""
+        """Total number of events across all musicians.
+
+        Returns
+        -------
+        int
+            Total event count.
+        """
         return sum(len(events) for events in self._events.values())
 
     def duration_ms(self) -> float:
-        """Total duration (last timestamp - first timestamp) in ms."""
+        """Total duration (last timestamp - first timestamp) in ms.
+
+        Returns
+        -------
+        float
+            Duration in milliseconds. Returns 0.0 if no events.
+        """
         all_events = self.all_events()
         if not all_events:
             return 0.0
         return all_events[-1][1] - all_events[0][1]
 
     def spectral_flux(self, musician: str) -> float:
-        """Spectral flux for a specific musician."""
+        """Spectral flux for a specific musician.
+
+        Parameters
+        ----------
+        musician : str
+            Musician name.
+
+        Returns
+        -------
+        float
+            Average rate of harmonic change.
+        """
         vecs = self.vectors_for(musician)
         return spectral_flux(vecs)
 
@@ -94,6 +175,18 @@ class Score:
         """Get the harmonic state near a given timestamp.
 
         Collects the nearest event from each musician within window_ms.
+
+        Parameters
+        ----------
+        timestamp : float
+            Target timestamp in milliseconds.
+        window_ms : float, default=100.0
+            Search window radius.
+
+        Returns
+        -------
+        HarmonyState | None
+            Harmonic state if any events are found, else None.
         """
         if not self._events:
             return None
@@ -121,6 +214,16 @@ class Score:
         """Convert the score to a flat list of MIDI events.
 
         Each FluxVector channel becomes a note.
+
+        Parameters
+        ----------
+        velocity_scale : int, default=100
+            Scaling factor for note velocities.
+
+        Returns
+        -------
+        list[MidiEvent]
+            Sorted list of MIDI events.
         """
         midi_events: list[MidiEvent] = []
         for musician, events in self._events.items():
@@ -139,8 +242,14 @@ class Score:
         midi_events.sort(key=lambda e: e.start_ms)
         return midi_events
 
-    def summary(self) -> dict:
-        """Get a summary dict for the score."""
+    def summary(self) -> dict[str, Any]:
+        """Get a summary dict for the score.
+
+        Returns
+        -------
+        dict[str, Any]
+            Summary statistics.
+        """
         return {
             "title": self._title,
             "musicians": len(self._events),
@@ -157,3 +266,6 @@ class Score:
             f"musicians={len(self._events)}, "
             f"events={self.total_events()})"
         )
+
+
+__all__ = ["Score"]

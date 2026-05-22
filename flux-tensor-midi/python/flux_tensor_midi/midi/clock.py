@@ -17,7 +17,7 @@ class MidiClock:
     Parameters
     ----------
     bpm : float, default=120.0
-        Beats per minute.
+        Beats per minute. Must be positive.
     tick_callback : Callable[[int], None] | None
         Called on each 0xF8 tick with tick count.
     """
@@ -34,16 +34,19 @@ class MidiClock:
 
     @property
     def bpm(self) -> float:
+        """Current beats per minute."""
         return self._bpm
 
     @bpm.setter
     def bpm(self, value: float) -> None:
+        """Set beats per minute. Must be positive."""
         if value <= 0:
             raise ValueError(f"bpm must be positive, got {value}")
         self._bpm = value
 
     @property
     def tick_count(self) -> int:
+        """Total number of clock ticks elapsed."""
         return self._tick_count
 
     @property
@@ -91,7 +94,18 @@ class MidiClock:
         return self._tick_count // self.PPQN
 
     def measure(self, beats_per_measure: int = 4) -> int:
-        """Current measure number."""
+        """Current measure number.
+
+        Parameters
+        ----------
+        beats_per_measure : int, default=4
+            Number of beats per measure.
+
+        Returns
+        -------
+        int
+            Measure number (0-indexed).
+        """
         return self.beat() // beats_per_measure
 
     def tick_in_beat(self) -> int:
@@ -99,12 +113,34 @@ class MidiClock:
         return self._tick_count % self.PPQN
 
     def tick_in_measure(self, beats_per_measure: int = 4) -> int:
-        """Tick position within the current measure."""
+        """Tick position within the current measure.
+
+        Parameters
+        ----------
+        beats_per_measure : int, default=4
+            Number of beats per measure.
+
+        Returns
+        -------
+        int
+            Tick position within measure.
+        """
         return self._tick_count % (self.PPQN * beats_per_measure)
 
     @classmethod
     def tempo_from_delay(cls, pulse_delay_ms: float) -> float:
-        """Calculate BPM from a clock pulse delay in ms."""
+        """Calculate BPM from a clock pulse delay in ms.
+
+        Parameters
+        ----------
+        pulse_delay_ms : float
+            Delay between clock pulses in milliseconds.
+
+        Returns
+        -------
+        float
+            Computed BPM.
+        """
         if pulse_delay_ms <= 0:
             raise ValueError(f"pulse_delay_ms must be positive, got {pulse_delay_ms}")
         return 60000.0 / (pulse_delay_ms * cls.PPQN)
@@ -114,3 +150,6 @@ class MidiClock:
             f"MidiClock(bpm={self._bpm}, ppqn={self.PPQN}, "
             f"running={self._running}, ticks={self._tick_count})"
         )
+
+
+__all__ = ["MidiClock"]

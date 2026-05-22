@@ -36,7 +36,9 @@ class EisensteinRatio:
     Parameters
     ----------
     numerator : int
+        Ratio numerator.
     denominator : int
+        Ratio denominator (must be positive).
     phase_offset : float, default=0.0
         Phase offset in fractions of a period (0–1).
     """
@@ -55,19 +57,22 @@ class EisensteinRatio:
 
     @property
     def ratio(self) -> float:
-        """The numeric ratio."""
+        """The numeric ratio (numerator / denominator)."""
         return self._num / self._den
 
     @property
     def numerator(self) -> int:
+        """Ratio numerator."""
         return self._num
 
     @property
     def denominator(self) -> int:
+        """Ratio denominator."""
         return self._den
 
     @property
     def phase(self) -> float:
+        """Phase offset as a fraction of a period."""
         return self._phase
 
     def snap(self, t: float, base_period_ms: float = 500.0) -> float:
@@ -82,7 +87,8 @@ class EisensteinRatio:
 
         Returns
         -------
-        Snapped timestamp in ms.
+        float
+            Snapped timestamp in ms.
         """
         period = base_period_ms * self._num / self._den
         phase_ms = period * self._phase
@@ -132,6 +138,7 @@ class EisensteinSnap:
 
     @property
     def base_period_ms(self) -> float:
+        """Base grid period in milliseconds."""
         return self._base_period_ms
 
     def set_tempo(self, bpm: float) -> None:
@@ -186,3 +193,20 @@ class EisensteinSnap:
 
     def __repr__(self) -> str:
         return f"EisensteinSnap(base_period_ms={self._base_period_ms}, covering_radius={self.COVERING_RADIUS:.4f})"
+
+
+__all__ = [
+    "RhythmicRole",
+    "EisensteinRatio",
+    "EisensteinSnap",
+    "UNISON",
+    "HALFTIME",
+    "TRIPLET",
+    "WALTZ_TIME",
+    "COMPOUND",
+    "DOUBLE_TIME",
+    "OFFSET",
+    "QUINTUPLE",
+    "SEPTUPLE",
+    "ROLE_RATIO_MAP",
+]

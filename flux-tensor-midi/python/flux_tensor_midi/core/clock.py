@@ -7,7 +7,6 @@ to observed clock skew from the conductor (or any reference beat).
 """
 
 from __future__ import annotations
-import math
 import time
 from typing import Callable
 
@@ -19,7 +18,7 @@ class TZeroClock:
     ----------
     alpha : float, default=0.125
         EWMA smoothing factor.  Higher = faster adapt, lower = smoother.
-    reference_clock : Callable[[], float], optional
+    reference_clock : Callable[[], float] | None
         Source of wall time in seconds.  Defaults to time.monotonic.
     initial_ticks : int, default=0
         Starting tick count.
@@ -55,18 +54,22 @@ class TZeroClock:
 
     @property
     def alpha(self) -> float:
+        """EWMA smoothing factor in (0, 1)."""
         return self._alpha
 
     @property
     def bpm(self) -> float:
+        """Current beats per minute."""
         return self._bpm
 
     @property
     def tick_duration_ms(self) -> float:
+        """Duration of one tick in milliseconds."""
         return self._tick_duration_s * 1000.0
 
     @property
     def ticks(self) -> int:
+        """Total number of ticks elapsed."""
         return self._ticks
 
     # ---- core operations ----
@@ -142,3 +145,9 @@ class TZeroClock:
         for _ in range(beat_number):
             c.tick()
         return c
+
+    def __repr__(self) -> str:
+        return (
+            f"TZeroClock(bpm={self._bpm}, ticks={self._ticks}, "
+            f"drift_ms={self._drift:.3f}, alpha={self._alpha})"
+        )

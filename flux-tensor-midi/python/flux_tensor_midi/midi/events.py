@@ -21,6 +21,38 @@ class NoteName(IntEnum):
     D5 = 74
 
 
+def _saturate_u7(value: int) -> int:
+    """Saturate to unsigned 7-bit range (0–127).
+
+    Parameters
+    ----------
+    value : int
+        Input value.
+
+    Returns
+    -------
+    int
+        Saturated value in [0, 127].
+    """
+    return max(0, min(127, value))
+
+
+def _saturate_int8(value: int) -> int:
+    """Saturate to signed 8-bit range (–128–127).
+
+    Parameters
+    ----------
+    value : int
+        Input value.
+
+    Returns
+    -------
+    int
+        Saturated value in [–128, 127].
+    """
+    return max(-128, min(127, value))
+
+
 class MidiEvent:
     """A single MIDI note event.
 
@@ -65,26 +97,32 @@ class MidiEvent:
 
     @property
     def note(self) -> int:
+        """MIDI note number (0–127)."""
         return self._note
 
     @property
     def velocity(self) -> int:
+        """Note velocity (0–127)."""
         return self._velocity
 
     @property
     def start_ms(self) -> float:
+        """Start time in milliseconds."""
         return self._start_ms
 
     @property
     def duration_ms(self) -> float:
+        """Duration in milliseconds."""
         return self._duration_ms
 
     @property
     def end_ms(self) -> float:
+        """End time in milliseconds (start_ms + duration_ms)."""
         return self._start_ms + self._duration_ms
 
     @property
     def channel(self) -> int:
+        """MIDI channel (0–15)."""
         return self._channel
 
     # ---- MIDI wire helpers ----
@@ -102,7 +140,14 @@ class MidiEvent:
 
     # ---- conversions ----
 
-    def as_dict(self) -> dict:
+    def as_dict(self) -> dict[str, int | float]:
+        """Serialize the event to a dictionary.
+
+        Returns
+        -------
+        dict[str, int | float]
+            Event fields as a dict.
+        """
         return {
             "note": self._note,
             "velocity": self._velocity,
@@ -125,13 +170,35 @@ class MidiEvent:
 
         Non-zero channels become notes.  Salience modulates velocity.
         Tolerance modulates note-off jitter.
+
+        Parameters
+        ----------
+        vector_values : tuple[float, ...]
+            FluxVector channel values.
+        start_ms : float
+            Start time in milliseconds.
+        duration_ms : float
+            Duration in milliseconds.
+        channel : int, default=0
+            MIDI channel (0–15).
+        base_note : int, default=NoteName.C4
+            Base MIDI note number.
+        velocity_scale : int, default=100
+            Scaling factor for velocity computation.
+
+        Returns
+        -------
+        list[MidiEvent]
+            One MidiEvent per non-zero channel.
         """
         events: list[MidiEvent] = []
         for i, val in enumerate(vector_values):
             if val == 0.0:
                 continue
-            note = min(127, max(0, base_note + i))
-            velocity = min(127, max(1, int(val * velocity_scale)))
+            note = _saturate_u7(base_note + i)
+            velocity = _saturate_u7(int(val * velocity_scale))
+            if velocity == 0:
+                velocity = 1  # Avoid silent note-on
             events.append(cls(note, velocity, start_ms, duration_ms, channel))
         return events
 
@@ -157,3 +224,6 @@ class MidiEvent:
 
     def __hash__(self) -> int:
         return hash((self._note, self._velocity, self._start_ms, self._duration_ms, self._channel))
+
+
+__all__ = ["MidiEvent", "NoteName", "_saturate_u7", "_saturate_int8"]
