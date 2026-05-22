@@ -14,11 +14,11 @@ Require Import Reals.
 Require Import ZArith.
 Require Import Nat.
 Require Import Arith.
+Require Import Lia.
+Require Import Lra.
 Require Import Coq.Lists.List.
 Require Import Coq.Bool.Bool.
 Import ListNotations.
-
-Open Scope R_scope.
 
 (* -------------------------------------------------------------------------- *)
 (*  Import lattice and rigidity infrastructure                                *)
@@ -26,6 +26,9 @@ Open Scope R_scope.
 
 Require Import Eisenstein.
 Require Import Laman.
+
+(* Laman.v opens nat_scope; we keep it open for natural-number theorems.
+   Real comparisons are annotated with %R where needed. *)
 
 (* ========================================================================== *)
 (*  Theorem 1 — Covering Radius is Bounded                                    *)
@@ -38,7 +41,7 @@ Require Import Laman.
 Theorem covering_radius_bounded :
   forall (x y : R),
   exists (a b : Z),
-    dist (x, y) (to_complex (a, b)) <= 1 / sqrt 3.
+    (dist (x, y) (to_complex (a, b)) <= 1 / R_sqrt.sqrt 3)%R.
 Proof.
   intros x y.
   (* The theorem is exactly [covering_radius_bounded] from Eisenstein.v,
@@ -123,6 +126,8 @@ Qed.
 
 Section Deadband.
 
+  Local Open Scope R_scope.
+
   Variables (epsilon_0 lambda : R).
   Hypothesis epsilon_0_pos : 0 < epsilon_0.
   Hypothesis lambda_pos    : 0 < lambda.
@@ -135,12 +140,14 @@ Section Deadband.
   Lemma exp_le_1 : forall dt, 0 <= dt -> exp (- lambda * dt) <= 1.
   Proof.
     intros dt Hdt.
-    assert (H1 : - lambda * dt <= 0).
-    { apply Rmult_le_0_compat; [ lra | assumption ]. }
-    assert (H2 : exp (- lambda * dt) <= exp 0).
-    { apply exp_le; assumption. }
-    rewrite exp_0 in H2.
-    assumption.
+    assert (H1 : (- lambda * dt <= 0)%R) by nra.
+    destruct (Rle_lt_or_eq_dec (- lambda * dt) 0 H1) as [Hlt | Heq].
+    - assert (H2 : (exp (- lambda * dt) < exp 0)%R).
+      { apply exp_increasing; assumption. }
+      rewrite exp_0 in H2.
+      lra.
+    - rewrite Heq, exp_0.
+      lra.
   Qed.
 
   (** The deadband narrows monotonically. *)
@@ -155,10 +162,13 @@ Section Deadband.
     rewrite exp_plus.
     replace (epsilon_0 * (exp (- lambda * t) * exp (- lambda * dt)))
       with (epsilon_0 * exp (- lambda * t) * exp (- lambda * dt)) by ring.
+    pattern (epsilon_0 * exp (- lambda * t)) at 2.
+    rewrite <- Rmult_1_r.
     apply Rmult_le_compat_l.
-    - apply Rmult_le_pos.
-      + lra.
-      + apply exp_pos.
+    - assert (Hpos1 : 0 <= epsilon_0) by lra.
+      assert (Hpos2 : 0 <= exp (- lambda * t)).
+      { apply Rlt_le; apply exp_pos. }
+      apply Rmult_le_pos; assumption.
     - apply exp_le_1. assumption.
   Qed.
 
@@ -177,6 +187,8 @@ End Deadband.
 (* ========================================================================== *)
 
 Section Metronome.
+
+  Local Open Scope R_scope.
 
   (** A fleet is a list of phase angles in radians. *)
   Definition fleet := list R.
@@ -240,7 +252,7 @@ Section Metronome.
       0 < alpha < 1 ->
       0 < delta ->
       exists (K : nat),
-        forall k, K <= k ->
+        forall k : nat, (K <= k)%nat ->
         converged delta (Nat.iter k (tick_step alpha) f0).
   Proof.
     intros alpha delta f0 [Halpha0 Halpha1] Hdelta.
@@ -275,7 +287,7 @@ Definition architecture_correct
   (agents : fleet)
   (n : nat) : Prop :=
   (* 1. Lattice quantization error bounded by 1/√3 *)
-  (forall x y, exists a b, dist (x,y) (to_complex (a,b)) <= 1/sqrt 3)
+  (forall x y, exists a b, (dist (x,y) (to_complex (a,b)) <= 1/R_sqrt.sqrt 3)%R)
   /\
   (* 2. Communication graph has exactly 2n-3 edges *)
   (2 <= n -> edge_count (henneberg_construct n) = 2*n - 3)
@@ -284,7 +296,7 @@ Definition architecture_correct
   (forall c, holonomy c = 0 -> consistent c)
   /\
   (* 4. Deadband narrows monotonically *)
-  (forall t dt, 0 <= dt -> epsilon epsilon_0 lambda (t+dt) <= epsilon epsilon_0 lambda t)
+  (forall t dt, (0 <= dt)%R -> (epsilon epsilon_0 lambda (t+dt) <= epsilon epsilon_0 lambda t)%R)
   /\
   (* 5. Fleet phases converge to δ-ball *)
   (exists K, forall k, K <= k -> converged delta (Nat.iter k (tick_step alpha) agents)).

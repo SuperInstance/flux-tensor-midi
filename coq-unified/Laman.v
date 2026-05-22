@@ -84,7 +84,7 @@ Fixpoint henneberg_construct (n : nat) : graph :=
     previous construct. *)
 Lemma henneberg_SSS : forall n',
   henneberg_construct (S (S (S n'))) =
-  (S (S n'), 0) :: (S (S n'), 1) :: henneberg_construct (S (S n')).
+  mk_edge (S (S n')) 0 :: mk_edge (S (S n')) 1 :: henneberg_construct (S (S n')).
 Proof. reflexivity. Qed.
 
 (** edge_count of a two-element prefix. *)
@@ -104,7 +104,7 @@ Proof.
   - simpl. reflexivity.          (* n = 2 *)
   - (* n ≥ 3 *)
     replace (henneberg_construct (S (S (S n'))))
-      with ((S (S n'), 0) :: (S (S n'), 1) :: henneberg_construct (S (S n')))
+      with (mk_edge (S (S n')) 0 :: mk_edge (S (S n')) 1 :: henneberg_construct (S (S n')))
       by apply henneberg_SSS.
     rewrite edge_count_cons2.
     rewrite IH by lia.
@@ -123,9 +123,10 @@ Fixpoint edges_in_subset (g : graph) (vs : list vertex) : nat :=
   match g with
   | [] => 0
   | (u, v) :: g' =>
-      if (In_dec Nat.eq_dec u vs) && (In_dec Nat.eq_dec v vs)
-      then 1 + edges_in_subset g' vs
-      else edges_in_subset g' vs
+      match In_dec Nat.eq_dec u vs, In_dec Nat.eq_dec v vs with
+      | left _, left _ => 1 + edges_in_subset g' vs
+      | _, _ => edges_in_subset g' vs
+      end
   end.
 
 Definition is_laman (n : nat) (g : graph) : Prop :=
