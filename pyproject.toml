@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flux-tensor-midi"
+version = "0.1.2"
+description = "PLATO rooms as musicians — flux tensor MIDI ensemble coordination"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    {name = "Forgemaster", email = "forgemaster@superinstance.dev"},
+]
+keywords = ["midi", "flux", "tensor", "plato", "ensemble", "music"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Artistic Software",
+    "Topic :: Multimedia :: Sound/Audio :: MIDI",
+]
+dependencies = [
+    "mido>=1.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/SuperInstance/flux-tensor-midi"
+Documentation = "https://github.com/SuperInstance/flux-tensor-midi#readme"
+Repository = "https://github.com/SuperInstance/flux-tensor-midi"
+Issues = "https://github.com/SuperInstance/flux-tensor-midi/issues"
+
+[tool.setuptools.packages.find]
+include = ["flux_tensor_midi*"]
