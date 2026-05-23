@@ -27,7 +27,7 @@ import copy
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple, Set
 
-from flux_tensor_midi.tracks import Arrangement, Track
+from flux_tensor_midi.tracks import Arrangement, Track, MidiEvent
 
 
 # ---------------------------------------------------------------------------
@@ -547,13 +547,15 @@ class GeneRegulatoryNetwork:
             rubato = state.get("RUBATO", 0.1)
             time_offset = t * 0.25 + rubato * random.uniform(-0.05, 0.05)
 
-            # Create a simple event dict (compatible with track internals)
-            events.append({
-                "note": note,
-                "velocity": velocity,
-                "duration": duration,
-                "time": time_offset,
-            })
+            # Create MidiEvent for track compatibility
+            beat_ms = 60000.0 / bpm
+            events.append(MidiEvent(
+                note=note,
+                velocity=velocity,
+                start_ms=time_offset * beat_ms,
+                duration_ms=duration * beat_ms,
+                channel=0,
+            ))
 
         return events
 
