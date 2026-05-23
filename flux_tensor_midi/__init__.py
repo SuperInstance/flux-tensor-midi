@@ -13,9 +13,17 @@ from flux_tensor_midi.core.clock import TZeroClock
 from flux_tensor_midi.core.room import RoomMusician
 from flux_tensor_midi.core.snap import EisensteinSnap
 
+from flux_tensor_midi.genre_brain import GenreBrain
+from flux_tensor_midi.analyzer import FluxAnalyzer
+from flux_tensor_midi.tracks import Arrangement, Track
+
 __all__ = [
     "FluxVector",
     "TZeroClock",
     "RoomMusician",
     "EisensteinSnap",
+    "GenreBrain",
+    "FluxAnalyzer",
+    "Arrangement",
+    "Track",
 ]
