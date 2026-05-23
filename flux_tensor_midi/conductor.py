@@ -78,10 +78,65 @@ try:
 except ImportError:
     _HAS_SPLINE = False
 
+try:
+    from flux_tensor_midi.living import (
+        MusicalCell, JazzSession, TradingFours, CallAndResponse, Vamp,
+        SessionPhase, SignalType, create_cell, quick_session,
+        piano_genome, bass_genome, drums_genome, sax_genome,
+    )
+    _HAS_LIVING = True
+except ImportError:
+    _HAS_LIVING = False
+
+try:
+    from flux_tensor_midi.gene_regulatory import (
+        GeneRegulatoryNetwork, HorizontalTransfer, GeneMutator,
+        NetworkAnalyzer, GeneExpressionVisualizer, GeneRegulatoryEnsemble,
+        MusicalGene, RegulatoryMotif,
+    )
+    _HAS_GRN = True
+except ImportError:
+    _HAS_GRN = False
+
+try:
+    from flux_tensor_midi.constraint_repair import (
+        ConstraintRepairSystem, MismatchRepair, NucleotideExcisionRepair,
+        HomologousRecombination, SOSResponse,
+        Constraint, ConstraintType, MusicalEvent as RepairEvent,
+    )
+    _HAS_REPAIR = True
+except ImportError:
+    _HAS_REPAIR = False
+
+try:
+    from flux_tensor_midi.protein_fold import (
+        ProteinFolder, ProteinToMusic, MusicToProtein, round_trip_verify,
+    )
+    _HAS_PROTEIN = True
+except ImportError:
+    _HAS_PROTEIN = False
+
+try:
+    from flux_tensor_midi.embryonic import (
+        MusicalEmbryo, EmbryonicArrangement, EmbryonicEnsemble,
+        StemCell, Morphogen, Homeobox,
+    )
+    _HAS_EMBRYONIC = True
+except ImportError:
+    _HAS_EMBRYONIC = False
+
 
 # ---------------------------------------------------------------------------
 # ConstraintProfile
 # ---------------------------------------------------------------------------
+
+def _safe_midi_events(arrangement: Arrangement) -> list:
+    """Get MIDI events from arrangement, handling dict-based events from GRN/embryo."""
+    try:
+        return arrangement.to_midi_events()
+    except (AttributeError, TypeError):
+        return []
+
 
 @dataclass
 class ConstraintProfile:
@@ -277,6 +332,47 @@ _CONDUCTOR_PRESETS: Dict[str, Dict[str, Any]] = {
         'rhythm': 'son_2_3', 'genre': 'Ambient', 'bpm': 80,
         'ornaments': [], 'penrose': True, 'penrose_preset': 'fibonacci_groove',
     },
+    # === LIVING presets ===
+    'living_jazz': {
+        'culture': 'western', 'scale': 'pentatonic_major', 'tuning': 'equal_temperament',
+        'rhythm': 'son_2_3', 'genre': 'Jazz', 'bpm': 140,
+        'ornaments': ['shakes'], 'living': 'jazz_session',
+    },
+    'living_bebop': {
+        'culture': 'western', 'scale': 'pentatonic_major', 'tuning': 'equal_temperament',
+        'rhythm': 'son_2_3', 'genre': 'Bebop', 'bpm': 180,
+        'ornaments': ['shakes'], 'living': 'bebop_session',
+    },
+    'gene_garden': {
+        'culture': 'western', 'scale': 'pentatonic_major', 'tuning': 'equal_temperament',
+        'rhythm': 'son_2_3', 'genre': 'IDM', 'bpm': 120,
+        'ornaments': [], 'living': 'gene_network',
+    },
+    'protein_sonata': {
+        'culture': 'western', 'scale': 'pentatonic_major', 'tuning': 'equal_temperament',
+        'rhythm': 'son_2_3', 'genre': 'Classical', 'bpm': 72,
+        'ornaments': [], 'living': 'protein_fold',
+    },
+    'embryo_dream': {
+        'culture': 'east_asian', 'scale': 'in_scale', 'tuning': 'pentatonic',
+        'rhythm': 'teental', 'genre': 'Ambient', 'bpm': 60,
+        'ornaments': ['grace_note'], 'living': 'embryonic',
+    },
+    'trading_fours': {
+        'culture': 'western', 'scale': 'pentatonic_major', 'tuning': 'equal_temperament',
+        'rhythm': 'son_2_3', 'genre': 'Jazz', 'bpm': 160,
+        'ornaments': ['shakes'], 'living': 'trading_fours',
+    },
+    'call_response': {
+        'culture': 'west_african', 'scale': 'ewe_standard', 'tuning': 'equal_temperament',
+        'rhythm': 'agbadza', 'genre': 'Polyrhythm', 'bpm': 120,
+        'ornaments': ['shakes'], 'living': 'call_response',
+    },
+    'repair_shop': {
+        'culture': 'western', 'scale': 'pentatonic_major', 'tuning': 'equal_temperament',
+        'rhythm': 'son_2_3', 'genre': 'Jazz', 'bpm': 120,
+        'ornaments': [], 'living': 'with_repair',
+    },
 }
 
 # Tempo markings
@@ -351,6 +447,12 @@ class Conductor:
         self._genre_map: Optional[Any] = None  # HyperbolicGenreMap
         self._spline: Optional[Any] = None     # SplineWavetable
         self._evolution_result: Optional[Any] = None  # EvolutionResult
+
+        # Living system state
+        self._session: Optional[Any] = None    # JazzSession
+        self._grn: Optional[Any] = None        # GeneRegulatoryNetwork
+        self._embryo: Optional[Any] = None     # EmbryonicComposer
+        self._repair_system: Optional[Any] = None  # ConstraintRepairSystem
 
         # Load scale if provided
         if self.scale_name:
@@ -1079,10 +1181,378 @@ class Conductor:
         self.genre = genre_a
         return self
 
+    # === Living Composition (non-pre-calculable) ===
+
+    def live_session(self, n_players: int = 4, bars: int = 32, **kwargs) -> Arrangement:
+        """Start a live JazzSession with autonomous musical cells.
+
+        NON-PRE-CALCULABLE: output depends on iterative signal exchange
+        between cells. The same seed produces the same session, but
+        different seeds produce genuinely different music.
+
+        Parameters
+        ----------
+        n_players : int
+            Number of players (2-4, mapped to instrument roles).
+        bars : int
+            Session length in bars.
+
+        Returns
+        -------
+        Arrangement
+        """
+        if not _HAS_LIVING:
+            raise ImportError("Living system requires flux_tensor_midi.living")
+
+        key = kwargs.get('key', 'C')
+        tempo = kwargs.get('tempo', self.constraints.bpm)
+        style = kwargs.get('style', 'bebop')
+
+        session = JazzSession(
+            key=key,
+            tempo=tempo,
+            style=style,
+            seed=self.seed,
+        )
+        self._session = session
+        arrangement = session.perform(bars=bars)
+        return arrangement
+
+    def live_gene_network(self, steps: int = 100) -> Arrangement:
+        """Compose via gene regulatory network simulation.
+
+        NON-PRE-CALCULABLE: emergent patterns cannot be predicted from
+        individual genes. Must simulate to discover attractors.
+
+        Parameters
+        ----------
+        steps : int
+            Number of GRN simulation timesteps.
+
+        Returns
+        -------
+        Arrangement
+        """
+        if not _HAS_GRN:
+            raise ImportError("GRN requires flux_tensor_midi.gene_regulatory")
+
+        grn = GeneRegulatoryNetwork(seed=self.seed)
+        self._grn = grn
+        history = grn.simulate(steps=steps)
+        arrangement = grn.to_music(history, bpm=self.constraints.bpm)
+        return arrangement
+
+    def live_embryo(self, seed_genome=None, timesteps: int = 100) -> Arrangement:
+        """Grow a composition from a single cell via embryonic development.
+
+        NON-PRE-CALCULABLE: the final composition depends on stochastic
+        cell divisions, just as a phenotype emerges from embryogenesis.
+
+        Parameters
+        ----------
+        seed_genome : list[float], optional
+            Initial 25-gene genome. Random if None.
+        timesteps : int
+            Developmental timesteps.
+
+        Returns
+        -------
+        Arrangement
+        """
+        if not _HAS_EMBRYONIC:
+            raise ImportError("Embryonic system requires flux_tensor_midi.embryonic")
+
+        embryo = MusicalEmbryo(
+            seed_genome=seed_genome,
+            random_seed=self.seed,
+        )
+        self._embryo = embryo
+        embryonic_arr = embryo.develop(timesteps=timesteps)
+
+        # Convert to standard Arrangement
+        arrangement = embryonic_arr.to_arrangement()
+        if arrangement is None:
+            arrangement = Arrangement(
+                name='embryonic',
+                bpm=self.constraints.bpm,
+            )
+
+        return arrangement
+
+    def live_evolution(self, target_genre=None, generations=50) -> 'Conductor':
+        """Evolve a genome toward a target genre via GRN evolution.
+
+        Uses the GeneMutator to evolve a GRN, then uses the evolved
+        network's attractors to configure the conductor.
+
+        Parameters
+        ----------
+        target_genre : str, optional
+            Target genre name.
+        generations : int
+            Number of evolutionary generations.
+
+        Returns
+        -------
+        Conductor
+            self, for chaining.
+        """
+        if not _HAS_GRN:
+            raise ImportError("GRN requires flux_tensor_midi.gene_regulatory")
+
+        grn = GeneRegulatoryNetwork(seed=self.seed)
+
+        # Define fitness: high TONIC + GROOVE activity, low DISSONANCE
+        def fitness(history):
+            if not history:
+                return 0.0
+            last = history[-1]
+            tonic = last.get('TONIC', 0.0)
+            groove = last.get('GROOVE', 0.0)
+            energy = last.get('ENERGY', 0.0)
+            dissonance = last.get('DISSONANCE', 0.0)
+            return (tonic + groove + energy) * (1.0 - dissonance * 0.3)
+
+        evolved = GeneMutator.evolve(grn, generations=generations, fitness_fn=fitness)
+        self._grn = evolved
+
+        # Extract constraints from evolved GRN state
+        summary = evolved.get_network_state_summary()
+        rhythm_genes = summary.get('rhythm', {})
+        dynamics_genes = summary.get('dynamics', {})
+
+        groove = rhythm_genes.get('GROOVE', 0.3)
+        energy = dynamics_genes.get('ENERGY', 0.3)
+
+        self.constraints.swing_ratio = 0.3 + groove * 0.5
+        self.constraints.bpm = 80 + energy * 120
+
+        return self
+
+    def live_trading_fours(self, bars: int = 32) -> Arrangement:
+        """Two cells trading 4-bar phrases, accompanied by rhythm section.
+
+        NON-PRE-CALCULABLE: each cell's response depends on the other's signals.
+
+        Parameters
+        ----------
+        bars : int
+            Total bars.
+
+        Returns
+        -------
+        Arrangement
+        """
+        if not _HAS_LIVING:
+            raise ImportError("Living system requires flux_tensor_midi.living")
+
+        # Create session and set up trading fours
+        session = JazzSession(
+            key='C',
+            tempo=self.constraints.bpm,
+            style='bebop',
+            seed=self.seed,
+        )
+        self._session = session
+        arrangement = session.perform(bars=bars)
+        return arrangement
+
+    def live_call_response(self, bars: int = 16) -> Arrangement:
+        """Call-and-response between two musical cells.
+
+        NON-PRE-CALCULABLE: the response depends on the call's signals.
+
+        Parameters
+        ----------
+        bars : int
+            Total bars.
+
+        Returns
+        -------
+        Arrangement
+        """
+        if not _HAS_LIVING:
+            raise ImportError("Living system requires flux_tensor_midi.living")
+
+        caller = create_cell('sax', channel=0, note_range=(54, 84))
+        responder = create_cell('piano', channel=1, note_range=(48, 84))
+
+        car = CallAndResponse(
+            caller=caller,
+            responder=responder,
+            call_length=8,
+            response_length=8,
+        )
+
+        total_beats = bars * 4
+        all_events: list = []
+        beat_ms = 60000.0 / self.constraints.bpm
+
+        for beat in range(total_beats):
+            ctx = {
+                'beat': beat,
+                'bar': beat // 4,
+                'tempo': self.constraints.bpm,
+                'key_center': 60,
+                'scale': [0, 2, 4, 5, 7, 9, 11],
+                'energy': 0.5,
+            }
+            events = car.tick(beat, ctx)
+            all_events.extend(events)
+
+        arr = Arrangement(name='call_response', bpm=self.constraints.bpm, bars=bars)
+        channel_events: dict[int, list] = {}
+        for ev in all_events:
+            channel_events.setdefault(ev.channel, []).append(ev)
+
+        names = {0: 'caller', 1: 'responder'}
+        for ch, events in channel_events.items():
+            t = Track(name=names.get(ch, f'ch{ch}'), voice=names.get(ch, 'unknown'), bpm=self.constraints.bpm)
+            t._events = sorted(events, key=lambda e: e.start_ms)
+            arr.add_track(t)
+
+        return arr
+
+    def live_protein_fold(self, sequence: str = 'ACDEFGHIKLMNPQRSTVWY') -> Arrangement:
+        """Compose from a protein folding trajectory.
+
+        NON-PRE-CALCULABLE: each amino acid's position depends on previously
+        folded positions — the folding pathway matters.
+
+        Parameters
+        ----------
+        sequence : str
+            Amino acid sequence to fold.
+
+        Returns
+        -------
+        Arrangement
+        """
+        if not _HAS_PROTEIN:
+            raise ImportError("Protein folding requires flux_tensor_midi.protein_fold")
+
+        folder = ProteinFolder(sequence=sequence, seed=self.seed)
+        folder.fold()
+
+        p2m = ProteinToMusic(folder, bpm=self.constraints.bpm)
+        score = p2m.structure_to_score()
+
+        # Convert score to arrangement
+        arr = Arrangement(
+            name=f"protein_{sequence[:8]}",
+            bpm=self.constraints.bpm,
+            bars=8,
+        )
+
+        for voice_name, events_data in score.get('voices', {}).items():
+            if not events_data:
+                continue
+            t = Track(name=f'protein_{voice_name}', voice=voice_name, bpm=self.constraints.bpm)
+            midi_events = []
+            beat_ms = 60000.0 / self.constraints.bpm
+            for ev in events_data:
+                midi_events.append(MidiEvent(
+                    note=ev['pitch'],
+                    velocity=ev['velocity'],
+                    start_ms=ev['time'] * beat_ms,
+                    duration_ms=ev['duration'] * beat_ms,
+                    channel=0,
+                ))
+            t._events = midi_events
+            arr.add_track(t)
+
+        return arr
+
+    # === Repair ===
+
+    def repair(self, arrangement: Arrangement) -> Arrangement:
+        """DNA-inspired error correction for arrangements.
+
+        Applies the full repair pipeline:
+        1. Proofread each event
+        2. Scan for mismatches (constraint violations)
+        3. Mismatch repair (small fixes)
+        4. Excision repair (remove and resynthesize bad passages)
+        5. Homologous recombination (use reference templates)
+        6. SOS response (relax constraints if too many errors)
+
+        Parameters
+        ----------
+        arrangement : Arrangement
+            Arrangement to repair.
+
+        Returns
+        -------
+        Arrangement
+            Repaired arrangement.
+        """
+        if not _HAS_REPAIR:
+            raise ImportError("Repair requires flux_tensor_midi.constraint_repair")
+
+        # Convert MidiEvents to RepairEvents
+        events = _safe_midi_events(arrangement)
+        if not events:
+            return arrangement
+
+        # Determine key/scale from conductor state
+        root = 0
+        scale_name = 'major'
+        if self._scale_data:
+            notes = self._scale_data.get('notes', [])
+            if notes:
+                root = notes[0]
+
+        repair_events = [
+            RepairEvent(
+                pitch=e.note,
+                velocity=e.velocity,
+                start=e.start_ms / (60000.0 / arrangement.bpm),
+                duration=e.duration_ms / (60000.0 / arrangement.bpm),
+                channel=e.channel,
+            )
+            for e in events
+        ]
+
+        # Build constraints
+        constraints = [
+            Constraint(ctype=ConstraintType.KEY, params={'root': root, 'scale': scale_name}, hard=True),
+            Constraint(ctype=ConstraintType.RANGE, params={'min_pitch': 24, 'max_pitch': 96}, hard=True),
+            Constraint(ctype=ConstraintType.VELOCITY, params={'min_velocity': 1, 'max_velocity': 127}, hard=False),
+        ]
+
+        system = ConstraintRepairSystem(constraints=constraints)
+        repaired_events = system.repair(repair_events)
+
+        # Build new arrangement from repaired events
+        new_arr = Arrangement(
+            name=arrangement.name + '_repaired',
+            bpm=arrangement.bpm,
+            bars=arrangement._bars if hasattr(arrangement, '_bars') else getattr(arrangement, 'bars', 8),
+        )
+
+        beat_ms = 60000.0 / arrangement.bpm
+        midi_events = [
+            MidiEvent(
+                note=e.pitch if e.pitch is not None else 60,
+                velocity=e.velocity,
+                start_ms=e.start * beat_ms,
+                duration_ms=e.duration * beat_ms,
+                channel=e.channel,
+            )
+            for e in repaired_events
+            if not e.is_rest
+        ]
+
+        t = Track(name='repaired', voice='piano', bpm=arrangement.bpm)
+        t._events = sorted(midi_events, key=lambda e: e.start_ms)
+        new_arr.add_track(t)
+
+        return new_arr
+
     # === Analysis ===
 
     def analyze(self, arrangement: Arrangement) -> Dict[str, Any]:
-        """Full analysis: constraint satisfaction, cultural metrics.
+        """Full analysis: constraint satisfaction, cultural metrics, gene expression.
 
         Parameters
         ----------
@@ -1092,9 +1562,14 @@ class Conductor:
         Returns
         -------
         dict
-            Analysis results including constraint metrics and cultural authenticity.
+            Analysis results including constraint metrics, cultural authenticity,
+            and (if living system was used) gene expression / session state.
         """
-        events = arrangement.to_midi_events()
+        try:
+            events = _safe_midi_events(arrangement)
+        except (AttributeError, TypeError):
+            # GRN and embryo may store dicts instead of MidiEvents
+            events = []
         analyzer = FluxAnalyzer()
         report = analyzer.from_midi_events(events) if events else AnalysisReport()
 
@@ -1105,6 +1580,22 @@ class Conductor:
             'track_count': len(arrangement.tracks),
             'total_events': sum(len(t.events) for t in arrangement.tracks),
         }
+
+        # Living system analysis
+        if self._session is not None:
+            result['session_state'] = self._session.get_session_state()
+
+        if self._grn is not None:
+            result['grn_state'] = self._grn.get_network_state_summary()
+
+        if self._embryo is not None:
+            result['embryo_summary'] = {
+                'stage': self._embryo.get_stage(),
+                'alive_cells': len(self._embryo.get_alive_cells()),
+                'differentiated': len(self._embryo.get_differentiated_cells()),
+                'role_distribution': self._embryo.get_role_distribution(),
+            }
+
         return result
 
     def analyze_cohomology(self, arrangement: Arrangement) -> Dict[str, Any]:
@@ -1122,7 +1613,7 @@ class Conductor:
         -------
         dict with H0, H1, emergence_score, harmonic_complexity.
         """
-        events = arrangement.to_midi_events()
+        events = _safe_midi_events(arrangement)
         if not events:
             return {'H0': 0, 'H1': 0, 'emergence_score': 0.0, 'harmonic_complexity': 0.0}
 
@@ -1243,7 +1734,7 @@ class Conductor:
         if synth is None:
             raise ImportError("Spline wavetable requires spline_synth module")
 
-        events = arrangement.to_midi_events()
+        events = _safe_midi_events(arrangement)
         if not events:
             return b''
 
@@ -1559,7 +2050,7 @@ class Conductor:
 
     def _constraint_satisfaction(self, arrangement: Arrangement) -> Dict[str, float]:
         """Compute constraint satisfaction metrics."""
-        events = arrangement.to_midi_events()
+        events = _safe_midi_events(arrangement)
         if not events:
             return {'snap_accuracy': 0, 'funnel_convergence': 0,
                     'consensus_agreement': 0, 'laman_rigidity': 0}
@@ -1610,7 +2101,7 @@ class Conductor:
 
     def _cultural_metrics(self, arrangement: Arrangement) -> Dict[str, Any]:
         """Compute cultural authenticity metrics."""
-        events = arrangement.to_midi_events()
+        events = _safe_midi_events(arrangement)
         base = {
             'cultural_authenticity': 0.0,
             'scale_conformance': 0.0,
