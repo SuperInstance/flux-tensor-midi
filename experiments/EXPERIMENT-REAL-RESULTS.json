@@ -1,0 +1,389 @@
+{
+  "timestamp": "2026-05-23T22:00:16.843013+00:00",
+  "experiments": {
+    "A_protein_folding": [
+      {
+        "epsilon": 0.0,
+        "avg_time": 1.0501899242401123,
+        "avg_energy": 48.724498056269724,
+        "energy_std": 9.042078315689363,
+        "avg_fold_positions": 20.0
+      },
+      {
+        "epsilon": 0.1,
+        "avg_time": 0.8149936199188232,
+        "avg_energy": 60.93234991193592,
+        "energy_std": 16.26412808434262,
+        "avg_fold_positions": 20.0
+      },
+      {
+        "epsilon": 0.2,
+        "avg_time": 1.0789587020874023,
+        "avg_energy": 39.76244086983907,
+        "energy_std": 16.340128662292962,
+        "avg_fold_positions": 20.0
+      },
+      {
+        "epsilon": 0.3,
+        "avg_time": 0.9938964366912841,
+        "avg_energy": 58.85788876078267,
+        "energy_std": 11.813943022189568,
+        "avg_fold_positions": 20.0
+      },
+      {
+        "epsilon": 0.4,
+        "avg_time": 1.0944583415985107,
+        "avg_energy": 66.7085236812697,
+        "energy_std": 14.335130657481571,
+        "avg_fold_positions": 20.0
+      },
+      {
+        "epsilon": 0.5,
+        "avg_time": 1.0674897193908692,
+        "avg_energy": 58.70505855589622,
+        "energy_std": 12.820380083294319,
+        "avg_fold_positions": 20.0
+      },
+      {
+        "epsilon": 0.6,
+        "avg_time": 1.0407130241394043,
+        "avg_energy": 41.381251852161455,
+        "energy_std": 19.556855828026006,
+        "avg_fold_positions": 20.0
+      },
+      {
+        "epsilon": 0.7,
+        "avg_time": 1.1503206729888915,
+        "avg_energy": 71.80459873021289,
+        "energy_std": 9.862914910193796,
+        "avg_fold_positions": 20.0
+      },
+      {
+        "epsilon": 0.8,
+        "avg_time": 1.0850130558013915,
+        "avg_energy": 51.19477289780692,
+        "energy_std": 21.142870590700266,
+        "avg_fold_positions": 20.0
+      },
+      {
+        "epsilon": 0.9,
+        "avg_time": 1.0917600631713866,
+        "avg_energy": 48.26822782626124,
+        "energy_std": 19.345069422049335,
+        "avg_fold_positions": 20.0
+      },
+      {
+        "epsilon": 1.0,
+        "avg_time": 0.8959553241729736,
+        "avg_energy": 51.1831826996068,
+        "energy_std": 34.67147373111887,
+        "avg_fold_positions": 20.0
+      }
+    ],
+    "B_ecosystem": [
+      {
+        "seed": 42,
+        "final_biodiversity": 0.0,
+        "max_biodiversity": 2.7871344091972694,
+        "min_biodiversity": 0.0,
+        "final_surviving": 1,
+        "biodiversity_trajectory": [
+          2.5847692216379103,
+          0.9971803988942642,
+          0.0,
+          0.0,
+          0.9904799742690308,
+          0.7024665512903903,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "surviving_trajectory": [
+          6,
+          2,
+          1,
+          1,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "seed": 123,
+        "final_biodiversity": 0.0,
+        "max_biodiversity": 2.58197662364143,
+        "min_biodiversity": 0.0,
+        "final_surviving": 0,
+        "biodiversity_trajectory": [
+          2.58197662364143,
+          1.3752794486331816,
+          1.5275844300784045,
+          1.191648278119215,
+          0.35096017303221255,
+          0.597185045253784,
+          0.5746356978376794,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "surviving_trajectory": [
+          6,
+          3,
+          3,
+          3,
+          2,
+          2,
+          2,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "seed": 999,
+        "final_biodiversity": 0.0,
+        "max_biodiversity": 2.580464327242773,
+        "min_biodiversity": 0.0,
+        "final_surviving": 1,
+        "biodiversity_trajectory": [
+          2.580464327242773,
+          1.8820521339482985,
+          0.9558398699876868,
+          0.9826175486669994,
+          0.511968294043992,
+          1.5263118470662038,
+          0.9976624275811201,
+          0.9991421039919088,
+          0.0,
+          0.0
+        ],
+        "surviving_trajectory": [
+          6,
+          5,
+          2,
+          3,
+          2,
+          3,
+          2,
+          2,
+          0,
+          0
+        ]
+      }
+    ],
+    "C_immune_system": [
+      {
+        "seed": 42,
+        "primary_antigens": 1,
+        "secondary_antigens": 5,
+        "tertiary_antigens": 5,
+        "primary_response_len": 8,
+        "secondary_response_len": 8,
+        "tertiary_response_len": 8,
+        "self_tolerance_antigens": 0,
+        "adaptive_antibodies": 1,
+        "response_log_entries": 11
+      },
+      {
+        "seed": 123,
+        "primary_antigens": 1,
+        "secondary_antigens": 5,
+        "tertiary_antigens": 5,
+        "primary_response_len": 8,
+        "secondary_response_len": 8,
+        "tertiary_response_len": 8,
+        "self_tolerance_antigens": 0,
+        "adaptive_antibodies": 1,
+        "response_log_entries": 11
+      },
+      {
+        "seed": 456,
+        "primary_antigens": 1,
+        "secondary_antigens": 5,
+        "tertiary_antigens": 5,
+        "primary_response_len": 8,
+        "secondary_response_len": 8,
+        "tertiary_response_len": 8,
+        "self_tolerance_antigens": 0,
+        "adaptive_antibodies": 1,
+        "response_log_entries": 11
+      }
+    ],
+    "D_neural_music": [
+      {
+        "seed": 42,
+        "performances": [
+          {
+            "performance": 0,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 1,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 2,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 3,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 4,
+            "events": 0,
+            "brain_tick": 127
+          }
+        ],
+        "total_events": 0,
+        "cortex_count": 7,
+        "synapse_count": 258,
+        "learning_rate": 0.02
+      },
+      {
+        "seed": 123,
+        "performances": [
+          {
+            "performance": 0,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 1,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 2,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 3,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 4,
+            "events": 0,
+            "brain_tick": 127
+          }
+        ],
+        "total_events": 0,
+        "cortex_count": 7,
+        "synapse_count": 258,
+        "learning_rate": 0.02
+      },
+      {
+        "seed": 456,
+        "performances": [
+          {
+            "performance": 0,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 1,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 2,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 3,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 4,
+            "events": 0,
+            "brain_tick": 127
+          }
+        ],
+        "total_events": 0,
+        "cortex_count": 7,
+        "synapse_count": 258,
+        "learning_rate": 0.02
+      },
+      {
+        "seed": 789,
+        "performances": [
+          {
+            "performance": 0,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 1,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 2,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 3,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 4,
+            "events": 0,
+            "brain_tick": 127
+          }
+        ],
+        "total_events": 0,
+        "cortex_count": 7,
+        "synapse_count": 258,
+        "learning_rate": 0.02
+      },
+      {
+        "seed": 1337,
+        "performances": [
+          {
+            "performance": 0,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 1,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 2,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 3,
+            "events": 0,
+            "brain_tick": 127
+          },
+          {
+            "performance": 4,
+            "events": 0,
+            "brain_tick": 127
+          }
+        ],
+        "total_events": 0,
+        "cortex_count": 7,
+        "synapse_count": 258,
+        "learning_rate": 0.02
+      }
+    ]
+  }
+}
