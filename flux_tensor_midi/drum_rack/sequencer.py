@@ -271,6 +271,28 @@ class StepSequencer:
 
     # ---- render ----
 
+    def to_midi(self, path: str, bpm: float = 120.0) -> int:
+        """Export the drum pattern as a MIDI file.
+
+        Renders the pattern and writes it to disk.
+
+        Parameters
+        ----------
+        path : str
+            Output file path (should end in .mid).
+        bpm : float
+            Tempo in BPM (default: 120).
+
+        Returns
+        -------
+        int
+            Number of bytes written.
+        """
+        events = self.render(bpm=bpm)
+        self._write_midi(events, bpm, path)
+        import os
+        return os.path.getsize(path)
+
     def render(self, bpm: float = 120.0, output: str | None = None) -> List[MidiEvent]:
         """Render the pattern to a list of MidiEvents.
 
@@ -312,6 +334,9 @@ class StepSequencer:
                 # Random timing offset
                 t += rng.uniform(-time_range, time_range)
 
+                # Clamp start time to non-negative (humanize can push early hits negative)
+                t = max(0.0, t)
+
                 dur = step_ms * 0.8  # 80% of step length
 
                 # Handle flams: detect pairs on same step/instrument
@@ -326,38 +351,61 @@ class StepSequencer:
         return events
 
     def _write_midi(self, events: List[MidiEvent], bpm: float, path: str) -> None:
-        """Write events to a MIDI file using mido."""
+        """Write events to a multi-track MIDI file using mido.
+
+        Each MIDI channel gets its own track.  All tick deltas are clamped
+        to >= 0 and events are sorted by absolute tick before writing to
+        prevent negative-delta crashes.
+        """
         try:
             import mido
         except ImportError:
             raise ImportError("mido is required for MIDI file output. Install with: pip install mido")
 
         mid = mido.MidiFile(ticks_per_beat=480)
-        track = mido.MidiTrack()
-        mid.tracks.append(track)
-
-        # Tempo
-        tempo = mido.bpm2tempo(bpm)
-        track.append(mido.MetaMessage("set_tempo", tempo=tempo))
-
         tpqn = mid.ticks_per_beat
-        ticks_per_16th = tpqn // 4
 
-        # Convert events to absolute ticks
-        tick_events = []
+        # Group events by channel for multi-track output
+        channels: Dict[int, List[MidiEvent]] = {}
         for ev in events:
-            start_tick = int(ev.start_ms * tpqn * bpm / 60000.0 * 4.0)
-            end_tick = int(ev.end_ms * tpqn * bpm / 60000.0 * 4.0)
-            tick_events.append((start_tick, "note_on", ev.note, ev.velocity, ev.channel))
-            tick_events.append((end_tick, "note_off", ev.note, 0, ev.channel))
+            channels.setdefault(ev.channel, []).append(ev)
 
-        tick_events.sort(key=lambda x: x[0])
+        if not channels:
+            # Empty pattern — write a single empty track with tempo
+            track = mido.MidiTrack()
+            mid.tracks.append(track)
+            tempo = mido.bpm2tempo(bpm)
+            track.append(mido.MetaMessage("set_tempo", tempo=tempo))
+            mid.save(path)
+            return
 
-        prev_tick = 0
-        for tick, msg_type, note, vel, ch in tick_events:
-            delta = tick - prev_tick
-            track.append(mido.Message(msg_type, note=note, velocity=vel, channel=ch, time=delta))
-            prev_tick = tick
+        for ch, ch_events in sorted(channels.items()):
+            track = mido.MidiTrack()
+            mid.tracks.append(track)
+
+            # Tempo on first track only
+            if ch == sorted(channels.keys())[0]:
+                tempo = mido.bpm2tempo(bpm)
+                track.append(mido.MetaMessage("set_tempo", tempo=tempo))
+
+            # Convert events to absolute ticks, clamped to >= 0
+            tick_events: List[tuple] = []
+            for ev in ch_events:
+                start_tick = max(0, int(ev.start_ms * tpqn * bpm / 60000.0 * 4.0))
+                end_tick = max(0, int(ev.end_ms * tpqn * bpm / 60000.0 * 4.0))
+                # Ensure end >= start
+                end_tick = max(end_tick, start_tick)
+                tick_events.append((start_tick, "note_on", ev.note, ev.velocity, ev.channel))
+                tick_events.append((end_tick, "note_off", ev.note, 0, ev.channel))
+
+            # Sort by absolute tick (note_off before note_on at same tick to avoid overlap)
+            tick_events.sort(key=lambda x: (x[0], 0 if x[1] == "note_off" else 1))
+
+            prev_tick = 0
+            for tick, msg_type, note, vel, ch_msg in tick_events:
+                delta = max(0, tick - prev_tick)
+                track.append(mido.Message(msg_type, note=note, velocity=vel, channel=ch_msg, time=delta))
+                prev_tick = tick
 
         mid.save(path)
 
