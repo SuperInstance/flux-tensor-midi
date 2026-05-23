@@ -1,0 +1,118 @@
+{
+  "ticks": [
+    {
+      "tick": 0,
+      "biodiversity": 2.9991526966967226,
+      "surviving_species": 8,
+      "protein_energy": 24.545383709156024,
+      "brain_events": 0,
+      "elapsed_seconds": 0.6
+    },
+    {
+      "tick": 50,
+      "biodiversity": 0.9984389230256236,
+      "surviving_species": 2,
+      "protein_energy": 35.1828195649574,
+      "brain_events": 767,
+      "elapsed_seconds": 1.51
+    },
+    {
+      "tick": 100,
+      "biodiversity": 1.9191864688549698,
+      "surviving_species": 4,
+      "protein_energy": 24.429596684271395,
+      "brain_events": 306,
+      "elapsed_seconds": 2.05
+    },
+    {
+      "tick": 200,
+      "biodiversity": 1.410207082779967,
+      "surviving_species": 3,
+      "protein_energy": 41.79124952248836,
+      "brain_events": 712,
+      "elapsed_seconds": 2.63
+    },
+    {
+      "tick": 500,
+      "biodiversity": 1.0,
+      "surviving_species": 2,
+      "protein_energy": 21.402552318023233,
+      "brain_events": 781,
+      "elapsed_seconds": 3.27
+    },
+    {
+      "tick": 750,
+      "biodiversity": 1.4403298787476837,
+      "surviving_species": 3,
+      "protein_energy": 28.976173576979868,
+      "brain_events": 677,
+      "elapsed_seconds": 3.92
+    },
+    {
+      "tick": 1000,
+      "biodiversity": 1.573449405940524,
+      "surviving_species": 3,
+      "protein_energy": 28.477358803024728,
+      "brain_events": 605,
+      "elapsed_seconds": 4.27
+    }
+  ],
+  "events": [
+    {
+      "tick": 0,
+      "biodiversity": 2.9991526966967226,
+      "surviving_species": 8,
+      "protein_energy": 24.545383709156024,
+      "brain_events": 0,
+      "elapsed_seconds": 0.6
+    },
+    {
+      "tick": 50,
+      "biodiversity": 0.9984389230256236,
+      "surviving_species": 2,
+      "protein_energy": 35.1828195649574,
+      "brain_events": 767,
+      "elapsed_seconds": 1.51
+    },
+    {
+      "tick": 100,
+      "biodiversity": 1.9191864688549698,
+      "surviving_species": 4,
+      "protein_energy": 24.429596684271395,
+      "brain_events": 306,
+      "elapsed_seconds": 2.05
+    },
+    {
+      "tick": 200,
+      "biodiversity": 1.410207082779967,
+      "surviving_species": 3,
+      "protein_energy": 41.79124952248836,
+      "brain_events": 712,
+      "elapsed_seconds": 2.63
+    },
+    {
+      "tick": 500,
+      "biodiversity": 1.0,
+      "surviving_species": 2,
+      "protein_energy": 21.402552318023233,
+      "brain_events": 781,
+      "elapsed_seconds": 3.27
+    },
+    {
+      "tick": 750,
+      "biodiversity": 1.4403298787476837,
+      "surviving_species": 3,
+      "protein_energy": 28.976173576979868,
+      "brain_events": 677,
+      "elapsed_seconds": 3.92
+    },
+    {
+      "tick": 1000,
+      "biodiversity": 1.573449405940524,
+      "surviving_species": 3,
+      "protein_energy": 28.477358803024728,
+      "brain_events": 605,
+      "elapsed_seconds": 4.27
+    }
+  ]
+}
