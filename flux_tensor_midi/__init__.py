@@ -14,9 +14,20 @@ from flux_tensor_midi.core.room import RoomMusician
 from flux_tensor_midi.core.snap import EisensteinSnap
 from flux_tensor_midi.exceptions import ConstraintError, RenderError, GenreError
 
+from flux_tensor_midi.constraint_repair import ConstraintRepairSystem
 from flux_tensor_midi.genre_brain import GenreBrain
 from flux_tensor_midi.analyzer import FluxAnalyzer
 from flux_tensor_midi.tracks import Arrangement, Track
+from flux_tensor_midi.gene_regulatory import (
+    MusicalGene,
+    GeneRegulatoryNetwork,
+    HorizontalTransfer,
+    NetworkAnalyzer,
+    RegulatoryMotif,
+    GeneExpressionVisualizer,
+    GeneRegulatoryEnsemble,
+    GeneMutator,
+)
 from flux_tensor_midi.midi_writer import MidiFileWriter
 
 __all__ = [
@@ -29,7 +40,16 @@ __all__ = [
     "Arrangement",
     "Track",
     "MidiFileWriter",
+    "MusicalGene",
+    "GeneRegulatoryNetwork",
+    "HorizontalTransfer",
+    "NetworkAnalyzer",
+    "RegulatoryMotif",
+    "GeneExpressionVisualizer",
+    "GeneRegulatoryEnsemble",
+    "GeneMutator",
     "ConstraintError",
     "RenderError",
     "GenreError",
+    "ConstraintRepairSystem",
 ]
