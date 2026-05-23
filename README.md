@@ -236,6 +236,14 @@ flux-tensor-midi/
 
 ---
 
+## Documentation
+
+- [User Guide](docs/USER-GUIDE.md) — Complete usage documentation
+- [Developer Guide](docs/DEVELOPER-GUIDE.md) — Contributing and internals
+- [Roadmap](docs/ROADMAP.md) — Planned features and direction
+- [Examples](examples/) — Working code in Python
+- [Demos](demos/) — Full demonstration scripts
+
 ## Related Projects
 
 - **[plato-midi-bridge](https://github.com/SuperInstance/plato-midi-bridge)** — Connect PLATO rooms to real MIDI hardware
