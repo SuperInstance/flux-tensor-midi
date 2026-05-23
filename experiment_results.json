@@ -1,0 +1,419 @@
+{
+  "sustain_vs_resonance": [
+    {
+      "bridge_impedance": 10,
+      "sustain_seconds": 0,
+      "max_sympathetic": 1.5647801915474098
+    },
+    {
+      "bridge_impedance": 20,
+      "sustain_seconds": 0,
+      "max_sympathetic": 1.5647808688076275
+    },
+    {
+      "bridge_impedance": 50,
+      "sustain_seconds": 0,
+      "max_sympathetic": 1.5647828361835152
+    },
+    {
+      "bridge_impedance": 100,
+      "sustain_seconds": 0,
+      "max_sympathetic": 1.564785715594689
+    },
+    {
+      "bridge_impedance": 200,
+      "sustain_seconds": 0,
+      "max_sympathetic": 1.5647903197181743
+    },
+    {
+      "bridge_impedance": 500,
+      "sustain_seconds": 0,
+      "max_sympathetic": 1.5647988595822668
+    },
+    {
+      "bridge_impedance": 1000,
+      "sustain_seconds": 0,
+      "max_sympathetic": 1.5648057364572885
+    }
+  ],
+  "headstock_mass": [
+    {
+      "added_mass_kg": 0,
+      "headstock_impedance": 547.7225575051662,
+      "sustain_seconds": 0
+    },
+    {
+      "added_mass_kg": 0.1,
+      "headstock_impedance": 632.4555320336759,
+      "sustain_seconds": 0
+    },
+    {
+      "added_mass_kg": 0.3,
+      "headstock_impedance": 774.5966692414834,
+      "sustain_seconds": 0
+    },
+    {
+      "added_mass_kg": 0.5,
+      "headstock_impedance": 894.4271909999159,
+      "sustain_seconds": 0
+    },
+    {
+      "added_mass_kg": 1.0,
+      "headstock_impedance": 1140.175425099138,
+      "sustain_seconds": 0
+    },
+    {
+      "added_mass_kg": 2.0,
+      "headstock_impedance": 1516.57508881031,
+      "sustain_seconds": 0
+    }
+  ],
+  "kuramoto_sync": {
+    "mean_sync": 0.3653424837181043,
+    "final_sync": 0.47146639818446273
+  },
+  "fret_positions": {
+    "string": "E2",
+    "frets": [
+      {
+        "fret": 0,
+        "frequency": 82.41,
+        "effective_length": 0.648,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      },
+      {
+        "fret": 1,
+        "frequency": 87.31035360614952,
+        "effective_length": 0.6116305546177374,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      },
+      {
+        "fret": 2,
+        "frequency": 92.50209740117543,
+        "effective_length": 0.5773023693549398,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      },
+      {
+        "fret": 3,
+        "frequency": 98.00255834737423,
+        "effective_length": 0.544900877084407,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      },
+      {
+        "fret": 4,
+        "frequency": 103.83009372183649,
+        "effective_length": 0.5143179408376967,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      },
+      {
+        "fret": 5,
+        "frequency": 110.00415238215253,
+        "effective_length": 0.48545149290804485,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      },
+      {
+        "fret": 6,
+        "frequency": 116.54533967516677,
+        "effective_length": 0.4582051942088828,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      },
+      {
+        "fret": 7,
+        "frequency": 123.47548620540732,
+        "effective_length": 0.4324881127510911,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      },
+      {
+        "fret": 8,
+        "frequency": 130.8177206926993,
+        "effective_length": 0.40821442016593895,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      },
+      {
+        "fret": 9,
+        "frequency": 138.59654716211722,
+        "effective_length": 0.3853031052608817,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      },
+      {
+        "fret": 10,
+        "frequency": 146.83792672389072,
+        "effective_length": 0.3636777036522369,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      },
+      {
+        "fret": 11,
+        "frequency": 155.5693642161967,
+        "effective_length": 0.3432660425724117,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      },
+      {
+        "fret": 12,
+        "frequency": 164.82,
+        "effective_length": 0.324,
+        "impedance": 0.10680336,
+        "sustain": 98.94436835077654
+      }
+    ]
+  },
+  "pluck_position": {
+    "positions": [
+      {
+        "position": 0.05,
+        "fundamental_amp": 0.15643446504023087,
+        "total_energy": 0.19774136774532589,
+        "harmonic richness": 0.8762436907792569,
+        "n_active_harmonics": 12
+      },
+      {
+        "position": 0.09736842105263158,
+        "fundamental_amp": 0.3011438072693074,
+        "total_energy": 0.3891768780381451,
+        "harmonic richness": 0.7669758976591486,
+        "n_active_harmonics": 11
+      },
+      {
+        "position": 0.14473684210526316,
+        "fundamental_amp": 0.43919658884737034,
+        "total_energy": 0.5743499440844498,
+        "harmonic richness": 0.6641531079755727,
+        "n_active_harmonics": 11
+      },
+      {
+        "position": 0.19210526315789472,
+        "fundamental_amp": 0.5675412553627637,
+        "total_energy": 0.7240535468523706,
+        "harmonic richness": 0.555139149667868,
+        "n_active_harmonics": 12
+      },
+      {
+        "position": 0.23947368421052628,
+        "fundamental_amp": 0.6833408430916084,
+        "total_energy": 0.8590655192143105,
+        "harmonic richness": 0.45643877283746587,
+        "n_active_harmonics": 12
+      },
+      {
+        "position": 0.28684210526315784,
+        "fundamental_amp": 0.7840356879781529,
+        "total_energy": 0.9704283635497614,
+        "harmonic richness": 0.36655606625634823,
+        "n_active_harmonics": 11
+      },
+      {
+        "position": 0.33421052631578946,
+        "fundamental_amp": 0.8674000051114951,
+        "total_energy": 1.0564751979320974,
+        "harmonic richness": 0.28783678941057417,
+        "n_active_harmonics": 8
+      },
+      {
+        "position": 0.381578947368421,
+        "fundamental_amp": 0.9315910880512789,
+        "total_energy": 1.1262187581568366,
+        "harmonic richness": 0.22940197093067086,
+        "n_active_harmonics": 12
+      },
+      {
+        "position": 0.4289473684210526,
+        "fundamental_amp": 0.9751900404877397,
+        "total_energy": 1.167544195228072,
+        "harmonic richness": 0.1854735615548082,
+        "n_active_harmonics": 11
+      },
+      {
+        "position": 0.47631578947368414,
+        "fundamental_amp": 0.997233139892941,
+        "total_energy": 1.1914183378841008,
+        "harmonic richness": 0.16530247715771254,
+        "n_active_harmonics": 12
+      },
+      {
+        "position": 0.5236842105263158,
+        "fundamental_amp": 0.9972331398929412,
+        "total_energy": 1.191418337884101,
+        "harmonic richness": 0.1653024771577125,
+        "n_active_harmonics": 12
+      },
+      {
+        "position": 0.5710526315789474,
+        "fundamental_amp": 0.9751900404877397,
+        "total_energy": 1.1675441952280723,
+        "harmonic richness": 0.18547356155480813,
+        "n_active_harmonics": 11
+      },
+      {
+        "position": 0.618421052631579,
+        "fundamental_amp": 0.931591088051279,
+        "total_energy": 1.126218758156837,
+        "harmonic richness": 0.22940197093067086,
+        "n_active_harmonics": 12
+      },
+      {
+        "position": 0.6657894736842105,
+        "fundamental_amp": 0.8674000051114954,
+        "total_energy": 1.0564751979320979,
+        "harmonic richness": 0.28783678941057383,
+        "n_active_harmonics": 8
+      },
+      {
+        "position": 0.7131578947368421,
+        "fundamental_amp": 0.784035687978153,
+        "total_energy": 0.9704283635497616,
+        "harmonic richness": 0.36655606625634796,
+        "n_active_harmonics": 11
+      },
+      {
+        "position": 0.7605263157894736,
+        "fundamental_amp": 0.6833408430916088,
+        "total_energy": 0.859065519214311,
+        "harmonic richness": 0.4564387728374655,
+        "n_active_harmonics": 12
+      },
+      {
+        "position": 0.8078947368421052,
+        "fundamental_amp": 0.5675412553627638,
+        "total_energy": 0.7240535468523708,
+        "harmonic richness": 0.555139149667868,
+        "n_active_harmonics": 12
+      },
+      {
+        "position": 0.8552631578947368,
+        "fundamental_amp": 0.4391965888473704,
+        "total_energy": 0.57434994408445,
+        "harmonic richness": 0.6641531079755727,
+        "n_active_harmonics": 11
+      },
+      {
+        "position": 0.9026315789473683,
+        "fundamental_amp": 0.30114380726930795,
+        "total_energy": 0.3891768780381457,
+        "harmonic richness": 0.7669758976591484,
+        "n_active_harmonics": 11
+      },
+      {
+        "position": 0.95,
+        "fundamental_amp": 0.15643446504023098,
+        "total_energy": 0.19774136774532627,
+        "harmonic richness": 0.876243690779257,
+        "n_active_harmonics": 12
+      }
+    ]
+  },
+  "vibrato": {
+    "vibrato": [
+      {
+        "epsilon": 0.0,
+        "frequency": 82.41,
+        "deviation_cents": 0.0
+      },
+      {
+        "epsilon": 0.05263157894736842,
+        "frequency": 82.54012105263158,
+        "deviation_cents": 2.7313716668541628
+      },
+      {
+        "epsilon": 0.10526315789473684,
+        "frequency": 82.67024210526314,
+        "deviation_cents": 5.458440829957917
+      },
+      {
+        "epsilon": 0.15789473684210525,
+        "frequency": 82.80036315789474,
+        "deviation_cents": 8.181221022752915
+      },
+      {
+        "epsilon": 0.21052631578947367,
+        "frequency": 82.93048421052632,
+        "deviation_cents": 10.899725714926154
+      },
+      {
+        "epsilon": 0.2631578947368421,
+        "frequency": 83.06060526315788,
+        "deviation_cents": 13.613968312810943
+      },
+      {
+        "epsilon": 0.3157894736842105,
+        "frequency": 83.19072631578948,
+        "deviation_cents": 16.323962159784735
+      },
+      {
+        "epsilon": 0.3684210526315789,
+        "frequency": 83.32084736842106,
+        "deviation_cents": 19.029720536660406
+      },
+      {
+        "epsilon": 0.42105263157894735,
+        "frequency": 83.45096842105262,
+        "deviation_cents": 21.73125666207794
+      },
+      {
+        "epsilon": 0.47368421052631576,
+        "frequency": 83.5810894736842,
+        "deviation_cents": 24.42858369289301
+      },
+      {
+        "epsilon": 0.5263157894736842,
+        "frequency": 83.7112105263158,
+        "deviation_cents": 27.12171472455918
+      },
+      {
+        "epsilon": 0.5789473684210527,
+        "frequency": 83.84133157894736,
+        "deviation_cents": 29.810662791510484
+      },
+      {
+        "epsilon": 0.631578947368421,
+        "frequency": 83.97145263157894,
+        "deviation_cents": 32.495440867541134
+      },
+      {
+        "epsilon": 0.6842105263157894,
+        "frequency": 84.10157368421052,
+        "deviation_cents": 35.17606186617876
+      },
+      {
+        "epsilon": 0.7368421052631579,
+        "frequency": 84.23169473684209,
+        "deviation_cents": 37.852538641058295
+      },
+      {
+        "epsilon": 0.7894736842105263,
+        "frequency": 84.36181578947368,
+        "deviation_cents": 40.52488398629284
+      },
+      {
+        "epsilon": 0.8421052631578947,
+        "frequency": 84.49193684210526,
+        "deviation_cents": 43.193110636838426
+      },
+      {
+        "epsilon": 0.894736842105263,
+        "frequency": 84.62205789473684,
+        "deviation_cents": 45.85723126885958
+      },
+      {
+        "epsilon": 0.9473684210526315,
+        "frequency": 84.75217894736842,
+        "deviation_cents": 48.51725850008998
+      },
+      {
+        "epsilon": 1.0,
+        "frequency": 84.8823,
+        "deviation_cents": 51.173204890192466
+      }
+    ]
+  }
+}
