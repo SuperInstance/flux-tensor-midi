@@ -227,6 +227,33 @@ class Arrangement:
         """
         self._loop_count = times
 
+    def to_midi(self, path: str) -> int:
+        """Export the arrangement as a multi-track MIDI file.
+
+        Parameters
+        ----------
+        path : str
+            Output file path (should end in .mid).
+
+        Returns
+        -------
+        int
+            Number of bytes written.
+        """
+        from flux_tensor_midi.midi_writer import MidiFileWriter
+
+        writer = MidiFileWriter(bpm=self._bpm)
+        for i, track in enumerate(self._tracks):
+            events = track.events
+            if not events:
+                continue
+            writer.add_track(
+                name=track.name,
+                channel=min(i, 15),
+                events=events,
+            )
+        return writer.write(path)
+
     def to_midi_events(self) -> List[MidiEvent]:
         """Collect all MIDI events from all tracks."""
         all_events: List[MidiEvent] = []

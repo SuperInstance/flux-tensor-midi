@@ -194,6 +194,63 @@ class RoomMusician:
 
     # ---- display ----
 
+    def render_to_file(
+        self,
+        path: str,
+        bpm: float | None = None,
+        bars: int = 4,
+        ticks_per_bar: int = 16,
+    ) -> int:
+        """Render the room's output to a MIDI file.
+
+        Emits events for the specified number of bars and writes them
+        as a single-track MIDI file.
+
+        Parameters
+        ----------
+        path : str
+            Output file path (should end in .mid).
+        bpm : float, optional
+            Tempo override. Uses the clock's BPM if not given.
+        bars : int
+            Number of bars to render.
+        ticks_per_bar : int
+            Ticks per bar (default 16 = 16th note grid).
+
+        Returns
+        -------
+        int
+            Number of bytes written.
+        """
+        from flux_tensor_midi.midi_writer import MidiFileWriter
+        from flux_tensor_midi.midi.events import MidiEvent
+        import numpy as np
+
+        effective_bpm = bpm or self._clock.bpm
+        quarter_ms = 60000.0 / effective_bpm
+        sixteenth_ms = quarter_ms / 4.0
+
+        events: list[MidiEvent] = []
+        for tick in range(bars * ticks_per_bar):
+            ts, vec = self.emit()
+            for ch in range(min(9, len(vec))):
+                val = vec[ch]
+                if val < 0.05:
+                    continue
+                note = min(127, max(0, 60 + ch * 2))
+                velocity = min(127, max(1, int(val * 100)))
+                events.append(MidiEvent(
+                    note=note,
+                    velocity=velocity,
+                    start_ms=ts,
+                    duration_ms=sixteenth_ms,
+                    channel=0,
+                ))
+
+        writer = MidiFileWriter(bpm=effective_bpm)
+        writer.add_track(name=self._name, channel=0, events=events)
+        return writer.write(path)
+
     def __repr__(self) -> str:
         return (
             f"RoomMusician(name={self._name!r}, id={self._id!r}, "

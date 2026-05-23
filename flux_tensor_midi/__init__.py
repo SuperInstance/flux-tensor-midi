@@ -17,6 +17,7 @@ from flux_tensor_midi.exceptions import ConstraintError, RenderError, GenreError
 from flux_tensor_midi.genre_brain import GenreBrain
 from flux_tensor_midi.analyzer import FluxAnalyzer
 from flux_tensor_midi.tracks import Arrangement, Track
+from flux_tensor_midi.midi_writer import MidiFileWriter
 
 __all__ = [
     "FluxVector",
@@ -27,6 +28,7 @@ __all__ = [
     "FluxAnalyzer",
     "Arrangement",
     "Track",
+    "MidiFileWriter",
     "ConstraintError",
     "RenderError",
     "GenreError",

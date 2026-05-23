@@ -11,6 +11,8 @@ Usage:
     python -m flux_tensor_midi jam --preset parker_miles --bars 32 --output jam.mid
     python -m flux_tensor_midi jam --list-presets
     python -m flux_tensor_midi analyze song.mid
+    python -m flux_tensor_midi generate --genre jazz --bpm 140 --bars 8 --output song.mid
+    python -m flux_tensor_midi generate --preset trap_beat --output beat.mid
 """
 
 from __future__ import annotations
@@ -158,6 +160,65 @@ def _play_cmd(args: argparse.Namespace) -> None:
             print(f"\n  Exported {len(midi_bytes)} bytes → {args.export}")
 
 
+def _generate_cmd(args: argparse.Namespace) -> None:
+    """Generate a MIDI file from a genre or preset."""
+    from flux_tensor_midi.midi_writer import MidiFileWriter
+    from flux_tensor_midi.tracks import Arrangement, Track, trap_beat, techno_loop, jazz_combo
+    from flux_tensor_midi.core.snap import RhythmicRole
+
+    if not args.output:
+        print("Error: --output is required for generate", file=sys.stderr)
+        sys.exit(1)
+
+    bpm = args.bpm or 120
+
+    if args.genre:
+        # Use GenreBrain to generate
+        from flux_tensor_midi.genre_brain import GenreBrain
+        brain = GenreBrain(args.genre)
+        band, musicians = brain.create_band(
+            bpm=bpm, key=args.key, bars=args.bars, seed=args.seed,
+        )
+        preset = brain.get_preset()
+        arr = Arrangement(
+            name=f"{args.genre}_gen",
+            bpm=band.bpm,
+            bars=args.bars or preset['loop_bars'],
+            seed=args.seed,
+        )
+        for i, musician in enumerate(musicians):
+            role = preset['roles'][i] if i < len(preset['roles']) else RhythmicRole.ROOT
+            voice = preset['member_names'][i] if i < len(preset['member_names']) else 'piano'
+            arr.add_track(Track(
+                musician.name, role, voice,
+                bpm=band.bpm, seed=args.seed,
+            ))
+        arr.generate_all()
+        size = arr.to_midi(args.output)
+        if not args.quiet:
+            print(f"Generated {args.genre} arrangement → {args.output} ({size} bytes)")
+
+    elif args.preset:
+        preset_map = {
+            'trap_beat': trap_beat,
+            'techno_loop': techno_loop,
+            'jazz_combo': jazz_combo,
+        }
+        if args.preset not in preset_map:
+            print(f"Unknown preset '{args.preset}'. Available: {sorted(preset_map.keys())}",
+                  file=sys.stderr)
+            sys.exit(1)
+        arr = preset_map[args.preset](bpm=bpm, bars=args.bars or 8, seed=args.seed)
+        arr.generate_all()
+        size = arr.to_midi(args.output)
+        if not args.quiet:
+            print(f"Generated {args.preset} → {args.output} ({size} bytes)")
+
+    else:
+        print("Error: specify --genre or --preset", file=sys.stderr)
+        sys.exit(1)
+
+
 def _analyze_cmd(args: argparse.Namespace) -> None:
     """Analyze a MIDI file through the flux-tensor lens."""
     from flux_tensor_midi.analyzer import FluxAnalyzer
@@ -239,6 +300,17 @@ def main(argv: list[str] | None = None) -> None:
     analyze = sub.add_parser("analyze", help="Analyze a MIDI file")
     analyze.add_argument("midi_file", help="Path to .mid file")
 
+    # ── generate subcommand ────────────────────────────────────────────────
+    gen = sub.add_parser("generate", help="Generate a MIDI file")
+    gen.add_argument("--genre", "-g", help="Genre: jazz, hiphop, electronic, classical, math")
+    gen.add_argument("--preset", "-p", help="Arrangement preset: trap_beat, techno_loop, jazz_combo")
+    gen.add_argument("--bpm", "-b", type=int, default=None, help="Beats per minute")
+    gen.add_argument("--key", "-k", type=str, default=None, help="Musical key")
+    gen.add_argument("--bars", type=int, default=None, help="Number of bars")
+    gen.add_argument("--seed", "-s", type=int, default=None, help="Random seed")
+    gen.add_argument("--output", "-o", required=True, help="Output .mid file path")
+    gen.add_argument("--quiet", "-q", action="store_true", help="Suppress output")
+
     # ── beta subcommand ─────────────────────────────────────────────────
     from flux_tensor_midi.beta.cli import build_parser, run_beta_command
     build_parser(sub)
@@ -254,6 +326,8 @@ def main(argv: list[str] | None = None) -> None:
         jam_command(args)
     elif args.command == "analyze":
         _analyze_cmd(args)
+    elif args.command == "generate":
+        _generate_cmd(args)
     elif args.command == "beta":
         run_beta_command(args)
     else:

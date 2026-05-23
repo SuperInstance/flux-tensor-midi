@@ -169,6 +169,24 @@ class JamSession:
 
         return sorted(all_events, key=lambda e: e.start_ms)
 
+    def to_midi(self, path: str) -> str:
+        """Run the jam and write a multi-track MIDI file.
+
+        Convenience wrapper around to_midi_file(). Each agent gets its
+        own track with its GM program.
+
+        Parameters
+        ----------
+        path : str
+            Output file path (should end in .mid).
+
+        Returns
+        -------
+        str
+            The output path.
+        """
+        return self.to_midi_file(path)
+
     def to_midi_file(self, output_path: str) -> str:
         """Run the jam and write a multi-track MIDI file.
 
