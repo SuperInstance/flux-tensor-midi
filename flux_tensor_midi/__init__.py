@@ -29,6 +29,18 @@ from flux_tensor_midi.gene_regulatory import (
     GeneMutator,
 )
 from flux_tensor_midi.midi_writer import MidiFileWriter
+from flux_tensor_midi.neural_music import (
+    MusicalNeuron,
+    MusicalSynapse,
+    MusicalCortex,
+    CortexType,
+    NeuroTransmitter,
+    DopamineSystem,
+    Hippocampus,
+    MemoryPattern,
+    MusicalBrain,
+    neural_performance,
+)
 
 __all__ = [
     "FluxVector",
@@ -52,4 +64,14 @@ __all__ = [
     "RenderError",
     "GenreError",
     "ConstraintRepairSystem",
+    "MusicalNeuron",
+    "MusicalSynapse",
+    "MusicalCortex",
+    "CortexType",
+    "NeuroTransmitter",
+    "DopamineSystem",
+    "Hippocampus",
+    "MemoryPattern",
+    "MusicalBrain",
+    "neural_performance",
 ]
