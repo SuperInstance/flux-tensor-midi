@@ -1,0 +1,224 @@
+{
+  "ecosystem_error": "MusicalEcosystem.extinction_event() got an unexpected keyword argument 'intensity'",
+  "grn_cell": {
+    "cell_states": [
+      {
+        "tick": 0,
+        "energy": 0.7053363779268018,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 1,
+        "energy": 0.6678709362449673,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 2,
+        "energy": 0.637241396387189,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 3,
+        "energy": 0.6122004874912956,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 4,
+        "energy": 0.5917285143162498,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 5,
+        "energy": 0.574991834053477,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 6,
+        "energy": 0.5613089094119119,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 7,
+        "energy": 0.5501225556184907,
+        "grn_genes_active": 20,
+        "n_events": 0
+      },
+      {
+        "tick": 8,
+        "energy": 0.5409772511993269,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 9,
+        "energy": 0.5335005886099169,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 10,
+        "energy": 0.5273881093622339,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 11,
+        "energy": 0.5223909061172625,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 12,
+        "energy": 0.5183054868856114,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 13,
+        "energy": 0.5149654885945393,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 14,
+        "energy": 0.5122349025881048,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 15,
+        "energy": 0.5100025361948446,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 16,
+        "energy": 0.5081774848315057,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 17,
+        "energy": 0.5066854302615742,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 18,
+        "energy": 0.5054656142693379,
+        "grn_genes_active": 20,
+        "n_events": 1
+      },
+      {
+        "tick": 19,
+        "energy": 0.5044683645139327,
+        "grn_genes_active": 20,
+        "n_events": 1
+      }
+    ],
+    "grn_final_state_sample": {
+      "TONIC": 1.0,
+      "DOMINANT": 1.0,
+      "REST": 1.0,
+      "SYNCOPATION": 1.0,
+      "GROOVE": 1.0,
+      "RHYTHM": 1.0,
+      "DISSONANCE": 1.0,
+      "TENSION": 1.0,
+      "CADENCE": 1.0,
+      "COMPLEXITY": 1.0
+    }
+  },
+  "protein_folding": {
+    "sequences": [
+      {
+        "sequence": "VYWYMLIGVCG",
+        "length": 11,
+        "energy": 27.284443033490383,
+        "radius_of_gyration": 0.8789877535498802,
+        "is_folded": true,
+        "n_coords": 11
+      },
+      {
+        "sequence": "PQSADYYFKK",
+        "length": 10,
+        "energy": 39.95106229590811,
+        "radius_of_gyration": 0.6268018351058121,
+        "is_folded": true,
+        "n_coords": 10
+      },
+      {
+        "sequence": "IHLDCWAKWVTMIDAGDQMQC",
+        "length": 21,
+        "energy": 24.59083715842921,
+        "radius_of_gyration": 0.8895816889875321,
+        "is_folded": true,
+        "n_coords": 21
+      },
+      {
+        "sequence": "GDEDVYWMYQAQVMRPRSN",
+        "length": 19,
+        "energy": 73.74325608647663,
+        "radius_of_gyration": 1.001045850785567,
+        "is_folded": true,
+        "n_coords": 19
+      },
+      {
+        "sequence": "MYVEWDLGEQQDL",
+        "length": 13,
+        "energy": 48.313156390245304,
+        "radius_of_gyration": 0.7084506641621637,
+        "is_folded": true,
+        "n_coords": 13
+      }
+    ],
+    "energy_funnel_sample": [
+      -2.2658961498617054,
+      -0.6833809456818102
+    ]
+  },
+  "cross_system": {
+    "biodiversities": [
+      1.5849420853053213,
+      2.5307266326350955,
+      2.2431840521333957,
+      2.226450383121519,
+      0.0,
+      2.6786066584824493
+    ],
+    "cell_energies_sample": [
+      0.5021372029285843,
+      0.5025297494907061,
+      0.5006546519349463,
+      0.5001360602924332,
+      0.5000260934309012,
+      0.5000048252439859,
+      0.5000008763665815,
+      0.5000001576932166,
+      0.5000000282362497,
+      0.5000000050426734
+    ],
+    "final_biodiversity": 2.6786066584824493,
+    "final_living": [
+      "Immigrant_ambient_81",
+      "Immigrant_melody_85",
+      "Immigrant_bass_91",
+      "Immigrant_rhythm_95",
+      "Immigrant_harmony_96",
+      "Folk",
+      "Immigrant_texture_98"
+    ],
+    "final_cell_energies": [
+      0.5000000032123713,
+      0.49999999999999223,
+      0.499999999993291
+    ]
+  }
+}
