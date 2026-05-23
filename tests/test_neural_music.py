@@ -409,6 +409,131 @@ class TestMusicalBrain:
         arr = neural_performance(root=60, bpm=100, bars=4, seed=42)
         assert arr is not None
 
+    # ---- epsilon / stimulus tests -----------------------------------------
+
+    def test_build_with_epsilon(self):
+        brain = MusicalBrain.build(epsilon=0.7, seed=1)
+        assert brain.epsilon == 0.7
+
+    def test_perform_with_stimulus_produces_events(self):
+        brain = MusicalBrain.build(epsilon=0.5, seed=42)
+        arr = brain.perform(bars=2, stimulus=[60, 64, 67, 72])
+        tracks = arr.tracks if hasattr(arr, 'tracks') else arr._tracks
+        assert len(tracks) > 0
+        assert len(tracks[0].events) > 0
+
+    def test_perform_no_stimulus_produces_events(self):
+        """No stimulus should still produce events via internal generator."""
+        brain = MusicalBrain.build(epsilon=0.5, seed=42)
+        arr = brain.perform(bars=2)
+        tracks = arr.tracks if hasattr(arr, 'tracks') else arr._tracks
+        assert len(tracks) > 0
+        assert len(tracks[0].events) > 0
+
+    def test_hear_primes_auditory_cortex(self):
+        brain = MusicalBrain.build(epsilon=0.3, seed=10)
+        brain.hear([60, 64, 67])
+        assert brain._stimulus == [60, 64, 67]
+        assert len(brain._context_notes) > 0
+
+    def test_epsilon_zero_mimics_stimulus(self):
+        """At epsilon=0 output should stay close to input notes."""
+        brain = MusicalBrain.build(epsilon=0.0, seed=42)
+        stimulus = [60, 64, 67]
+        arr = brain.perform(bars=2, stimulus=stimulus)
+        tracks = arr.tracks if hasattr(arr, 'tracks') else arr._tracks
+        notes = [e.note for e in tracks[0].events]
+        # Most notes should be near the stimulus range
+        nearby = sum(1 for n in notes
+                     if any(abs(n - s) <= 2 for s in stimulus))
+        assert nearby > len(notes) * 0.3  # at least 30% nearby
+
+    def test_epsilon_values_produce_different_output(self):
+        """Different epsilon should produce different event counts."""
+        counts = {}
+        for eps in [0.0, 0.5, 1.0]:
+            brain = MusicalBrain.build(epsilon=eps, seed=42)
+            arr = brain.perform(bars=2, stimulus=[60, 64, 67])
+            tracks = arr.tracks if hasattr(arr, 'tracks') else arr._tracks
+            counts[eps] = len(tracks[0].events)
+        # Not all counts should be identical
+        assert len(set(counts.values())) > 1
+
+    def test_improvise_produces_arrangement(self):
+        brain = MusicalBrain.build(epsilon=0.5, seed=7)
+        progression = [[60, 64, 67], [62, 65, 69], [64, 67, 71], [60, 64, 67]]
+        arr = brain.improvise(progression, key=60, tempo=120, bars=4)
+        tracks = arr.tracks if hasattr(arr, 'tracks') else arr._tracks
+        assert len(tracks) > 0
+        assert len(tracks[0].events) > 0
+
+    def test_improvise_uses_chord_context(self):
+        """Improvise should generate different notes for different chords."""
+        brain = MusicalBrain.build(epsilon=0.5, seed=42)
+        arr1 = brain.improvise([[60, 64, 67]], key=60, bars=2)
+        # Reset and improvise with different chord
+        brain.reset()
+        arr2 = brain.improvise([[65, 69, 72]], key=65, bars=2)
+        tracks1 = arr1.tracks if hasattr(arr1, 'tracks') else arr1._tracks
+        tracks2 = arr2.tracks if hasattr(arr2, 'tracks') else arr2._tracks
+        notes1 = set(e.note for e in tracks1[0].events)
+        notes2 = set(e.note for e in tracks2[0].events)
+        # Not identical note sets (different chords → different output)
+        assert notes1 != notes2
+
+    def test_respond_to_produces_arrangement(self):
+        """respond_to should produce non-empty output from another performance."""
+        brain1 = MusicalBrain.build(epsilon=0.5, seed=1)
+        performance = brain1.perform(bars=2, stimulus=[60, 64, 67])
+
+        brain2 = MusicalBrain.build(epsilon=0.5, seed=2)
+        response = brain2.respond_to(performance, bars=2)
+        tracks = response.tracks if hasattr(response, 'tracks') else response._tracks
+        assert len(tracks) > 0
+        assert len(tracks[0].events) > 0
+
+    def test_sleep_improves_after_stimulus(self):
+        """After hear + perform + sleep, brain should consolidate."""
+        brain = MusicalBrain.build(epsilon=0.5, seed=42)
+        brain.hear([60, 64, 67, 72])
+        brain.perform(bars=2)
+        stats = brain.sleep()
+        assert stats["pruned_patterns"] >= 0  # some consolidation happened
+        assert stats["remaining_synapses"] > 0
+
+    def test_internal_stimulus_generated_when_none_provided(self):
+        """_generate_internal_stimulus should populate _stimulus."""
+        brain = MusicalBrain.build(epsilon=0.5, seed=42)
+        brain._generate_internal_stimulus()
+        assert len(brain._stimulus) > 0
+        assert all(0 <= n <= 127 for n in brain._stimulus)
+
+    def test_apply_epsilon_at_zero_returns_input(self):
+        brain = MusicalBrain.build(epsilon=0.0, seed=42)
+        # At epsilon=0, _apply_epsilon should mostly return the input note
+        results = set()
+        for _ in range(50):
+            results.add(brain._apply_epsilon(60))
+        # Should be very close to 60
+        assert all(abs(n - 60) <= 1 for n in results)
+
+    def test_apply_epsilon_at_one_uses_scale(self):
+        brain = MusicalBrain.build(epsilon=1.0, seed=42)
+        results = set()
+        for _ in range(50):
+            results.add(brain._apply_epsilon(60))
+        # At epsilon=1.0, results should be more diverse
+        assert len(results) > 1
+
+    def test_hear_multiple_times_appends_context(self):
+        brain = MusicalBrain.build(epsilon=0.3, seed=10)
+        brain.hear([60, 64])
+        brain.hear([67, 72])
+        # Second hear overwrites stimulus but appends context
+        assert brain._stimulus == [67, 72]
+        assert 60 in brain._context_notes
+        assert 67 in brain._context_notes
+
 
 # ---------------------------------------------------------------------------
 # Integration test

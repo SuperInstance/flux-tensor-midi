@@ -565,6 +565,11 @@ class MusicalBrain:
     bpm: float = 120.0
     root_note: int = 60
     scale: list[int] = field(default_factory=lambda: [0, 2, 4, 5, 7, 9, 11])
+    # Epsilon: controls deviation from input stimulus
+    epsilon: float = 0.5               # 0 = mimic, 1 = free improv
+    # Stimulus buffer (set by hear())
+    _stimulus: list[int] = field(default_factory=list)
+    _stimulus_index: int = 0
     # Performance state
     _events: list[MidiEvent] = field(default_factory=list)
     _context_notes: list[int] = field(default_factory=list)
@@ -575,13 +580,15 @@ class MusicalBrain:
     @classmethod
     def build(cls, root: int = 60, bpm: float = 120.0,
               scale: Optional[list[int]] = None,
-              seed: Optional[int] = None) -> MusicalBrain:
+              seed: Optional[int] = None,
+              epsilon: float = 0.5) -> MusicalBrain:
         """Construct a full brain with default layer architecture."""
         rng = random.Random(seed)
         brain = cls(
             bpm=bpm,
             root_note=root,
             scale=scale or [0, 2, 4, 5, 7, 9, 11],
+            epsilon=epsilon,
             _rng=rng,
         )
 
@@ -649,6 +656,184 @@ class MusicalBrain:
                         weight=_clamp(w, -1.0, 2.0),
                         neurotransmitter=nt,
                     ))
+
+    # ---- input methods (stimulus) ------------------------------------------
+
+    def hear(self, midi_events: list[int]) -> None:
+        """Feed MIDI note numbers to the auditory cortex.
+
+        Stores the events as internal stimulus for the next perform() call.
+        Also immediately activates the auditory cortex so perception is primed.
+        """
+        self._stimulus = list(midi_events)
+        self._stimulus_index = 0
+
+        # Immediately activate auditory cortex with the heard notes
+        for neuron in self.layers["auditory"].neurons:
+            min_dist = min((abs(neuron.note - n) for n in midi_events),
+                           default=12)
+            sig = max(0.0, 1.0 - min_dist / 12.0) * 0.8
+            neuron.receive(sig)
+
+        # Store in context for downstream processing
+        self._context_notes.extend(midi_events)
+
+    def _get_next_stimulus_note(self) -> Optional[int]:
+        """Return the next stimulus note, cycling if exhausted."""
+        if not self._stimulus:
+            return None
+        note = self._stimulus[self._stimulus_index % len(self._stimulus)]
+        self._stimulus_index += 1
+        return note
+
+    def _apply_epsilon(self, note: int) -> int:
+        """Apply epsilon deviation to a note.
+
+        epsilon=0: return note unchanged (mimicry)
+        epsilon=1: return a random scale note (free improv)
+        """
+        if self._rng.random() > self.epsilon:
+            # Stay close to input — mimic
+            deviation = self._rng.choice([-1, 0, 0, 0, 1])
+            return max(0, min(127, note + deviation))
+        else:
+            # Free improv — pick from scale
+            octave = note // 12
+            degree = self._rng.choice(self.scale) if self.scale else self._rng.randint(0, 11)
+            return max(0, min(127, octave * 12 + degree))
+
+    def improvise(self, chord_progression: list[list[int]],
+                  key: int = 60, tempo: float = 120.0,
+                  bars: int = 8) -> Arrangement:
+        """Generate music in response to harmonic context.
+
+        Each chord in the progression provides context for one or more bars.
+        The brain uses epsilon to control how closely it follows the harmony.
+        """
+        saved_bpm = self.bpm
+        self.bpm = tempo
+
+        self._events.clear()
+        self._context_notes = [key]
+        ticks_per_chord = (bars * 4 * self.ticks_per_beat) // max(len(chord_progression), 1)
+        total_ticks = bars * 4 * self.ticks_per_beat
+        ms_per_tick = 60000.0 / (self.bpm * self.ticks_per_beat)
+
+        for t in range(total_ticks):
+            self.tick = t
+            # Select current chord
+            chord_idx = min(t // max(ticks_per_chord, 1), len(chord_progression) - 1)
+            current_chord = chord_progression[chord_idx]
+
+            # Feed chord tones as stimulus
+            self.hear(current_chord)
+
+            perception = self.perceive(current_chord)
+            events = self._generate_with_stimulus(perception, ms_per_tick)
+
+            for evt in events:
+                r = self.dopamine.reward(evt.note, self._context_notes[-8:])
+                self.learn(r)
+                self._context_notes.append(evt.note)
+            self._events.extend(events)
+            self.dopamine.withdrawal()
+
+        self.bpm = saved_bpm
+        return self._build_arrangement(f"improv_{key}", bars)
+
+    def respond_to(self, other_performance: Arrangement,
+                   bars: int = 8) -> Arrangement:
+        """Musical conversation: call and response.
+
+        Listens to the other performance, then generates a response.
+        Uses epsilon to control how closely it follows vs. creates new material.
+        """
+        # Extract notes from the other performance
+        other_notes: list[int] = []
+        if other_performance.tracks:
+            for track in other_performance.tracks:
+                for evt in track.events:
+                    other_notes.append(evt.note)
+
+        if other_notes:
+            self.hear(other_notes)
+
+        self._events.clear()
+        ms_per_tick = 60000.0 / (self.bpm * self.ticks_per_beat)
+        total_ticks = bars * 4 * self.ticks_per_beat
+
+        for t in range(total_ticks):
+            self.tick = t
+            # Use other performance notes as context
+            context = other_notes[-12:] if other_notes else [self.root_note]
+            perception = self.perceive(context)
+            events = self._generate_with_stimulus(perception, ms_per_tick)
+
+            for evt in events:
+                r = self.dopamine.reward(evt.note, self._context_notes[-8:])
+                self.learn(r)
+                self._context_notes.append(evt.note)
+            self._events.extend(events)
+            self.dopamine.withdrawal()
+
+        return self._build_arrangement(f"response_{self.root_note}", bars)
+
+    def _generate_with_stimulus(self, perception: dict,
+                                ms_per_tick: float) -> list[MidiEvent]:
+        """Generate events using stimulus + epsilon deviation."""
+        events: list[MidiEvent] = []
+        decision_fired = perception.get("decision", [])
+        output_layer = self.layers["output"]
+
+        # Get stimulus note if available
+        stim_note = self._get_next_stimulus_note()
+
+        for i, neuron in enumerate(output_layer.neurons):
+            # Decision-driven signal
+            if i < len(decision_fired) and decision_fired[i]:
+                neuron.receive(0.6 + self._rng.gauss(0, 0.1))
+            else:
+                neuron.receive(self._rng.gauss(0, 0.05))
+
+            # Inject stimulus influence (inversely proportional to epsilon)
+            if stim_note is not None:
+                influence = (1.0 - self.epsilon) * 0.5
+                min_dist = abs(neuron.note - stim_note)
+                stim_signal = max(0.0, 1.0 - min_dist / 12.0) * influence
+                neuron.receive(stim_signal)
+
+            neuron.integrate()
+            event = neuron.fire()
+            if event is not None:
+                # Apply epsilon to the output note
+                if stim_note is not None:
+                    note = self._apply_epsilon(stim_note)
+                else:
+                    note = self._snap_to_scale(event.note)
+                note = max(0, min(127, note))
+                timed = MidiEvent(
+                    note=note,
+                    velocity=event.velocity,
+                    start_ms=self.tick * ms_per_tick,
+                    duration_ms=neuron.duration_ticks * ms_per_tick,
+                    channel=event.channel,
+                )
+                events.append(timed)
+        return events
+
+    def _build_arrangement(self, name: str, bars: int) -> Arrangement:
+        """Build an Arrangement from current _events."""
+        arrangement = Arrangement(
+            name=name,
+            bpm=self.bpm,
+            bars=bars,
+        )
+        if self._events:
+            track = Track(name="neural_brain", voice="piano")
+            for evt in self._events:
+                track._events.append(evt)
+            arrangement.add_track(track)
+        return arrangement
 
     # ---- perception -------------------------------------------------------
 
@@ -750,14 +935,20 @@ class MusicalBrain:
         """Prefrontal cortex decides what to play next.
 
         Uses decision layer activations to select output neurons.
+        Delegates to _generate_with_stimulus when stimulus is available.
         """
+        ms_per_tick = 60000.0 / (self.bpm * self.ticks_per_beat)
+
+        # If we have stimulus, use the epsilon-aware generation
+        if self._stimulus:
+            return self._generate_with_stimulus(perception, ms_per_tick)
+
+        # Original path: no stimulus, purely internal generation
         decision_fired = perception.get("decision", [])
         events: list[MidiEvent] = []
 
-        # Map decision activations to output neurons
         output_layer = self.layers["output"]
         for i, neuron in enumerate(output_layer.neurons):
-            # Inject decision signal
             if i < len(decision_fired) and decision_fired[i]:
                 neuron.receive(0.6 + self._rng.gauss(0, 0.1))
             else:
@@ -766,9 +957,7 @@ class MusicalBrain:
             neuron.integrate()
             event = neuron.fire()
             if event is not None:
-                # Quantise to scale and create a new event with correct timing
                 snapped = self._snap_to_scale(event.note)
-                ms_per_tick = 60000.0 / (self.bpm * self.ticks_per_beat)
                 timed = MidiEvent(
                     note=max(0, min(127, snapped)),
                     velocity=event.velocity,
@@ -820,15 +1009,28 @@ class MusicalBrain:
 
     # ---- full performance -------------------------------------------------
 
-    def perform(self, bars: int = 32) -> Arrangement:
+    def perform(self, bars: int = 32,
+                stimulus: Optional[list[int]] = None) -> Arrangement:
         """Full performance with real-time learning.
+
+        If *stimulus* is provided (list of MIDI note numbers), feeds it via
+        hear() first. If no stimulus and none was previously heard, uses an
+        internal rhythm generator as fallback so output is never empty.
 
         The brain gets better (or worse) as it plays.
         Returns an Arrangement ready for MIDI export.
         """
+        if stimulus is not None:
+            self.hear(stimulus)
+
+        # Fallback: if no stimulus at all, use internal rhythm generator
+        if not self._stimulus:
+            self._generate_internal_stimulus()
+
         total_ticks = bars * 4 * self.ticks_per_beat  # 4/4 time
         self._events.clear()
-        self._context_notes = [self.root_note]
+        if not self._context_notes:
+            self._context_notes = [self.root_note]
         ms_per_tick = 60000.0 / (self.bpm * self.ticks_per_beat)
 
         for t in range(total_ticks):
@@ -837,8 +1039,8 @@ class MusicalBrain:
             # Perceive current context
             perception = self.perceive(self._context_notes[-12:])
 
-            # Decide what to play
-            events = self.decide(perception)
+            # Decide what to play (uses stimulus + epsilon)
+            events = self._generate_with_stimulus(perception, ms_per_tick)
 
             # Evaluate and learn
             for evt in events:
@@ -858,19 +1060,19 @@ class MusicalBrain:
                     pattern.extend(n.fired for n in layer.neurons)
                 self.hippocampus.store(pattern, self.dopamine.current, tick=t)
 
-        # Build arrangement
-        arrangement = Arrangement(
-            name=f"neural_perf_{self.root_note}",
-            bpm=self.bpm,
-            bars=bars,
-        )
-        if self._events:
-            track = Track(name="neural_brain", voice="piano")
-            for evt in self._events:
-                track._events.append(evt)
-            arrangement.add_track(track)
+        return self._build_arrangement(f"neural_perf_{self.root_note}", bars)
 
-        return arrangement
+    def _generate_internal_stimulus(self) -> None:
+        """Create an internal stimulus from scale + rhythm patterns."""
+        # Generate a melodic pattern from the current scale
+        pattern: list[int] = []
+        for i in range(8):
+            degree = self.scale[i % len(self.scale)] if self.scale else 0
+            octave = (i // len(self.scale)) if self.scale else 0
+            note = self.root_note + degree + octave * 12
+            pattern.append(max(0, min(127, note)))
+        self._stimulus = pattern
+        self._stimulus_index = 0
 
     # ---- sleep (memory consolidation) -------------------------------------
 

@@ -506,6 +506,9 @@ class MusicalEcosystem:
         extinction_threshold: float = 5,
         speciation_threshold: float = 0.7,
         seed: Optional[int] = None,
+        epsilon: float = 0.5,
+        immigration_rate: float = 0.1,
+        kill_the_winner_strength: float = 0.15,
     ):
         if seed is not None:
             random.seed(seed)
@@ -521,9 +524,29 @@ class MusicalEcosystem:
         self.migration_rate = migration_rate
         self.extinction_threshold = extinction_threshold
         self.speciation_threshold = speciation_threshold
+        self.epsilon = _clamp(epsilon, 0.0, 1.0)
+        self.immigration_rate = immigration_rate
+        self.kill_the_winner_strength = kill_the_winner_strength
         self.time = 0
         self.history: list[dict[str, Any]] = []
         self.interactions: list[Interaction] = []
+
+    # -- niche partitioning --------------------------------------------------
+
+    @staticmethod
+    def niche_overlap(s1: MusicalSpecies, s2: MusicalSpecies) -> float:
+        """Compute genome-based niche overlap between two species.
+
+        Returns a value in [0, 1]:
+        - 0 = completely different niches, no competition
+        - 1 = identical niche, direct competition
+
+        Uses cosine similarity of genomes to measure how much
+        ecological overlap exists.
+        """
+        if s1.extinct or s2.extinct:
+            return 0.0
+        return _genome_similarity(s1.genome, s2.genome)
 
     # -- resource management -------------------------------------------------
 
@@ -583,7 +606,7 @@ class MusicalEcosystem:
     # -- ecological dynamics -------------------------------------------------
 
     def _competition_phase(self) -> dict[str, float]:
-        """Lotka-Volterra competition between all species pairs."""
+        """Lotka-Volterra competition with niche partitioning and ε control."""
         fitness_changes: dict[str, float] = {}
         living = self.living_species()
 
@@ -592,8 +615,15 @@ class MusicalEcosystem:
             for j, sp_b in enumerate(living):
                 if i == j:
                     continue
-                # Competition reduces fitness
-                competition = sp_a.compete(sp_b)
+
+                # Niche-aware competition with ε scaling
+                raw_competition = sp_a.compete(sp_b)
+                overlap = self.niche_overlap(sp_a, sp_b)
+                # ε controls how much niche overlap matters:
+                # ε=0: strict partitioning, competition suppressed when overlap is low
+                # ε=1: free-for-all, full competition regardless of niche
+                partitioning_factor = self.epsilon + (1.0 - self.epsilon) * overlap
+                competition = raw_competition * partitioning_factor
                 delta -= competition * 0.1
 
                 # Cooperation increases fitness
@@ -651,7 +681,11 @@ class MusicalEcosystem:
             s.age += 1
 
     def _selection(self):
-        """Weak species die. Strong species thrive."""
+        """Weak species die. Strong species thrive.
+
+        Tuned to be less aggressive than pure competitive exclusion:
+        species decline gradually, and resilience helps them hold on.
+        """
         for s in self.living_species():
             # Population dynamics
             effective = s.effective_fitness()
@@ -661,15 +695,15 @@ class MusicalEcosystem:
                 growth = int(s.population * s.reproduction_rate * effective * 0.1)
                 s.population += max(1, growth)
             else:
-                decline = int(s.population * (1.0 - effective) * 0.2)
+                decline = int(s.population * (1.0 - effective) * 0.1)  # reduced from 0.2
                 s.population -= max(1, decline)
 
-            # Resource scarcity penalty
+            # Resource scarcity penalty (reduced severity)
             avail = self.available_resources()
             for key in ["attention", "harmonic_space", "temporal_space", "emotional_bandwidth"]:
                 need = getattr(s.resources, key) * s.population / 100.0
                 if avail.get(key, 0) < need * 0.5:
-                    s.population -= max(1, int(s.population * 0.05 * (1.0 - s.resilience)))
+                    s.population -= max(1, int(s.population * 0.03 * (1.0 - s.resilience)))  # reduced from 0.05
 
             # Extinction
             if s.population <= self.extinction_threshold or s.fitness < 0.01:
@@ -693,6 +727,71 @@ class MusicalEcosystem:
                     self.species.append(child)
                     if len(self.living_species()) >= self.carrying_capacity:
                         return
+
+    def _keystone_predation(self):
+        """Kill the winner: dominant species attract predators/parasites.
+
+        This is the 'kill the winner' mechanism from ocean ecology:
+        the most abundant species attracts more predation pressure,
+        preventing competitive exclusion and maintaining biodiversity.
+        """
+        living = self.living_species()
+        if len(living) < 2:
+            return
+
+        total_pop = sum(s.population for s in living)
+        if total_pop == 0:
+            return
+
+        for s in living:
+            # Fraction of total population this species holds
+            dominance = s.population / total_pop
+            # Predation pressure scales with dominance squared
+            # (more dominant = exponentially more pressure)
+            pressure = self.kill_the_winner_strength * (dominance ** 2) * len(living)
+            # Reduce population proportionally
+            loss = int(s.population * pressure)
+            s.population = max(1, s.population - loss)
+            # Also slightly reduce fitness
+            s.fitness = _clamp(s.fitness - pressure * 0.02)
+
+    def _immigration(self):
+        """Immigration: new species arrive from outside after extinctions.
+
+        Unlike migration (which just adds random species), immigration
+        is triggered by low species counts and fills empty niches.
+        This prevents permanent monoculture.
+        """
+        living = self.living_species()
+        living_count = len(living)
+
+        # Only immigrate when diversity is low
+        if living_count >= self.carrying_capacity // 2:
+            return
+
+        # Probability increases as fewer species remain
+        if random.random() > self.immigration_rate * (1.0 - living_count / max(1, self.carrying_capacity)):
+            return
+
+        # Find unoccupied niches
+        occupied_niches = {s.niche for s in living}
+        all_niches = set(Niche)
+        empty_niches = all_niches - occupied_niches
+
+        # Prefer empty niches but allow any
+        if empty_niches:
+            target_niche = random.choice(list(empty_niches))
+        else:
+            target_niche = random.choice(list(all_niches))
+
+        # Create immigrant with moderate fitness (not too strong, not too weak)
+        immigrant = MusicalSpecies(
+            name=f"Immigrant_{target_niche.value}_{self.time}",
+            niche=target_niche,
+            population=random.randint(30, 80),
+            fitness=random.uniform(0.3, 0.6),
+        )
+        self.species.append(immigrant)
 
     def _migration(self):
         """New species arrive from outside the ecosystem."""
@@ -754,11 +853,17 @@ class MusicalEcosystem:
         # Phase 4: Selection
         self._selection()
 
+        # Phase 4.5: Kill the winner (keystone predation)
+        self._keystone_predation()
+
         # Phase 5: Speciation
         self._speciation()
 
         # Phase 6: Migration
         self._migration()
+
+        # Phase 6.5: Immigration after extinction events
+        self._immigration()
 
         # Record history
         snapshot = self._snapshot()
@@ -1060,6 +1165,7 @@ class MusicalEcosystem:
             "resource_pressure": self.resource_pressure(),
             "dominant": self.dominant_species().name if self.dominant_species() else None,
             "niches_occupied": list(set(s.niche.value for s in living)),
+            "epsilon": self.epsilon,
         }
 
     def __repr__(self) -> str:
