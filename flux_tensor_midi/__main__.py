@@ -8,6 +8,8 @@ Usage:
     python -m flux_tensor_midi play --genre jazz --bpm 180 --seed 42
     python -m flux_tensor_midi play --genre hiphop --bars 8 --seed 0 --export beat.mid
     python -m flux_tensor_midi play --list-genres
+    python -m flux_tensor_midi jam --preset parker_miles --bars 32 --output jam.mid
+    python -m flux_tensor_midi jam --list-presets
     python -m flux_tensor_midi analyze song.mid
 """
 
@@ -221,6 +223,18 @@ def main(argv: list[str] | None = None) -> None:
                       help="Export arrangement to MIDI file")
     play.add_argument("--quiet", "-q", action="store_true", help="Suppress output")
 
+    # ── jam subcommand ──────────────────────────────────────────────────────
+    jam = sub.add_parser("jam", help="AI-AI jam session (two agents jamming)")
+    jam.add_argument("--preset", "-p", help="Jam preset (parker_miles, bach_vivaldi, etc.)")
+    jam.add_argument("--bpm", "-b", type=float, default=None, help="Tempo in BPM")
+    jam.add_argument("--bars", type=int, default=None, help="Total session length in bars")
+    jam.add_argument("--phrase-bars", type=int, default=4,
+                     help="Bars per agent turn (default: 4)")
+    jam.add_argument("--output", "-o", default=None, help="Output .mid file path")
+    jam.add_argument("--seed", "-s", type=int, default=None, help="Random seed")
+    jam.add_argument("--list-presets", "-l", action="store_true", help="List presets")
+    jam.add_argument("--quiet", "-q", action="store_true", help="Suppress output")
+
     # ── analyze subcommand ───────────────────────────────────────────────
     analyze = sub.add_parser("analyze", help="Analyze a MIDI file")
     analyze.add_argument("midi_file", help="Path to .mid file")
@@ -231,6 +245,9 @@ def main(argv: list[str] | None = None) -> None:
         _drum_cmd(args)
     elif args.command == "play":
         _play_cmd(args)
+    elif args.command == "jam":
+        from flux_tensor_midi.ai_jam.cli import jam_command
+        jam_command(args)
     elif args.command == "analyze":
         _analyze_cmd(args)
     else:
