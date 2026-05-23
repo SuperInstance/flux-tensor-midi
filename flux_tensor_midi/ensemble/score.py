@@ -18,6 +18,18 @@ class Score:
 
     Stores timestamped events from multiple musicians and
     provides analysis and export utilities.
+
+    Parameters
+    ----------
+    title : str, default="Untitled"
+        Title of the score.
+
+    Examples
+    --------
+    >>> s = Score("My Song")
+    >>> s.record_event("piano", 0.0, FluxVector.unit(0))
+    >>> s.total_events()
+    1
     """
 
     def __init__(self, title: str = "Untitled"):

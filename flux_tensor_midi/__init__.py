@@ -12,6 +12,7 @@ from flux_tensor_midi.core.flux import FluxVector
 from flux_tensor_midi.core.clock import TZeroClock
 from flux_tensor_midi.core.room import RoomMusician
 from flux_tensor_midi.core.snap import EisensteinSnap
+from flux_tensor_midi.exceptions import ConstraintError, RenderError, GenreError
 
 from flux_tensor_midi.genre_brain import GenreBrain
 from flux_tensor_midi.analyzer import FluxAnalyzer
@@ -26,4 +27,7 @@ __all__ = [
     "FluxAnalyzer",
     "Arrangement",
     "Track",
+    "ConstraintError",
+    "RenderError",
+    "GenreError",
 ]

@@ -119,7 +119,10 @@ class Band:
     def tick_all(self) -> dict[str, tuple[float, FluxVector]]:
         """Advance all musicians by one tick.
 
-        Returns dict mapping musician name to (timestamp, vector).
+        Returns
+        -------
+        dict[str, tuple[float, FluxVector]]
+            Mapping of musician name to (timestamp_ms, vector).
         """
         results: dict[str, tuple[float, FluxVector]] = {}
         for m in self._members.values():

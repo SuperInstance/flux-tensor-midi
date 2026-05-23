@@ -18,7 +18,32 @@ from enum import Enum
 
 
 class RhythmicRole(Enum):
-    """Rhythmic role for a musician in the ensemble."""
+    """Rhythmic role for a musician in the ensemble.
+
+    Each role maps to an Eisenstein lattice ratio that determines
+    how the musician's timestamps are quantized.
+
+    Attributes
+    ----------
+    ROOT : str
+        1:1 — downbeat, the fundamental grid.
+    HALFTIME : str
+        2:1 — half speed, plays every other beat.
+    TRIPLET : str
+        3:2 — swung feel.
+    WALTZ : str
+        3:1 — waltz time (3 beats per unit).
+    COMPOUND : str
+        4:3 — compound meter.
+    DOUBLETIME : str
+        1:2 — double speed, twice as fast.
+    OFFSET : str
+        1:1 with π/3 phase offset.
+    QUINTUPLE : str
+        5:4 — quintuple meter.
+    SEPTUPLE : str
+        7:4 — septuple meter.
+    """
     ROOT = "root"           # 1:1 — downbeat
     HALFTIME = "halftime"   # 2:1 — half speed
     TRIPLET = "triplet"     # 3:2 — swung feel
@@ -135,13 +160,37 @@ class EisensteinSnap:
         return self._base_period_ms
 
     def set_tempo(self, bpm: float) -> None:
-        """Update base period from BPM (quarter note = 1 beat)."""
+        """Update base period from BPM (quarter note = 1 beat).
+
+        Parameters
+        ----------
+        bpm : float
+            Beats per minute. Must be positive.
+
+        Raises
+        ------
+        ValueError
+            If bpm is not positive.
+        """
         if bpm <= 0:
             raise ValueError(f"bpm must be positive, got {bpm}")
         self._base_period_ms = 60000.0 / bpm
 
     def snap(self, t: float, role: RhythmicRole = RhythmicRole.ROOT) -> float:
-        """Snap a timestamp to the Eisenstein lattice for the given role."""
+        """Snap a timestamp to the Eisenstein lattice for the given role.
+
+        Parameters
+        ----------
+        t : float
+            Timestamp in ms.
+        role : RhythmicRole, default=ROOT
+            Rhythmic role determining the snap ratio.
+
+        Returns
+        -------
+        float
+            Snapped timestamp in ms.
+        """
         ratio = ROLE_RATIO_MAP.get(role, UNISON)
         return ratio.snap(t, self._base_period_ms)
 

@@ -33,8 +33,9 @@ audio = [
 ]
 dev = [
     "pytest>=7.0",
-    "ruff>=0.1.0",
+    "pytest-cov>=4.0",
     "mypy>=1.0",
+    "ruff>=0.4",
 ]
 
 [project.urls]
@@ -45,3 +46,23 @@ Issues = "https://github.com/SuperInstance/flux-tensor-midi/issues"
 
 [tool.setuptools.packages.find]
 include = ["flux_tensor_midi*"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+src = ["flux_tensor_midi", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
