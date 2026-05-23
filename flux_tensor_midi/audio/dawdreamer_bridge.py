@@ -42,11 +42,11 @@ except ImportError:
 
 # Reuse the existing daw_bridge MIDI builder for file generation
 from flux_tensor_midi.adapters.daw_bridge import (
-    MidiEvent,
     MidiExportConfig,
     TrackConfig,
     build_midi_file,
 )
+from flux_tensor_midi.midi.events import MidiEvent
 
 
 # ──────────────────────────────────────────────────────────────────────────────
