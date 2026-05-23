@@ -239,6 +239,10 @@ def main(argv: list[str] | None = None) -> None:
     analyze = sub.add_parser("analyze", help="Analyze a MIDI file")
     analyze.add_argument("midi_file", help="Path to .mid file")
 
+    # ── beta subcommand ─────────────────────────────────────────────────
+    from flux_tensor_midi.beta.cli import build_parser, run_beta_command
+    build_parser(sub)
+
     args = parser.parse_args(argv)
 
     if args.command == "drum":
@@ -250,6 +254,8 @@ def main(argv: list[str] | None = None) -> None:
         jam_command(args)
     elif args.command == "analyze":
         _analyze_cmd(args)
+    elif args.command == "beta":
+        run_beta_command(args)
     else:
         parser.print_help()
 
