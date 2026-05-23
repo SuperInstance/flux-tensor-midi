@@ -43,7 +43,7 @@ try:
 
     # Phase 3: Extinction event
     print("\n--- Extinction event ---")
-    eco.extinction_event(intensity=0.5)
+    eco.extinction_event(threshold=0.5)
     for i in range(30):
         eco.tick()
 

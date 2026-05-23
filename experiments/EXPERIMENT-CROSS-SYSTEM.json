@@ -1,126 +1,167 @@
 {
-  "ecosystem_error": "MusicalEcosystem.extinction_event() got an unexpected keyword argument 'intensity'",
+  "ecosystem": {
+    "biodiversity_before": 0.964078764808229,
+    "living_before": [
+      "HipHop",
+      "Immigrant_vocal_18"
+    ],
+    "biodiversity_after_invasion": 1.5063597869291336,
+    "living_after_invasion": [
+      "Immigrant_melody_86",
+      "Techno",
+      "Immigrant_texture_96"
+    ],
+    "biodiversity_post_extinction": 1.882088865848281,
+    "living_post_extinction": [
+      "Pop",
+      "Immigrant_vocal_117",
+      "Immigrant_bass_121",
+      "Immigrant_percussion_128"
+    ],
+    "biodiversity_recovery": 1.9551606499200087,
+    "living_recovery": [
+      "Pop",
+      "Immigrant_harmony_165",
+      "Rock",
+      "Punk"
+    ],
+    "summary": {
+      "time": 180,
+      "living_species": 4,
+      "extinct_species": 23,
+      "total_population": 65,
+      "biodiversity": 1.9551606499200087,
+      "resource_pressure": 0.14554029841305993,
+      "dominant": "Immigrant_harmony_165",
+      "niches_occupied": [
+        "rhythm",
+        "harmony",
+        "melody"
+      ],
+      "epsilon": 0.5
+    }
+  },
   "grn_cell": {
     "cell_states": [
       {
         "tick": 0,
-        "energy": 0.7053363779268018,
+        "energy": 0.7394398072738163,
         "grn_genes_active": 20,
         "n_events": 1
       },
       {
         "tick": 1,
-        "energy": 0.6678709362449673,
+        "energy": 0.6951752575129049,
         "grn_genes_active": 20,
-        "n_events": 1
+        "n_events": 0
       },
       {
         "tick": 2,
-        "energy": 0.637241396387189,
+        "energy": 0.6590937679868172,
         "grn_genes_active": 20,
         "n_events": 1
       },
       {
         "tick": 3,
-        "energy": 0.6122004874912956,
+        "energy": 0.6296825598427591,
         "grn_genes_active": 20,
         "n_events": 1
       },
       {
         "tick": 4,
-        "energy": 0.5917285143162498,
+        "energy": 0.6057085173114031,
         "grn_genes_active": 20,
-        "n_events": 1
+        "n_events": 0
       },
       {
         "tick": 5,
-        "energy": 0.574991834053477,
+        "energy": 0.5861664871955341,
         "grn_genes_active": 20,
         "n_events": 1
       },
       {
         "tick": 6,
-        "energy": 0.5613089094119119,
+        "energy": 0.5702371360838039,
         "grn_genes_active": 20,
-        "n_events": 1
+        "n_events": 2
       },
       {
         "tick": 7,
-        "energy": 0.5501225556184907,
+        "energy": 0.5572525983803882,
         "grn_genes_active": 20,
         "n_events": 0
       },
       {
         "tick": 8,
-        "energy": 0.5409772511993269,
+        "energy": 0.5466684748847822,
         "grn_genes_active": 20,
         "n_events": 1
       },
       {
         "tick": 9,
-        "energy": 0.5335005886099169,
+        "energy": 0.5380410079137579,
         "grn_genes_active": 20,
         "n_events": 1
       },
       {
         "tick": 10,
-        "energy": 0.5273881093622339,
+        "energy": 0.5310084759929978,
         "grn_genes_active": 20,
         "n_events": 1
       },
       {
         "tick": 11,
-        "energy": 0.5223909061172625,
+        "energy": 0.5252760280586724,
         "grn_genes_active": 20,
         "n_events": 1
       },
       {
         "tick": 12,
-        "energy": 0.5183054868856114,
+        "energy": 0.5206033213166317,
         "grn_genes_active": 20,
         "n_events": 1
       },
       {
         "tick": 13,
-        "energy": 0.5149654885945393,
+        "energy": 0.516794444455078,
         "grn_genes_active": 20,
-        "n_events": 1
+        "n_events": 0
       },
       {
         "tick": 14,
-        "energy": 0.5122349025881048,
+        "energy": 0.5136897037239826,
         "grn_genes_active": 20,
-        "n_events": 1
+        "n_events": 2
       },
       {
         "tick": 15,
-        "energy": 0.5100025361948446,
+        "energy": 0.5111589274984178,
         "grn_genes_active": 20,
-        "n_events": 1
+        "n_events": 2
       },
       {
         "tick": 16,
-        "energy": 0.5081774848315057,
+        "energy": 0.509096008608046,
         "grn_genes_active": 20,
         "n_events": 1
       },
       {
         "tick": 17,
-        "energy": 0.5066854302615742,
+        "energy": 0.5074144556104858,
         "grn_genes_active": 20,
         "n_events": 1
       },
       {
         "tick": 18,
-        "energy": 0.5054656142693379,
+        "energy": 0.5060437664879995,
         "grn_genes_active": 20,
         "n_events": 1
       },
       {
         "tick": 19,
-        "energy": 0.5044683645139327,
+        "energy": 0.5049264727284641,
         "grn_genes_active": 20,
-        "n_events": 1
+        "n_events": 2
       }
     ],
     "grn_final_state_sample": {
@@ -188,10 +229,10 @@
     "biodiversities": [
       1.5849420853053213,
       2.5307266326350955,
-      2.2431840521333957,
-      2.226450383121519,
+      2.241326880200503,
+      2.218591359909649,
       0.0,
-      2.6786066584824493
+      2.4471573734358447
     ],
     "cell_energies_sample": [
       0.5021372029285843,
@@ -205,15 +246,14 @@
       0.5000000282362497,
       0.5000000050426734
     ],
-    "final_biodiversity": 2.6786066584824493,
+    "final_biodiversity": 2.4471573734358447,
     "final_living": [
-      "Immigrant_ambient_81",
-      "Immigrant_melody_85",
-      "Immigrant_bass_91",
-      "Immigrant_rhythm_95",
-      "Immigrant_harmony_96",
+      "Immigrant_texture_85",
+      "Immigrant_percussion_91",
+      "Immigrant_bass_95",
+      "Immigrant_rhythm_96",
       "Folk",
-      "Immigrant_texture_98"
+      "Immigrant_ambient_98"
     ],
     "final_cell_energies": [
       0.5000000032123713,

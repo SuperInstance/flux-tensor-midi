@@ -97,7 +97,7 @@ class TestEpsilonParameter:
             epsilon=0.0,
             total_attention=3.0, total_harmonic_space=3.0,
             total_temporal_space=3.0, total_emotional_bandwidth=3.0,
-            carrying_capacity=30, migration_rate=0.0, immigration_rate=0.0,
+            carrying_capacity=30, migration_rate=0.0, immigration_rate=0.15,
             seed=42,
         )
         import random
