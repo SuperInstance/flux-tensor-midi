@@ -1,0 +1,245 @@
+╔══════════════════════════════════════════════════════════╗
+║     RESONANCE & IMPEDANCE APPLICATIONS EXPERIMENT       ║
+║     flux-tensor-midi                                    ║
+║                                      2026-05-23 14:54:24 ║
+╚══════════════════════════════════════════════════════════╝
+
+============================================================
+APP 1: Genre Compatibility Matrix
+============================================================
+
+                 jazz classica    blues     rock   hiphop electron  ambient    metal
+------------------------------------------------------------------------------------
+jazz            1.000    0.922    0.960    0.974    0.942    0.898    0.860    0.906
+classical       0.922    1.000    0.817    0.949    0.897    0.919    0.707    0.956
+blues           0.960    0.817    1.000    0.934    0.913    0.878    0.921    0.840
+rock            0.974    0.949    0.934    1.000    0.972    0.970    0.795    0.966
+hiphop          0.942    0.897    0.913    0.972    1.000    0.956    0.744    0.956
+electronic      0.898    0.919    0.878    0.970    0.956    1.000    0.724    0.975
+ambient         0.860    0.707    0.921    0.795    0.744    0.724    1.000    0.670
+metal           0.906    0.956    0.840    0.966    0.956    0.975    0.670    1.000
+
+✅ Best blends (highest transfer efficiency):
+  electronic   + metal         transfer=0.975  mismatch=2.24
+  jazz         + rock          transfer=0.974  mismatch=2.06
+  hiphop       + rock          transfer=0.972  mismatch=2.06
+  electronic   + rock          transfer=0.970  mismatch=2.69
+  metal        + rock          transfer=0.966  mismatch=3.20
+
+🎯 Sweet spot blends (novel but workable):
+  jazz         + rock          transfer=0.974  mismatch=2.06
+  hiphop       + rock          transfer=0.972  mismatch=2.06
+  electronic   + metal         transfer=0.975  mismatch=2.24
+  blues        + jazz          transfer=0.960  mismatch=2.40
+  electronic   + rock          transfer=0.970  mismatch=2.69
+
+⚠️  Hardest blends (lowest transfer):
+  ambient      + rock          transfer=0.795  mismatch=4.64
+  ambient      + hiphop        transfer=0.744  mismatch=6.02
+  ambient      + electronic    transfer=0.724  mismatch=6.73
+  ambient      + classical     transfer=0.707  mismatch=6.87
+  ambient      + metal         transfer=0.670  mismatch=7.63
+
+============================================================
+APP 2: Optimal Practice Schedule via Resonance Theory
+============================================================
+
+--- Student: beginner_generalist ---
+  Natural freq: 0.5 Hz  |  Q factor: 0.8  |  Bandwidth: 0.625
+        Q_type: GENERALIST
+
+  Optimal practice order (resonance × transfer):
+    1. scales                score=0.868  ██████████████████████████████████
+    2. jam_session           score=0.672  ██████████████████████████
+    3. listening             score=0.672  ██████████████████████████
+    4. ear_training          score=0.501  ████████████████████
+    5. improvisation         score=0.260  ██████████
+    6. composition           score=0.150  ██████
+    7. sight_reading         score=0.079  ███
+    8. technique_drill       score=0.037  █
+
+  Suggested session structure:
+    Brainstorm   (reverb=2.5s): Long reverb — let ideas ring and interfere
+    Develop      (reverb=1.0s): Medium reverb — shape emerging ideas
+    Edit/Crit    (reverb=0.2s): Short reverb — precise evaluation
+
+--- Student: intermediate_specialist ---
+  Natural freq: 1.0 Hz  |  Q factor: 3.0  |  Bandwidth: 0.333
+        Q_type: SPECIALIST
+
+  Optimal practice order (resonance × transfer):
+    1. improvisation         score=0.912  ████████████████████████████████████
+    2. ear_training          score=0.397  ███████████████
+    3. composition           score=0.357  ██████████████
+    4. jam_session           score=0.214  ████████
+    5. sight_reading         score=0.097  ███
+    6. scales                score=0.094  ███
+    7. listening             score=0.047  █
+    8. technique_drill       score=0.026  █
+
+  Suggested session structure:
+    Brainstorm   (reverb=2.5s): Long reverb — let ideas ring and interfere
+    Develop      (reverb=1.0s): Medium reverb — shape emerging ideas
+    Edit/Crit    (reverb=0.2s): Short reverb — precise evaluation
+
+--- Student: advanced_virtuoso ---
+  Natural freq: 2.0 Hz  |  Q factor: 8.0  |  Bandwidth: 0.250
+        Q_type: VIRTUOSO
+
+  Optimal practice order (resonance × transfer):
+    1. technique_drill       score=0.924  ████████████████████████████████████
+    2. sight_reading         score=0.057  ██
+    3. composition           score=0.020  
+    4. improvisation         score=0.013  
+    5. ear_training          score=0.010  
+    6. jam_session           score=0.008  
+    7. scales                score=0.006  
+    8. listening             score=0.004  
+
+  Suggested session structure:
+    Brainstorm   (reverb=2.5s): Long reverb — let ideas ring and interfere
+    Develop      (reverb=1.0s): Medium reverb — shape emerging ideas
+    Edit/Crit    (reverb=0.2s): Short reverb — precise evaluation
+
+============================================================
+APP 3: Band Impedance Matching
+============================================================
+
+Band member impedance profiles:
+  guitarist   : [5. 2. 2. 3. 2.]
+  drummer     : [2. 2. 3. 2. 5.]
+  bassist     : [2. 3. 5. 2. 3.]
+  singer      : [2. 5. 2. 1. 2.]
+  AVERAGE     : [2.75 3.   3.   2.   3.  ]
+
+  jazz        : total=0.956  avg=0.991  [gui=0.917  dru=0.975  bas=0.998  sin=0.935]
+  classical   : total=0.883  avg=0.927  [gui=0.889  dru=0.889  bas=0.924  sin=0.830]
+  blues       : total=0.943  avg=0.961  [gui=0.917  dru=0.962  bas=0.945  sin=0.949]
+  rock        : total=0.947  avg=0.986  [gui=0.955  dru=0.979  bas=0.966  sin=0.890]
+  hiphop      : total=0.921  avg=0.957  [gui=0.934  dru=0.973  bas=0.937  sin=0.846]
+  electronic  : total=0.897  avg=0.932  [gui=0.959  dru=0.933  bas=0.884  sin=0.818]
+  ambient     : total=0.855  avg=0.858  [gui=0.813  dru=0.822  bas=0.843  sin=0.949]
+  metal       : total=0.881  avg=0.922  [gui=0.929  dru=0.922  bas=0.904  sin=0.779]
+
+🏆 Best genre for this band: jazz (total transfer=0.956)
+💀 Worst genre for this band: ambient (total transfer=0.855)
+
+Individual best genres:
+  guitarist   : best=electronic (0.959), worst=ambient (0.813)
+  drummer     : best=rock (0.979), worst=ambient (0.822)
+  bassist     : best=jazz (0.998), worst=ambient (0.843)
+  singer      : best=ambient (0.949), worst=metal (0.779)
+
+Genre preference ranking per member:
+  guitarist   : electronic > rock > hiphop > metal ...
+  drummer     : rock > jazz > hiphop > blues ...
+  bassist     : jazz > rock > blues > hiphop ...
+  singer      : ambient > blues > jazz > rock ...
+
+============================================================
+APP 4: String Resonance Experiment
+============================================================
+
+--- 4a: Pluck E2, Sympathetic Response of All Strings ---
+  Bridge impedance = 100, Q = 50
+
+    String   Freq (Hz)    Response                   Bar
+        E2       82.41     25.0000  ████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+        A2      110.00      1.1390  ██████████████████████
+        D3      146.83      0.7298  ██████████████
+        G3      196.00      0.6073  ████████████
+        B3      246.94      0.5626  ███████████
+        E4      329.63      0.5333  ██████████
+
+  E2 harmonic analysis:
+    Harmonic 1: 82.4 Hz → closest=E2 (82.4 Hz, Δ=0.0) ✓ RESONANCE
+    Harmonic 2: 164.8 Hz → closest=D3 (146.8 Hz, Δ=18.0) 
+    Harmonic 3: 247.2 Hz → closest=B3 (246.9 Hz, Δ=0.3) ✓ RESONANCE
+    Harmonic 4: 329.6 Hz → closest=E4 (329.6 Hz, Δ=0.0) ✓ RESONANCE
+    Harmonic 5: 412.0 Hz → closest=E4 (329.6 Hz, Δ=82.4) 
+    Harmonic 6: 494.5 Hz → closest=E4 (329.6 Hz, Δ=164.8) 
+    Harmonic 7: 576.9 Hz → closest=E4 (329.6 Hz, Δ=247.2) 
+
+--- 4b: Bridge Impedance Sweep (Sustain vs Resonance) ---
+    Bridge Z     Sustain   Resonance Peak
+        10.0       11.00           4.5455
+        12.7       14.02           5.6513
+        16.2       17.86           6.9847
+        20.7       22.76           8.5720
+        26.4       29.00          10.4326
+        33.6       36.96          12.5743
+        42.8       47.09          14.9893
+        54.6       60.01          17.6493
+        69.5       76.47          20.5048
+        88.6       97.45          23.4870
+       112.9      124.17          26.5130
+       143.8      158.23          29.4952
+       183.3      201.63          32.3507
+       233.6      256.93          35.0107
+       297.6      327.40          37.4257
+       379.3      417.20          39.5674
+       483.3      531.62          41.4280
+       615.8      677.43          43.0153
+       784.8      863.24          44.3487
+      1000.0     1100.00          45.4545
+
+  Sustain range: 11.00 → 1100.00
+  Resonance range: 4.5455 → 45.4545
+  ⚡ Inversion confirmed: high bridge Z = high sustain but low sympathetic coupling
+
+--- 4c: Headstock Mass Sweep (Sustain) ---
+   Mass (kg)     Sustain    % increase
+        0.00      100.00          0.0%
+        0.20      120.00         20.0%
+        0.40      140.00         40.0%
+        0.60      160.00         60.0%
+        0.80      180.00         80.0%
+        1.00      200.00        100.0%
+        1.20      220.00        120.0%
+        1.40      240.00        140.0%
+        1.60      260.00        160.0%
+        1.80      280.00        180.0%
+        2.00      300.00        200.0%
+  ⚡ Confirmed: increasing headstock mass increases sustain
+
+============================================================
+APP 5: Creative Session Optimizer
+============================================================
+
+Task × Energy State Compatibility (transfer efficiency):
+
+                         morning_fresh    afternoon_flow     evening_chill        late_night
+songwriting                      0.929             0.976             0.984             0.853
+arranging                        0.984             0.966             0.929             0.749
+mixing                           0.970             0.913             0.863             0.689
+improvising                      0.743             0.838             0.909             0.928
+sound_design                     0.907             0.949             0.990             0.883
+
+📊 Optimal task per energy state:
+  morning_fresh        → arranging (transfer=0.984)
+  afternoon_flow       → songwriting (transfer=0.976)
+  evening_chill        → sound_design (transfer=0.990)
+  late_night           → improvising (transfer=0.928)
+
+🔧 Optimal constraint per task:
+  songwriting          → collaborate (transfer=0.958): Shared, communicative
+  arranging            → copy_a_style (transfer=0.977): Imitation, learning
+  mixing               → restrict_to_3_notes (transfer=0.974): Maximum constraint
+  improvising          → use_random_seed (transfer=0.978): Chaos, novelty
+  sound_design         → collaborate (transfer=0.921): Shared, communicative
+
+📋 Optimized Session Plan for 'Songwriting':
+  Diverge     :    18min, reverb=2.5s, effective_Z=[3. 3. 2. 2. 4.]
+  Explore     :    24min, reverb=1.5s, effective_Z=[2.2 2.2 1.6 1.6 2.8]
+  Converge    :    12min, reverb=0.8s, effective_Z=[1.64 1.64 1.32 1.32 1.96]
+  Commit      :     6min, reverb=0.2s, effective_Z=[1.16 1.16 1.08 1.08 1.24]
+
+📈 Predicted Output Quality by Session Start Time:
+  morning_fresh       : base=0.929, w/constraint=0.938 ⭐⭐⭐⭐⭐
+  afternoon_flow      : base=0.976, w/constraint=0.970 ⭐⭐⭐⭐⭐
+  evening_chill       : base=0.984, w/constraint=0.976 ⭐⭐⭐⭐⭐
+  late_night          : base=0.853, w/constraint=0.884 ⭐⭐⭐
+
+============================================================
+EXPERIMENT COMPLETE — All 5 apps ran successfully
+============================================================
