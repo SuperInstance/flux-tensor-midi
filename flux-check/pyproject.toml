@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flux-check"
+version = "0.1.0"
+description = "Constraint checker — zero false negatives, uint8 error masks"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "Casey Digennaro", email = "casey@superinstance.com"}]
+keywords = ["constraints", "checking", "validation", "bounds", "automotive", "aviation", "medical"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = ["numpy>=1.24"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[project.urls]
+Homepage = "https://github.com/SuperInstance/flux-lib-py"
+Repository = "https://github.com/SuperInstance/flux-lib-py"
+
+[tool.setuptools.packages.find]
+include = ["flux_check*"]

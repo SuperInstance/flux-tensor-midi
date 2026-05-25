@@ -1,0 +1,243 @@
+DIGEST 2a6ceba21c0bba16928f3916262cc38c
+FCoqUnified.Laman
+R664:666 Coq.Init.Nat <> <> lib
+R684:688 Coq.Arith.Arith <> <> lib
+R706:708 Coq.micromega.Lia <> <> lib
+R726:739 Coq.Lists.List <> <> lib
+R749:761 Coq.Lists.List ListNotations <> mod
+def 1081:1086 <> vertex
+R1091:1093 Coq.Init.Datatypes <> nat ind
+def 1226:1229 <> edge
+R1241:1243 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R1235:1240 CoqUnified.Laman <> vertex def
+R1244:1249 CoqUnified.Laman <> vertex def
+def 1270:1276 <> mk_edge
+R1285:1290 CoqUnified.Laman <> vertex def
+binder 1279:1279 <> u:1
+binder 1281:1281 <> v:2
+R1295:1298 CoqUnified.Laman <> edge def
+R1309:1312 Coq.Arith.PeanoNat <> ::nat_scope:x_'<?'_x not
+R1308:1308 CoqUnified.Laman <> u:1 var
+R1313:1313 CoqUnified.Laman <> v:2 var
+R1332:1332 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1334:1335 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1337:1337 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1333:1333 CoqUnified.Laman <> v:2 var
+R1336:1336 CoqUnified.Laman <> u:1 var
+R1320:1320 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1322:1323 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1325:1325 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R1321:1321 CoqUnified.Laman <> u:1 var
+R1324:1324 CoqUnified.Laman <> v:2 var
+def 1387:1391 <> graph
+R1396:1399 Coq.Init.Datatypes <> list ind
+R1401:1404 CoqUnified.Laman <> edge def
+def 1663:1672 <> edge_count
+R1679:1683 CoqUnified.Laman <> graph def
+binder 1675:1675 <> g:3
+R1688:1690 Coq.Init.Datatypes <> nat ind
+R1703:1703 CoqUnified.Laman <> g:3 var
+R1714:1715 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R1727:1730 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R1738:1740 Coq.Init.Nat <> ::nat_scope:x_'+'_x not
+R1741:1750 CoqUnified.Laman <> edge_count:4 def
+prf 1769:1782 <> edge_count_app
+binder 1793:1794 <> g1:6
+binder 1796:1797 <> g2:7
+R1823:1825 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R1802:1811 CoqUnified.Laman <> edge_count def
+R1816:1819 Coq.Init.Datatypes <> ::list_scope:x_'++'_x not
+R1814:1815 CoqUnified.Laman <> g1:6 var
+R1820:1821 CoqUnified.Laman <> g2:7 var
+R1839:1841 Coq.Init.Nat <> ::nat_scope:x_'+'_x not
+R1826:1835 CoqUnified.Laman <> edge_count def
+R1837:1838 CoqUnified.Laman <> g1:6 var
+R1842:1851 CoqUnified.Laman <> edge_count def
+R1853:1854 CoqUnified.Laman <> g2:7 var
+def 2661:2679 <> henneberg_construct
+R2686:2688 Coq.Init.Datatypes <> nat ind
+binder 2682:2682 <> n:8
+R2693:2697 CoqUnified.Laman <> graph def
+R2710:2710 CoqUnified.Laman <> n:8 var
+R2726:2727 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R2738:2739 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R2750:2750 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R2757:2757 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R2751:2751 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2753:2754 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2756:2756 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2763:2763 Coq.Init.Datatypes <> S constr
+R2786:2804 CoqUnified.Laman <> henneberg_construct:9 def
+binder 2781:2781 <> g:11
+binder 2822:2822 <> v:12
+binder 2910:2910 <> i:13
+binder 2930:2930 <> j:14
+R3025:3028 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R3014:3020 CoqUnified.Laman <> mk_edge def
+R3022:3022 CoqUnified.Laman <> v:12 var
+R3024:3024 CoqUnified.Laman <> i:13 var
+R3040:3043 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R3029:3035 CoqUnified.Laman <> mk_edge def
+R3037:3037 CoqUnified.Laman <> v:12 var
+R3039:3039 CoqUnified.Laman <> j:14 var
+R3044:3044 CoqUnified.Laman <> g:11 var
+prf 3410:3422 <> henneberg_SSS
+binder 3433:3434 <> n':15
+R3473:3477 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3439:3457 CoqUnified.Laman <> henneberg_construct def
+R3460:3460 Coq.Init.Datatypes <> S constr
+R3463:3463 Coq.Init.Datatypes <> S constr
+R3466:3466 Coq.Init.Datatypes <> S constr
+R3468:3469 CoqUnified.Laman <> n':15 var
+R3498:3501 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R3478:3484 CoqUnified.Laman <> mk_edge def
+R3487:3487 Coq.Init.Datatypes <> S constr
+R3490:3490 Coq.Init.Datatypes <> S constr
+R3492:3493 CoqUnified.Laman <> n':15 var
+R3522:3525 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R3502:3508 CoqUnified.Laman <> mk_edge def
+R3511:3511 Coq.Init.Datatypes <> S constr
+R3514:3514 Coq.Init.Datatypes <> S constr
+R3516:3517 CoqUnified.Laman <> n':15 var
+R3526:3544 CoqUnified.Laman <> henneberg_construct def
+R3547:3547 Coq.Init.Datatypes <> S constr
+R3550:3550 Coq.Init.Datatypes <> S constr
+R3552:3553 CoqUnified.Laman <> n':15 var
+prf 3633:3648 <> edge_count_cons2
+binder 3659:3660 <> e1:16
+binder 3662:3663 <> e2:17
+R3670:3674 CoqUnified.Laman <> graph def
+binder 3666:3666 <> g:18
+R3706:3708 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3680:3689 CoqUnified.Laman <> edge_count def
+R3694:3697 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R3692:3693 CoqUnified.Laman <> e1:16 var
+R3700:3703 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R3698:3699 CoqUnified.Laman <> e2:17 var
+R3704:3704 CoqUnified.Laman <> g:18 var
+R3710:3712 Coq.Init.Nat <> ::nat_scope:x_'+'_x not
+R3713:3722 CoqUnified.Laman <> edge_count def
+R3724:3724 CoqUnified.Laman <> g:18 var
+prf 3845:3860 <> laman_edge_count
+binder 3873:3873 <> n:19
+R3882:3885 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3877:3880 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R3881:3881 CoqUnified.Laman <> n:19 var
+R3920:3922 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3886:3895 CoqUnified.Laman <> edge_count def
+R3898:3916 CoqUnified.Laman <> henneberg_construct def
+R3918:3918 CoqUnified.Laman <> n:19 var
+R3928:3930 Coq.Init.Nat <> ::nat_scope:x_'-'_x not
+R3924:3926 Coq.Init.Nat <> ::nat_scope:x_'*'_x not
+R3927:3927 CoqUnified.Laman <> n:19 var
+R4198:4216 CoqUnified.Laman <> henneberg_construct def
+R4219:4219 Coq.Init.Datatypes <> S constr
+R4222:4222 Coq.Init.Datatypes <> S constr
+R4225:4225 Coq.Init.Datatypes <> S constr
+R4266:4269 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R4246:4252 CoqUnified.Laman <> mk_edge def
+R4255:4255 Coq.Init.Datatypes <> S constr
+R4258:4258 Coq.Init.Datatypes <> S constr
+R4290:4293 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R4270:4276 CoqUnified.Laman <> mk_edge def
+R4279:4279 Coq.Init.Datatypes <> S constr
+R4282:4282 Coq.Init.Datatypes <> S constr
+R4294:4312 CoqUnified.Laman <> henneberg_construct def
+R4315:4315 Coq.Init.Datatypes <> S constr
+R4318:4318 Coq.Init.Datatypes <> S constr
+R4341:4353 CoqUnified.Laman <> henneberg_SSS thm
+R4198:4216 CoqUnified.Laman <> henneberg_construct def
+R4219:4219 Coq.Init.Datatypes <> S constr
+R4222:4222 Coq.Init.Datatypes <> S constr
+R4225:4225 Coq.Init.Datatypes <> S constr
+R4266:4269 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R4246:4252 CoqUnified.Laman <> mk_edge def
+R4255:4255 Coq.Init.Datatypes <> S constr
+R4258:4258 Coq.Init.Datatypes <> S constr
+R4290:4293 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R4270:4276 CoqUnified.Laman <> mk_edge def
+R4279:4279 Coq.Init.Datatypes <> S constr
+R4282:4282 Coq.Init.Datatypes <> S constr
+R4294:4312 CoqUnified.Laman <> henneberg_construct def
+R4315:4315 Coq.Init.Datatypes <> S constr
+R4318:4318 Coq.Init.Datatypes <> S constr
+R4341:4353 CoqUnified.Laman <> henneberg_SSS thm
+R4368:4383 CoqUnified.Laman <> edge_count_cons2 thm
+R4368:4383 CoqUnified.Laman <> edge_count_cons2 thm
+R4368:4383 CoqUnified.Laman <> edge_count_cons2 thm
+def 4899:4913 <> edges_in_subset
+R4920:4924 CoqUnified.Laman <> graph def
+binder 4916:4916 <> g:20
+R4933:4936 Coq.Init.Datatypes <> list ind
+R4938:4943 CoqUnified.Laman <> vertex def
+binder 4928:4929 <> vs:21
+R4948:4950 Coq.Init.Datatypes <> nat ind
+R4963:4963 CoqUnified.Laman <> g:20 var
+R4974:4975 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R4992:4995 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R4986:4986 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4988:4989 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R4991:4991 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R5038:5043 Coq.Lists.List <> In_dec syndef
+R5058:5059 CoqUnified.Laman <> vs:21 var
+R5045:5054 Coq.Arith.PeanoNat Nat eq_dec thm
+R5014:5019 Coq.Lists.List <> In_dec syndef
+R5034:5035 CoqUnified.Laman <> vs:21 var
+R5021:5030 Coq.Arith.PeanoNat Nat eq_dec thm
+R5074:5077 Coq.Init.Specif <> left constr
+R5082:5085 Coq.Init.Specif <> left constr
+R5093:5095 Coq.Init.Nat <> ::nat_scope:x_'+'_x not
+R5096:5110 CoqUnified.Laman <> edges_in_subset:22 def
+R5115:5116 CoqUnified.Laman <> vs:21 var
+R5134:5148 CoqUnified.Laman <> edges_in_subset:22 def
+R5153:5154 CoqUnified.Laman <> vs:21 var
+def 5185:5192 <> is_laman
+R5199:5201 Coq.Init.Datatypes <> nat ind
+binder 5195:5195 <> n:24
+R5209:5213 CoqUnified.Laman <> graph def
+binder 5205:5205 <> g:25
+R5252:5258 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R5394:5394 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R5240:5242 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R5228:5237 CoqUnified.Laman <> edge_count def
+R5239:5239 CoqUnified.Laman <> g:25 var
+R5248:5250 Coq.Init.Nat <> ::nat_scope:x_'-'_x not
+R5244:5246 Coq.Init.Nat <> ::nat_scope:x_'*'_x not
+R5247:5247 CoqUnified.Laman <> n:24 var
+R5272:5275 Coq.Init.Datatypes <> list ind
+R5277:5282 CoqUnified.Laman <> vertex def
+binder 5267:5268 <> vs:26
+R5291:5291 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5318:5327 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+binder 5299:5299 <> v:27
+R5309:5312 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5302:5303 Coq.Lists.List <> In def
+R5307:5308 CoqUnified.Laman <> vs:26 var
+R5305:5305 CoqUnified.Laman <> v:27 var
+R5314:5316 Coq.Init.Peano <> ::nat_scope:x_'<'_x not
+R5313:5313 CoqUnified.Laman <> v:27 var
+R5317:5317 CoqUnified.Laman <> n:24 var
+R5342:5350 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5329:5332 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R5333:5338 Coq.Init.Datatypes <> length def
+R5340:5341 CoqUnified.Laman <> vs:26 var
+R5371:5374 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R5351:5365 CoqUnified.Laman <> edges_in_subset def
+R5367:5367 CoqUnified.Laman <> g:25 var
+R5369:5370 CoqUnified.Laman <> vs:26 var
+R5390:5392 Coq.Init.Nat <> ::nat_scope:x_'-'_x not
+R5376:5379 Coq.Init.Nat <> ::nat_scope:x_'*'_x not
+R5389:5389 Coq.Init.Nat <> ::nat_scope:x_'*'_x not
+R5380:5385 Coq.Init.Datatypes <> length def
+R5387:5388 CoqUnified.Laman <> vs:26 var
+prf 6012:6029 <> henneberg_is_laman
+binder 6042:6042 <> n:28
+R6051:6054 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6046:6049 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R6050:6050 CoqUnified.Laman <> n:28 var
+R6055:6062 CoqUnified.Laman <> is_laman def
+R6064:6064 CoqUnified.Laman <> n:28 var
+R6067:6085 CoqUnified.Laman <> henneberg_construct def
+R6087:6087 CoqUnified.Laman <> n:28 var
+R6130:6145 CoqUnified.Laman <> laman_edge_count thm
+R6130:6145 CoqUnified.Laman <> laman_edge_count thm

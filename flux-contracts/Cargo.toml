@@ -1,0 +1,17 @@
+[package]
+name = "flux-contracts"
+version = "0.1.0"
+edition = "2021"
+description = "FLUX OS shared trait definitions — the frozen contracts between all components"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/SuperInstance/flux-contracts"
+keywords = ["flux", "constraint", "traits", "contracts", "safety"]
+categories = ["algorithms", "embedded"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[dev-dependencies]
+
+[workspace]

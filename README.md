@@ -252,6 +252,44 @@ flux-tensor-midi/
 
 ---
 
+## Forgemaster Historical Context
+
+Forgemaster is the historical monorepo that seeded the entire Cocapn ecosystem. Over 160 modules have been extracted to standalone repositories under [SuperInstance](https://github.com/SuperInstance?tab=repositories). This repo now serves as the coordinator for flux-tensor-midi — the musical tensor library.
+
+### Cocapn Fleet Architecture
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                        APPLICATION LAYER                         │
+│   platoclaw │ plato-mcp │ cocapn-cli │ cocapn-ai-web            │
+├──────────────────────────────────────────────────────────────────┤
+│                      INTELLIGENCE LAYER                          │
+│   plato-model-ocean │ plato-escalation-gate │ plato-room-intel  │
+│   plato-training │ plato-soul-fingerprint │ fleet-calibrator    │
+├──────────────────────────────────────────────────────────────────┤
+│                       RUNTIME LAYER                              │
+│   plato-engine │ plato-mud │ flux-vm │ flux-lucid │ flux-isa   │
+│   flux-ast │ flux-compiler │ flux-hardware │ flux-verify-api    │
+├──────────────────────────────────────────────────────────────────┤
+│                      CONSTRAINT LAYER                            │
+│   constraint-theory-core │ spectral-conservation │ eisenstein    │
+│   dodecet-encoder │ penrose-memory │ guardc │ guard2mask        │
+│   holonomy-consensus │ pbft-rust │ snapkit (multi-lang)        │
+├──────────────────────────────────────────────────────────────────┤
+│                        DATA LAYER                                │
+│   plato-types │ plato-data │ tensor-spline │ flux-provenance    │
+│   tile-memory │ plato-tiles │ plato-kernel-constraints          │
+├──────────────────────────────────────────────────────────────────┤
+│                      INFRASTRUCTURE                              │
+│   fleet-router │ fleet-health-monitor │ fleet-murmur            │
+│   fleet-resonance │ zeitgeist-protocol │ fleet-gateway          │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Forgemaster is one of **9 agents** in the [Cocapn fleet](https://github.com/SuperInstance?tab=repositories).
+
+---
+
 ## License
 
-Apache 2.0
+[Apache 2.0](./LICENSE)

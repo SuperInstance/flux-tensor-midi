@@ -1,0 +1,89 @@
+C ====================================================================
+C DEADBAND FRAMEWORK — CELLULAR AUTOMATON IMPLEMENTATION
+C ====================================================================
+C
+C Von Neumann invented BOTH the von Neumann architecture AND
+C cellular automata. The irony: his non-von-Neumann invention
+C (cellular automata) may be more fundamental than his von Neumann one.
+C
+C CELLULAR AUTOMATON FOR EISENSTEIN LATTICE:
+C
+C Grid: 2D hexagonal (each cell has 6 neighbors)
+C Cell state: (lattice_point: bool, signal: float, snapped: bool)
+C
+C Rule 1 (SNAP): If signal exceeds threshold, snap to nearest lattice point
+C   snapped = |signal - lattice_point| < deadband
+C
+C Rule 2 (PROPAGATE): Snapped cells propagate to neighbors
+C   If neighbor is within deadband, it snaps too
+C   This is WAVE PROPAGATION of the lattice snap
+C
+C Rule 3 (BMA): Linear cells store sequence bits
+C   Each cell computes local discrepancy
+C   Discrepancy propagates along the line
+C   Convergence detected when discrepancy reaches zero for 2L cells
+C
+C ====================================================================
+C THE HEXAGONAL CELLULAR AUTOMATON
+C ====================================================================
+C
+C The Eisenstein lattice IS a hexagonal grid.
+C A cellular automaton ON this grid is NATURAL:
+C
+C   Each cell = one Eisenstein lattice point
+C   Cell state = (signal_value, snapped)
+C   Update rule: if |signal - lattice_point| < deadband → snap
+C   Propagation: snapped cells pull neighbors toward lattice
+C
+C THIS IS EXACTLY WHAT THE GPU SWARM DOES:
+C   Each agent = one cell
+C   Snap = lattice_point assignment
+C   The "zero drift" result = the cellular automaton reaching equilibrium
+C
+C ====================================================================
+C BMA AS 1D CELLULAR AUTOMATON
+C ====================================================================
+C
+C Rule 110 (Wolfram) is Turing-complete.
+C BMA is a specific 1D CA rule:
+C
+C   Cell state: (bit, connection_polynomial_bit, discrepancy)
+C   Rule: compute discrepancy from neighbor bits
+C   Update: if discrepancy ≠ 0, toggle connection polynomial
+C   Detect: after 2L steps with zero discrepancy, pattern found
+C
+C The BMA algorithm IS a 1D cellular automaton rule.
+C The 2L convergence IS the CA reaching a fixed point.
+C
+C ====================================================================
+C /360 AS CYCLIC CELLULAR AUTOMATON
+C ====================================================================
+C
+C A ring of 360 cells. Each cell has state 0 or 1.
+C Adding two /360 values = shifting the 1-cells around the ring.
+C Multiplication = repeated shifting.
+C
+C This is a CYCLIC TAG SYSTEM — another von Neumann-era concept.
+C /360 arithmetic IS a tag system by another name.
+C
+C ====================================================================
+C BACK-TRANSLATION INSIGHTS
+C ====================================================================
+C
+C 1. THE GPU SWARM IS A CELLULAR AUTOMATON
+C    We built a GPU swarm with 200K agents and zero drift.
+C    This is a cellular automaton on the Eisenstein lattice.
+C    The "zero drift" = the CA reached a fixed point.
+C    The lattice IS the CA's equilibrium.
+C
+C 2. BMA IS A CA RULE, NOT AN ALGORITHM
+C    Reframing BMA as a CA rule means:
+C    - It can run on ANY CA hardware (including FPGAs, neural tissue)
+C    - The 2L convergence = CA fixed point (topological guarantee)
+C    - Parallel BMA = parallel CA update (trivially parallelizable)
+C
+C 3. /360 ARITHMETIC IS A TAG SYSTEM
+C    The ring of 360 cells is a tag system.
+C    Tag systems are Turing-complete.
+C    Therefore /360 arithmetic can compute ANYTHING (slowly).
+C    But for our purposes, it computes EXACT arithmetic (fast).

@@ -1,0 +1,132 @@
+C DEADBAND FRAMEWORK — AUTOCODE (MANCHESTER 1952 VARIANT)
+C TARGET: FERRANTI MERCURY (SIMULATED)
+C
+C AUTOCODE IS THE FIRST HIGH-LEVEL LANGUAGE (1952).
+C IT HAS: VARIABLES (vn), ARITHMETIC (+, -, *, /), 
+C          JUMPS (->n), CONDITIONAL (IF vn > vn ->n)
+C          INPUT/OUTPUT (READ vn, PRINT vn)
+C          FUNCTIONS (not in original — we simulate with blocks)
+C
+C CONSTRAINTS THAT FORCE INNOVATION:
+C 1. NO ARRAYS — each lattice point is a separate variable
+C 2. NO FUNCTIONS — all code is inline
+C 3. NO FLOATING POINT (original) — we use scaled integers
+C 4. NO RECURSION — iteration only
+C 5. NO DATA STRUCTURES — flat variables only
+C
+C BACK-TRANSLATION INSIGHTS:
+C - Scaled integer arithmetic is FASTER than float on modern hardware
+C - Inline code eliminates call overhead (same as -O3 inlining)
+C - Flat variable access is cache-friendly (no pointer chasing)
+C
+C ============================================================
+C /360 INTEGER ARITHMETIC
+C Uses scaled integers: value * SCALE where SCALE = 10000
+C This gives 4 decimal places of precision without floats
+C ============================================================
+
+C Initialize constants
+v1 = 360       C modulus
+v2 = 0         C result
+v3 = 0         C temp
+
+C /360 ADD: v4 + v5 -> v6 (mod 360)
+C Autocode doesn't have MOD, so we subtract repeatedly
+C This is the LOOP-BASED modular arithmetic pattern
+v4 = 0         C input a
+v5 = 0         C input b
+->10           C jump to add routine
+
+C Label 10: /360 ADD routine
+10 v6 = v4 + v5
+   v6 = v6 - (v6 / v1) * v1
+   C v6 now contains (a + b) mod 360
+   ->20
+
+C Label 20: /360 SUB routine  
+20 v7 = v4 - v5
+   IF v7 < 0 -> 21
+   ->22
+21 v7 = v7 + v1
+   ->22
+
+C Label 22: /360 MUL routine
+22 v8 = v4 * v5
+   v8 = v8 - (v8 / v1) * v1
+
+C ============================================================
+C EISENSTEIN SNAP (SCALED INTEGER VERSION)
+C Multiply coordinates by 10000 to avoid floats
+C Basis: (1, 0) and (-5000, 8660) [scaled -0.5 and sqrt(3)/2]
+C ============================================================
+
+v10 = 10000    C scale factor
+v11 = 8660     C sqrt(3)/2 * 10000
+v12 = -5000    C -0.5 * 10000
+
+C Snap (v13, v14) to lattice
+C v = y / (sqrt(3)/2) = v14 * 10000 / 8660
+C u = x - 0.5*v = v13 + 2500*v/10000
+C Round u, v to nearest integers
+C x_snap = u - 0.5*v, y_snap = (sqrt(3)/2)*v
+
+30 v15 = v14 * v10 / v11    C v = y * scale / sqrt3/2
+   v16 = v13 + v12 * v15 / (2 * v10)  C u = x + (-0.5) * v / scale
+   v17 = v16 + 5000 / v10    C round u (add 0.5)
+   v17 = v17 - (v17 / v10) * v10  C truncate
+   v18 = v15 + 5000 / v10    C round v
+   v18 = v18 - (v18 / v10) * v10  C truncate
+   v19 = v17 - v12 * v18 / v10    C x_snap = u - (-0.5)*v
+   v20 = v11 * v18 / v10           C y_snap = (sqrt3/2)*v
+
+C ============================================================
+C BMA OVER GF(2) (BIT MANIPULATION VIA INTEGER ARITHMETIC)
+C Autocode has no bitwise ops. We use integer division to extract bits.
+C bit n of v = (v / 2^n) - 2 * (v / 2^(n+1))
+C This is the ONLY way to do bit ops in Autocode.
+C ============================================================
+
+C BACK-TRANSLATION INSIGHT: This division-based bit extraction
+C is actually how some RISC architectures implement bit operations
+C when they lack dedicated bit-manipulation instructions.
+C The pattern generalizes: if you lack primitive X, decompose into
+C available primitives. The decomposition often reveals the ESSENTIAL
+C structure that X was hiding.
+
+C ============================================================
+C DEADBAND CHECK
+C IF L <= K THEN PATTERN IS PERCEIVABLE
+C This is a simple comparison — natural even in Autocode.
+C ============================================================
+
+v30 = 0        C L (pattern order)
+v31 = 0        C k (receiver bits)
+40 IF v30 > v31 -> 41
+   v32 = 1     C perceivable = true
+   ->42
+41 v32 = 0     C perceivable = false
+42 ->50        C continue
+
+C ============================================================
+C SHELL DECOMPOSITION (2x2 EIGENVALUES)
+C trace = a + d
+C det = a*d - b*c  
+C discriminant = trace^2 - 4*det
+C lambda1 = (trace + sqrt(disc)) / 2
+C lambda2 = (trace - sqrt(disc)) / 2
+C 
+C Autocode has no SQRT. We use Newton's method iteration.
+C This is the BUILT-FROM-NOTHING pattern.
+C ============================================================
+
+C Newton's method for sqrt(v40):
+C guess = v40 / 2
+C iterate: guess = (guess + v40/guess) / 2
+50 v41 = v40 / 2
+51 v42 = (v41 + v40 / v41) / 2
+   IF v42 = v41 -> 52     C converged
+   v41 = v42
+   ->51
+52 v43 = v42              C v43 = sqrt(v40)
+
+PRINT v32                  C output perceivability

@@ -1,4 +1,6 @@
-# Python
+# Build artifacts
+target/
+node_modules/
 __pycache__/
 *.py[cod]
 *.class
@@ -8,6 +10,7 @@ __pycache__/
 dist/
 build/
 .eggs/
+.next/
 
 # IDE
 .idea/
@@ -15,13 +18,54 @@ build/
 *.swp
 *.swo
 
+# Backup files
+*.bak
+*.orig
+
 # OS
 .DS_Store
 Thumbs.db
 
 # Environment
 .env
+.env.local
 .venv/
 venv/
 
+# Beta data
 beta_data/
+
+# Agent internal state
+.keeper/
+memory/.dreams/
+
+# GPU experiment compiled binaries
+gpu-experiments/exp*
+
+# Keeper ephemera (tracked separately)
+.keeper/ticker/compressed/
+
+# Downloaded/temp
+*.zip
+download/
+.credentials/
+claude/
+flux-research-clone/
+lucineer/
+snapkit-c/*.o
+snapkit-c/*.a
+snapkit-c/*.so
+snapkit-c/test_*
+constraint-demos/
+galois-unification-proofs/
+tile-memory/
+memory-crystal/
+collective-recall-demo/
+neural-plato/
+acg_protocol/
+automerge/
+pbft-rust/
+penrose/
+tri-quarter-toolbox/
+.flux.fvt
+sana-wm/

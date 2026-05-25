@@ -1,0 +1,16 @@
+[package]
+name = "spectral-conservation"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+authors = ["SuperInstance <forgemaster@superinstance.com>"]
+description = "Spectral first integral I(x) = γ(x) + H(x) conservation tracker for coupled nonlinear dynamics"
+repository = "https://github.com/SuperInstance/spectral-conservation"
+keywords = ["spectral", "conservation", "koopman", "dynamics", "fleet"]
+
+[dependencies]
+nalgebra = { version = "0.33", default-features = false, features = ["std"] }
+serde = { version = "1.0", features = ["derive"] }
+
+[dev-dependencies]
+approx = "0.5"

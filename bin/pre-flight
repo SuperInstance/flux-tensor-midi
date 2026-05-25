@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+# PRE-FLIGHT GATE — must pass before ANY external post
+# Called automatically. If this fails, the post does not happen.
+set -euo pipefail
+
+PLATFORM="${1:-}"
+URL="${2:-}"
+
+if [ -z "$PLATFORM" ] || [ -z "$URL" ]; then
+  echo "Usage: pre-flight <platform> <url>"
+  echo "  platform: hn, reddit, twitter, mastodon"
+  exit 1
+fi
+
+PASS=true
+REASON=""
+
+case "$PLATFORM" in
+  hn|hackernews)
+    echo "=== HN Pre-Flight ==="
+    
+    # Check: account karma (scrape user page)
+    HN_USER="${HN_USER:-}"
+    if [ -z "$HN_USER" ]; then
+      echo "FAIL: HN_USER env var not set. Set it to your HN username."
+      PASS=false
+    else
+      KARMA=$(curl -s "https://news.ycombinator.com/user?id=$HN_USER" 2>/dev/null | grep -oP 'id="karma"[^>]*>\K[0-9]+' || true)
+      if [ -z "$KARMA" ]; then
+        # Fallback: extract from page text
+        KARMA=$(curl -s "https://news.ycombinator.com/user?id=$HN_USER" 2>/dev/null | grep -oP '\d+ karma' | grep -oP '\d+' || echo "0")
+      fi
+      echo "Karma: $KARMA"
+      if [ "$KARMA" -lt 50 ]; then
+        echo "FAIL: Karma ($KARMA) below 50 threshold. Build karma by commenting before posting."
+        PASS=false
+      else
+        echo "PASS: Karma sufficient ($KARMA >= 50)"
+      fi
+    fi
+
+    # Check: title length
+    TITLE="${HN_TITLE:-}"
+    if [ -n "$TITLE" ]; then
+      WORDS=$(echo "$TITLE" | wc -w)
+      if [ "$WORDS" -gt 15 ]; then
+        echo "WARN: Title is $WORDS words (recommend <=15)"
+      fi
+    fi
+
+    # Check: time of day (weekday morning Pacific is best)
+    HOUR_AKST=$(TZ=America/Anchorage date +%H)
+    DAY=$(TZ=America/Anchorage date +%u)  # 1=Mon, 7=Sun
+    if [ "$DAY" -ge 6 ]; then
+      echo "WARN: Weekend. Best posting days are Tue-Thu."
+    fi
+    if [ "$HOUR_AKST" -lt 7 ] || [ "$HOUR_AKST" -gt 12 ]; then
+      echo "WARN: Outside optimal window (7AM-12PM AKST / 8AM-1PM PT)"
+    fi
+
+    # Check: self-link count
+    if [ -n "$URL" ]; then
+      SELF_LINKS=$(echo "$URL" | grep -o "superinstance\|cocapn\|purplepincher" | wc -l || echo "0")
+      echo "Self-links in URL: $SELF_LINKS"
+    fi
+
+    # Check: is the domain flagged
+    DOMAIN=$(echo "$URL" | grep -oP 'https?://\K[^/]+' || true)
+    if [ -n "$DOMAIN" ]; then
+      echo "Posting domain: $DOMAIN"
+    fi
+    ;;
+
+  reddit)
+    echo "=== Reddit Pre-Flight ==="
+    echo "TODO: Implement Reddit checks"
+    ;;
+
+  *)
+    echo "Unknown platform: $PLATFORM"
+    echo "Supported: hn, reddit, twitter, mastodon"
+    exit 1
+    ;;
+esac
+
+echo ""
+if [ "$PASS" = true ]; then
+  echo "✅ PRE-FLIGHT PASS — clear to post"
+  exit 0
+else
+  echo "🚫 PRE-FLIGHT FAIL — DO NOT POST"
+  echo "Reason: $REASON"
+  exit 1
+fi

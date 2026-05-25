@@ -1,0 +1,513 @@
+DIGEST 2a31c3d7d484315e3277dc2dabbef646
+FCoqUnified.Theorems
+R910:914 Coq.Reals.Reals <> <> lib
+R932:937 Coq.ZArith.ZArith <> <> lib
+R955:957 Coq.Init.Nat <> <> lib
+R975:979 Coq.Arith.Arith <> <> lib
+R997:999 Coq.micromega.Lia <> <> lib
+R1017:1019 Coq.micromega.Lra <> <> lib
+R1037:1050 Coq.Lists.List <> <> lib
+R1068:1080 Coq.Bool.Bool <> <> lib
+R1090:1102 Coq.Lists.List ListNotations <> mod
+R1365:1374 CoqUnified.Eisenstein <> <> lib
+R1392:1396 CoqUnified.Laman <> <> lib
+prf 2116:2138 <> covering_radius_bounded
+R2158:2158 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 2152:2152 <> x:1
+binder 2154:2154 <> y:2
+R2164:2171 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R2179:2185 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R2178:2178 Coq.Numbers.BinNums <> Z ind
+binder 2172:2172 <> a:3
+R2178:2178 Coq.Numbers.BinNums <> Z ind
+binder 2174:2174 <> b:4
+R2218:2221 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R2187:2190 CoqUnified.Eisenstein <> dist def
+R2192:2192 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2194:2195 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2197:2197 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2193:2193 CoqUnified.Theorems <> x:1 var
+R2196:2196 CoqUnified.Theorems <> y:2 var
+R2200:2209 CoqUnified.Eisenstein <> to_complex def
+R2211:2211 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2213:2214 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2216:2216 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R2212:2212 CoqUnified.Theorems <> a:3 var
+R2215:2215 CoqUnified.Theorems <> b:4 var
+R2223:2225 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R2226:2236 Coq.Reals.R_sqrt <> sqrt def
+R2413:2427 CoqUnified.Eisenstein <> covering_radius def
+R2443:2476 CoqUnified.Eisenstein <> covering_radius_bounded prfax
+R2443:2476 CoqUnified.Eisenstein <> covering_radius_bounded prfax
+prf 2984:2999 <> laman_edge_count
+R3017:3019 Coq.Init.Datatypes <> nat ind
+binder 3013:3013 <> n:5
+R3033:3040 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R3028:3031 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R3032:3032 CoqUnified.Theorems <> n:5 var
+R3075:3077 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R3041:3050 CoqUnified.Laman <> edge_count def
+R3053:3071 CoqUnified.Laman <> henneberg_construct def
+R3073:3073 CoqUnified.Theorems <> n:5 var
+R3083:3085 Coq.Init.Nat <> ::nat_scope:x_'-'_x not
+R3079:3081 Coq.Init.Nat <> ::nat_scope:x_'*'_x not
+R3082:3082 CoqUnified.Theorems <> n:5 var
+R3104:3125 CoqUnified.Laman <> laman_edge_count thm
+R3104:3125 CoqUnified.Laman <> laman_edge_count thm
+def 3776:3790 <> direction_index
+R3795:3797 Coq.Init.Datatypes <> nat ind
+def 3859:3863 <> cycle
+R3868:3871 Coq.Init.Datatypes <> list ind
+R3873:3887 CoqUnified.Theorems <> direction_index def
+def 3902:3916 <> direction_count
+R3920:3922 Coq.Init.Datatypes <> nat ind
+def 3999:4006 <> holonomy
+R4013:4017 CoqUnified.Theorems <> cycle def
+binder 4009:4009 <> c:6
+R4022:4024 Coq.Init.Datatypes <> nat ind
+R4037:4037 CoqUnified.Theorems <> c:6 var
+R4048:4049 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R4061:4064 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R4071:4071 Coq.Arith.PeanoNat <> ::nat_scope:x_'mod'_x not
+R4087:4092 Coq.Arith.PeanoNat <> ::nat_scope:x_'mod'_x not
+R4073:4075 Coq.Init.Nat <> ::nat_scope:x_'+'_x not
+R4076:4083 CoqUnified.Theorems <> holonomy:7 def
+R4093:4107 CoqUnified.Theorems <> direction_count def
+def 4183:4192 <> consistent
+R4199:4203 CoqUnified.Theorems <> cycle def
+binder 4195:4195 <> c:9
+R4228:4230 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4218:4225 CoqUnified.Theorems <> holonomy def
+R4227:4227 CoqUnified.Theorems <> c:9 var
+prf 4392:4423 <> holonomy_zero_implies_consistent
+R4441:4445 CoqUnified.Theorems <> cycle def
+binder 4437:4437 <> c:10
+R4467:4474 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4463:4465 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4453:4460 CoqUnified.Theorems <> holonomy def
+R4462:4462 CoqUnified.Theorems <> c:10 var
+R4475:4484 CoqUnified.Theorems <> consistent def
+R4486:4486 CoqUnified.Theorems <> c:10 var
+R4520:4529 CoqUnified.Theorems <> consistent def
+prf 4631:4662 <> consistent_implies_holonomy_zero
+R4680:4684 CoqUnified.Theorems <> cycle def
+binder 4676:4676 <> c:11
+R4704:4711 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R4692:4701 CoqUnified.Theorems <> consistent def
+R4703:4703 CoqUnified.Theorems <> c:11 var
+R4722:4724 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R4712:4719 CoqUnified.Theorems <> holonomy def
+R4721:4721 CoqUnified.Theorems <> c:11 var
+R4759:4768 CoqUnified.Theorems <> consistent def
+sec 5473:5480 <> Deadband
+var 5526:5534 Deadband epsilon_0
+var 5536:5541 Deadband lambda
+R5545:5545 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+var 5562:5574 Deadband epsilon_0_pos
+R5579:5581 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R5582:5590 CoqUnified.Theorems <> Deadband.epsilon_0 var
+var 5606:5615 Deadband lambda_pos
+R5623:5625 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R5626:5631 CoqUnified.Theorems <> Deadband.lambda var
+def 5689:5695 <> epsilon
+R5702:5702 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 5698:5698 <> t:16
+R5707:5707 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R5725:5727 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R5716:5724 CoqUnified.Theorems <> Deadband.epsilon_0 var
+R5728:5730 Coq.Reals.Rtrigo_def <> exp def
+R5741:5743 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R5733:5734 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R5735:5740 CoqUnified.Theorems <> Deadband.lambda var
+R5744:5744 CoqUnified.Theorems <> t:16 var
+prf 5809:5816 <> exp_le_1
+binder 5827:5828 <> dt:17
+R5838:5841 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R5832:5835 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R5836:5837 CoqUnified.Theorems <> dt:17 var
+R5861:5864 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R5842:5844 Coq.Reals.Rtrigo_def <> exp def
+R5855:5857 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R5847:5848 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R5849:5854 CoqUnified.Theorems <> Deadband.lambda var
+R5858:5859 CoqUnified.Theorems <> dt:17 var
+R5927:5930 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R5922:5924 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R5914:5915 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R5916:5921 CoqUnified.Theorems <> Deadband.lambda var
+R5927:5930 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R5922:5924 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R5914:5915 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R5916:5921 CoqUnified.Theorems <> Deadband.lambda var
+R5959:5974 Coq.Reals.RIneq <> Rle_lt_or_eq_dec thm
+R5985:5987 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R5977:5978 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R5979:5984 CoqUnified.Theorems <> Deadband.lambda var
+R5959:5974 Coq.Reals.RIneq <> Rle_lt_or_eq_dec thm
+R5985:5987 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R5977:5978 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R5979:5984 CoqUnified.Theorems <> Deadband.lambda var
+R6053:6055 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R6034:6036 Coq.Reals.Rtrigo_def <> exp def
+R6047:6049 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6039:6040 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6041:6046 CoqUnified.Theorems <> Deadband.lambda var
+R6056:6058 Coq.Reals.Rtrigo_def <> exp def
+R6053:6055 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R6034:6036 Coq.Reals.Rtrigo_def <> exp def
+R6047:6049 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6039:6040 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6041:6046 CoqUnified.Theorems <> Deadband.lambda var
+R6056:6058 Coq.Reals.Rtrigo_def <> exp def
+R6081:6094 Coq.Reals.Rpower <> exp_increasing thm
+R6081:6094 Coq.Reals.Rpower <> exp_increasing thm
+R6125:6129 Coq.Reals.Rtrigo_def <> exp_0 thm
+R6125:6129 Coq.Reals.Rtrigo_def <> exp_0 thm
+R6125:6129 Coq.Reals.Rtrigo_def <> exp_0 thm
+R6168:6172 Coq.Reals.Rtrigo_def <> exp_0 thm
+R6168:6172 Coq.Reals.Rtrigo_def <> exp_0 thm
+R6168:6172 Coq.Reals.Rtrigo_def <> exp_0 thm
+prf 6249:6266 <> deadband_narrowing
+R6289:6289 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 6282:6282 <> t:18
+binder 6284:6285 <> dt:19
+R6306:6315 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R6300:6303 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R6304:6305 CoqUnified.Theorems <> dt:19 var
+R6332:6335 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R6316:6322 CoqUnified.Theorems <> epsilon def
+R6326:6328 Coq.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R6325:6325 CoqUnified.Theorems <> t:18 var
+R6329:6330 CoqUnified.Theorems <> dt:19 var
+R6336:6342 CoqUnified.Theorems <> epsilon def
+R6344:6344 CoqUnified.Theorems <> t:18 var
+R6388:6394 CoqUnified.Theorems <> epsilon def
+R6418:6421 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6428:6428 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6410:6411 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6412:6417 CoqUnified.Theorems <> Deadband.lambda var
+R6423:6425 Coq.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R6449:6451 Coq.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R6445:6447 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6437:6438 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6439:6444 CoqUnified.Theorems <> Deadband.lambda var
+R6460:6462 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6452:6453 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6454:6459 CoqUnified.Theorems <> Deadband.lambda var
+R6418:6421 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6428:6428 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6410:6411 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6412:6417 CoqUnified.Theorems <> Deadband.lambda var
+R6423:6425 Coq.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R6449:6451 Coq.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R6445:6447 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6437:6438 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6439:6444 CoqUnified.Theorems <> Deadband.lambda var
+R6460:6462 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6452:6453 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6454:6459 CoqUnified.Theorems <> Deadband.lambda var
+R6488:6495 Coq.Reals.Exp_prop <> exp_plus thm
+R6488:6495 Coq.Reals.Exp_prop <> exp_plus thm
+R6488:6495 Coq.Reals.Exp_prop <> exp_plus thm
+R6520:6523 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6564:6564 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6511:6519 CoqUnified.Theorems <> Deadband.epsilon_0 var
+R6542:6544 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6524:6526 Coq.Reals.Rtrigo_def <> exp def
+R6537:6539 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6529:6530 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6531:6536 CoqUnified.Theorems <> Deadband.lambda var
+R6545:6547 Coq.Reals.Rtrigo_def <> exp def
+R6558:6560 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6550:6551 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6552:6557 CoqUnified.Theorems <> Deadband.lambda var
+R6609:6611 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6588:6590 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6579:6587 CoqUnified.Theorems <> Deadband.epsilon_0 var
+R6591:6593 Coq.Reals.Rtrigo_def <> exp def
+R6604:6606 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6596:6597 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6598:6603 CoqUnified.Theorems <> Deadband.lambda var
+R6612:6614 Coq.Reals.Rtrigo_def <> exp def
+R6625:6627 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6617:6618 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6619:6624 CoqUnified.Theorems <> Deadband.lambda var
+R6520:6523 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6564:6564 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6511:6519 CoqUnified.Theorems <> Deadband.epsilon_0 var
+R6542:6544 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6524:6526 Coq.Reals.Rtrigo_def <> exp def
+R6537:6539 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6529:6530 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6531:6536 CoqUnified.Theorems <> Deadband.lambda var
+R6545:6547 Coq.Reals.Rtrigo_def <> exp def
+R6558:6560 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6550:6551 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6552:6557 CoqUnified.Theorems <> Deadband.lambda var
+R6609:6611 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6588:6590 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6579:6587 CoqUnified.Theorems <> Deadband.epsilon_0 var
+R6591:6593 Coq.Reals.Rtrigo_def <> exp def
+R6604:6606 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6596:6597 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6598:6603 CoqUnified.Theorems <> Deadband.lambda var
+R6612:6614 Coq.Reals.Rtrigo_def <> exp def
+R6625:6627 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6617:6618 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6619:6624 CoqUnified.Theorems <> Deadband.lambda var
+R6664:6666 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6655:6663 CoqUnified.Theorems <> Deadband.epsilon_0 var
+R6667:6669 Coq.Reals.Rtrigo_def <> exp def
+R6680:6682 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6672:6673 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6674:6679 CoqUnified.Theorems <> Deadband.lambda var
+R6664:6666 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6655:6663 CoqUnified.Theorems <> Deadband.epsilon_0 var
+R6667:6669 Coq.Reals.Rtrigo_def <> exp def
+R6680:6682 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6672:6673 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6674:6679 CoqUnified.Theorems <> Deadband.lambda var
+R6708:6716 Coq.Reals.RIneq <> Rmult_1_r thm
+R6708:6716 Coq.Reals.RIneq <> Rmult_1_r thm
+R6708:6716 Coq.Reals.RIneq <> Rmult_1_r thm
+R6729:6745 Coq.Reals.RIneq <> Rmult_le_compat_l thm
+R6729:6745 Coq.Reals.RIneq <> Rmult_le_compat_l thm
+R6771:6774 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R6775:6783 CoqUnified.Theorems <> Deadband.epsilon_0 var
+R6771:6774 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R6775:6783 CoqUnified.Theorems <> Deadband.epsilon_0 var
+R6817:6820 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R6821:6823 Coq.Reals.Rtrigo_def <> exp def
+R6834:6836 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6826:6827 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6828:6833 CoqUnified.Theorems <> Deadband.lambda var
+R6817:6820 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R6821:6823 Coq.Reals.Rtrigo_def <> exp def
+R6834:6836 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R6826:6827 Coq.Reals.Rdefinitions <> ::R_scope:'-'_x not
+R6828:6833 CoqUnified.Theorems <> Deadband.lambda var
+R6856:6861 Coq.Reals.RIneq <> Rlt_le thm
+R6870:6876 Coq.Reals.Exp_prop <> exp_pos thm
+R6856:6861 Coq.Reals.RIneq <> Rlt_le thm
+R6870:6876 Coq.Reals.Exp_prop <> exp_pos thm
+R6893:6904 Coq.Reals.RIneq <> Rmult_le_pos thm
+R6893:6904 Coq.Reals.RIneq <> Rmult_le_pos thm
+R6931:6938 CoqUnified.Theorems <> exp_le_1 thm
+R6931:6938 CoqUnified.Theorems <> exp_le_1 thm
+R6965:6972 CoqUnified.Theorems Deadband <> sec
+sec 7879:7887 <> Metronome
+def 7988:7992 <> fleet
+R7997:8000 Coq.Init.Datatypes <> list ind
+R8002:8002 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+def 8077:8089 <> circular_dist
+R8098:8098 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 8092:8092 <> a:20
+binder 8094:8094 <> b:21
+R8103:8103 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R8124:8127 Coq.Reals.Rbasic_fun <> Rabs def
+R8131:8133 Coq.Reals.Rdefinitions <> ::R_scope:x_'-'_x not
+R8130:8130 CoqUnified.Theorems <> a:20 var
+R8134:8134 CoqUnified.Theorems <> b:21 var
+binder 8116:8119 <> diff:22
+R8144:8147 Coq.Reals.Rbasic_fun <> Rmin def
+R8149:8152 CoqUnified.Theorems <> diff:22 var
+R8161:8163 Coq.Reals.Rdefinitions <> ::R_scope:x_'-'_x not
+R8156:8158 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R8159:8160 Coq.Reals.Rtrigo1 <> PI def
+R8164:8167 CoqUnified.Theorems <> diff:22 var
+def 8248:8261 <> fleet_diameter
+R8268:8272 CoqUnified.Theorems <> fleet def
+binder 8264:8264 <> f:23
+R8277:8277 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R8292:8292 CoqUnified.Theorems <> f:23 var
+R8305:8306 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R8320:8323 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R8338:8341 Coq.Reals.Rbasic_fun <> Rmax def
+R8344:8353 Coq.Lists.List <> fold_right def
+binder 8360:8360 <> q:26
+binder 8362:8364 <> acc:27
+R8369:8372 Coq.Reals.Rbasic_fun <> Rmax def
+R8375:8387 CoqUnified.Theorems <> circular_dist def
+R8391:8391 CoqUnified.Theorems <> q:26 var
+R8394:8396 CoqUnified.Theorems <> acc:27 var
+R8419:8432 CoqUnified.Theorems <> fleet_diameter:24 def
+def 8511:8523 <> circular_mean
+R8530:8534 CoqUnified.Theorems <> fleet def
+binder 8526:8526 <> f:28
+R8539:8539 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+R8554:8554 CoqUnified.Theorems <> f:28 var
+R8567:8568 Coq.Lists.List ListNotations ::list_scope:'['_']' not
+R8581:8581 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R8583:8583 Coq.Lists.List ListNotations ::list_scope:'['_x_']' not
+R8597:8600 Coq.Init.Datatypes <> ::list_scope:x_'::'_x not
+R8624:8636 CoqUnified.Theorems <> circular_mean:29 def
+binder 8619:8619 <> m:31
+R8806:8806 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R8812:8815 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R8808:8810 Coq.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R8811:8811 CoqUnified.Theorems <> m:31 var
+def 8997:9005 <> tick_step
+R9016:9016 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 9008:9012 <> alpha:32
+R9024:9028 CoqUnified.Theorems <> fleet def
+binder 9020:9020 <> f:33
+R9033:9037 CoqUnified.Theorems <> fleet def
+R9056:9068 CoqUnified.Theorems <> circular_mean def
+R9070:9070 CoqUnified.Theorems <> f:33 var
+binder 9050:9051 <> mu:34
+R9079:9081 Coq.Lists.List <> map def
+R9115:9115 CoqUnified.Theorems <> f:33 var
+binder 9088:9088 <> p:35
+R9094:9096 Coq.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R9093:9093 CoqUnified.Theorems <> p:35 var
+R9102:9105 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R9112:9112 Coq.Reals.Rdefinitions <> ::R_scope:x_'*'_x not
+R9097:9101 CoqUnified.Theorems <> alpha:32 var
+R9108:9110 Coq.Reals.Rdefinitions <> ::R_scope:x_'-'_x not
+R9106:9107 CoqUnified.Theorems <> mu:34 var
+R9111:9111 CoqUnified.Theorems <> p:35 var
+def 9206:9214 <> converged
+R9225:9225 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 9217:9221 <> delta:36
+R9233:9237 CoqUnified.Theorems <> fleet def
+binder 9229:9229 <> f:37
+R9270:9273 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R9254:9267 CoqUnified.Theorems <> fleet_diameter def
+R9269:9269 CoqUnified.Theorems <> f:37 var
+R9274:9278 CoqUnified.Theorems <> delta:36 var
+prf 9436:9457 <> diameter_nonincreasing
+binder 9472:9476 <> alpha:38
+binder 9478:9478 <> f:39
+R9502:9511 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R9488:9491 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x_'<='_x not
+R9497:9500 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x_'<='_x not
+R9492:9496 CoqUnified.Theorems <> alpha:38 var
+R9492:9496 CoqUnified.Theorems <> alpha:38 var
+R9546:9549 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R9512:9525 CoqUnified.Theorems <> fleet_diameter def
+R9528:9536 CoqUnified.Theorems <> tick_step def
+R9538:9542 CoqUnified.Theorems <> alpha:38 var
+R9544:9544 CoqUnified.Theorems <> f:39 var
+R9550:9563 CoqUnified.Theorems <> fleet_diameter def
+R9565:9565 CoqUnified.Theorems <> f:39 var
+prf 10151:10171 <> metronome_convergence
+R10201:10201 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 10187:10191 <> alpha:40
+binder 10193:10197 <> delta:41
+R10210:10214 CoqUnified.Theorems <> fleet def
+binder 10205:10206 <> f0:42
+R10237:10246 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10225:10227 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x_'<'_x not
+R10233:10235 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x_'<'_x not
+R10228:10232 CoqUnified.Theorems <> alpha:40 var
+R10228:10232 CoqUnified.Theorems <> alpha:40 var
+R10256:10265 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10248:10250 Coq.Reals.Rdefinitions <> ::R_scope:x_'<'_x not
+R10251:10255 CoqUnified.Theorems <> delta:41 var
+R10266:10273 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R10281:10291 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R10278:10280 Coq.Init.Datatypes <> nat ind
+binder 10274:10274 <> K:43
+R10303:10305 Coq.Init.Datatypes <> nat ind
+binder 10299:10299 <> k:44
+R10320:10331 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10310:10313 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R10309:10309 CoqUnified.Theorems <> K:43 var
+R10314:10314 CoqUnified.Theorems <> k:44 var
+R10332:10340 CoqUnified.Theorems <> converged def
+R10342:10346 CoqUnified.Theorems <> delta:41 var
+R10349:10356 Coq.Arith.PeanoNat Nat iter def
+R10378:10379 CoqUnified.Theorems <> f0:42 var
+R10361:10369 CoqUnified.Theorems <> tick_step def
+R10371:10375 CoqUnified.Theorems <> alpha:40 var
+R10358:10358 CoqUnified.Theorems <> k:44 var
+R10928:10936 CoqUnified.Theorems <> converged def
+R11197:11205 CoqUnified.Theorems Metronome <> sec
+def 11950:11969 <> architecture_correct
+R12005:12005 Coq.Reals.Rdefinitions RbaseSymbolsImpl R defax
+binder 11974:11982 <> epsilon_0:45
+binder 11984:11989 <> lambda:46
+binder 11991:11995 <> alpha:47
+binder 11997:12001 <> delta:48
+R12020:12024 CoqUnified.Theorems <> fleet def
+binder 12011:12016 <> agents:49
+R12034:12036 Coq.Init.Datatypes <> nat ind
+binder 12030:12030 <> n:50
+R12107:12107 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R12184:12246 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+binder 12115:12115 <> x:51
+binder 12117:12117 <> y:52
+R12120:12126 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R12130:12131 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 12127:12127 <> a:53
+binder 12129:12129 <> b:54
+R12162:12165 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R12133:12136 CoqUnified.Eisenstein <> dist def
+R12138:12138 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12140:12140 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12142:12142 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12139:12139 CoqUnified.Theorems <> x:51 var
+R12141:12141 CoqUnified.Theorems <> y:52 var
+R12145:12154 CoqUnified.Eisenstein <> to_complex def
+R12156:12156 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12158:12158 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12160:12160 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R12157:12157 CoqUnified.Theorems <> a:53 var
+R12159:12159 CoqUnified.Theorems <> b:54 var
+R12167:12167 Coq.Reals.Rdefinitions <> ::R_scope:x_'/'_x not
+R12168:12178 Coq.Reals.R_sqrt <> sqrt def
+R12247:12247 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R12302:12355 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R12254:12257 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12249:12252 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R12253:12253 CoqUnified.Theorems <> n:50 var
+R12292:12294 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12258:12267 CoqUnified.Laman <> edge_count def
+R12270:12288 CoqUnified.Laman <> henneberg_construct def
+R12290:12290 CoqUnified.Theorems <> n:50 var
+R12298:12300 Coq.Init.Nat <> ::nat_scope:x_'-'_x not
+R12296:12296 Coq.Init.Nat <> ::nat_scope:x_'*'_x not
+R12297:12297 CoqUnified.Theorems <> n:50 var
+R12356:12356 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R12397:12447 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+binder 12364:12364 <> c:55
+R12381:12384 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12377:12379 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12367:12374 CoqUnified.Theorems <> holonomy def
+R12376:12376 CoqUnified.Theorems <> c:55 var
+R12385:12394 CoqUnified.Theorems <> consistent def
+R12396:12396 CoqUnified.Theorems <> c:55 var
+R12448:12448 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R12542:12595 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+R12679:12679 Coq.Init.Logic <> ::type_scope:x_'/\'_x not
+binder 12456:12456 <> t:56
+binder 12458:12459 <> dt:57
+R12473:12476 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12464:12467 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R12468:12469 CoqUnified.Theorems <> dt:57 var
+R12509:12512 Coq.Reals.Rdefinitions <> ::R_scope:x_'<='_x not
+R12478:12484 CoqUnified.Theorems <> epsilon def
+R12505:12505 Coq.Reals.Rdefinitions <> ::R_scope:x_'+'_x not
+R12504:12504 CoqUnified.Theorems <> t:56 var
+R12506:12507 CoqUnified.Theorems <> dt:57 var
+R12496:12501 CoqUnified.Theorems <> lambda:46 var
+R12486:12494 CoqUnified.Theorems <> epsilon_0:45 var
+R12513:12519 CoqUnified.Theorems <> epsilon def
+R12538:12538 CoqUnified.Theorems <> t:56 var
+R12531:12536 CoqUnified.Theorems <> lambda:46 var
+R12521:12529 CoqUnified.Theorems <> epsilon_0:45 var
+R12596:12602 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R12604:12605 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 12603:12603 <> K:58
+binder 12613:12613 <> k:59
+R12622:12625 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12617:12620 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R12616:12616 CoqUnified.Theorems <> K:58 var
+R12621:12621 CoqUnified.Theorems <> k:59 var
+R12626:12634 CoqUnified.Theorems <> converged def
+R12636:12640 CoqUnified.Theorems <> delta:48 var
+R12643:12650 Coq.Arith.PeanoNat Nat iter def
+R12672:12677 CoqUnified.Theorems <> agents:49 var
+R12655:12663 CoqUnified.Theorems <> tick_step def
+R12665:12669 CoqUnified.Theorems <> alpha:47 var
+R12652:12652 CoqUnified.Theorems <> k:59 var

@@ -1,0 +1,114 @@
+C ====================================================================
+C DEADBAND FRAMEWORK — REDUCTION MACHINE (FP STYLE)
+C ====================================================================
+C
+C John Backus (inventor of FORTRAN!) proposed the Reduction Machine
+C as the ANTI-von-Neumann architecture. No variables. No assignment.
+C No state. Just function composition and reduction.
+C
+C This is the PUREST expression of the deadband framework:
+C Everything reduces to function application. No loops, no mutation.
+C
+C ====================================================================
+C FP PRIMITIVES
+C ====================================================================
+C
+C Selector:     1:<x,y> = x    2:<x,y> = y
+C Apply:        f:x = apply f to x
+C Compose:      (f o g):x = f:(g:x)
+C Construct:    [f,g]:x = <f:x, g:x>
+C Insert:       (INSERT f):<x1,x2,...,xn> = f:<x1, f:<x2, ...>>
+C Constant:     (CONST c):x = c
+C Condition:    (p -> f; g):x = if p:x then f:x else g:x
+C
+C ====================================================================
+C /360 ARITHMETIC IN FP
+C ====================================================================
+C
+C div360_add = (mod o +) o [1, 2] o (CONST 360)  -- WRONG
+C
+C Let's be precise:
+C   div360_add:<a,b> = (a + b) mod 360
+C
+C In FP:
+C   div360_add = mod360 o add
+C   where add = + o [1, 2]           -- extract both, add
+C         mod360 = (INSERT -) o [id, (* o [id, (/ o [id, CONST 360]])] o (+ o [id, CONST 360])]
+C
+C Simplified (using named functions):
+C   div360_add = mod360 o add_pair
+C   div360_sub = mod360 o sub_pair
+C   div360_mul = mod360 o mul_pair
+C
+C BACK-TRANSLATION: /360 in FP is POINT-FREE.
+C No mention of variables. Just function composition.
+C This means the C implementation should have a CHAINABLE API:
+C   div360_add(a, b) can be composed: div360_add(x, div360_add(y, z))
+C   This is already natural in C. But the FP view makes it EXPLICIT.
+C
+C ====================================================================
+C EISENSTEIN SNAP IN FP
+C ====================================================================
+C
+C   snap:<x,y> = convert_back o round_pair o compute_basis : <x,y>
+C
+C   compute_basis:<x,y> = <x + 0.5*y, y * (sqrt(3)/2)>   -- wait
+C   Actually: basis_v = y / (sqrt(3)/2), basis_u = x + 0.5 * basis_v
+C
+C   compute_basis:<x,y> = <x + 0.5*(y/omega_im), y/omega_im>
+C   round_pair:<u,v> = <round(u), round(v)>
+C   convert_back:<u,v> = <u - 0.5*v, omega_im*v>
+C
+C   snap = convert_back o round_pair o compute_basis
+C
+C THREE FUNCTIONS COMPOSED. That's the entire snap.
+C No variables. No state. No loops. Just three pure functions.
+C
+C BACK-TRANSLATION: The snap should be three EXPOSED functions:
+C   eisenstein_to_basis(x, y) -> (u, v)
+C   eisenstein_round(u, v) -> (ur, vr)
+C   eisenstein_from_basis(ur, vr) -> (sx, sy)
+C   Each can be called independently. Each is pure. Each composes.
+C
+C ====================================================================
+C BMA IN FP
+C ====================================================================
+C
+C   bma:sequence = (detect_convergence o (INSERT update_state)) : states
+C
+C   where update_state:<state, bit> = updated_state
+C         detect_convergence:states = L (the order)
+C
+C BMA as INSERT (fold/reduce) over the sequence:
+C   bma = extract_L o (INSERT update_bma_state o pair_with_index)
+C
+C   (INSERT update_bma_state):<bit1, bit2, ..., bitn>
+C     = update_bma_state:<...update_bma_state:<init, bit1>..., bitn>
+C
+C This is a LEFT FOLD. The BMA IS a fold over the sequence.
+C The "2L convergence" is the fold accumulating enough state.
+C
+C BACK-TRANSLATION: BMA should have a FOLD API:
+C   bma_state = BMA_INIT
+C   for each bit:
+C     bma_state = bma_update(bma_state, bit)
+C     if bma_state.converged: return bma_state.L
+C
+C This is already what the streaming API does. But the FP view
+C makes it EXPLICIT that BMA is a fold, not a loop.
+C
+C ====================================================================
+C DEADBAND CHECK IN FP
+C ====================================================================
+C
+C   deadband_check:<L, k> = (<= o [1, 2]) : <L, k>
+C
+C   This is: 1:<L,k> <= 2:<L,k> = L <= k
+C
+C   Pure function. No state. No mutation.
+C   The SIMPLEST possible FP expression.
+C
+C BACK-TRANSLATION: deadband_check is a PURE PREDICATE.
+C In C: bool deadband_perceivable(int L, int k) { return L <= k; }
+C In Rust: fn deadband_perceivable(l: i32, k: i32) -> bool { l <= k }
+C This is ALREADY the implementation. The FP view confirms it's minimal.

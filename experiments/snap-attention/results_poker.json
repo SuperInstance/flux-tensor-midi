@@ -1,0 +1,55 @@
+{
+  "num_hands": 100,
+  "profiles": {
+    "novice": {
+      "wins": 33,
+      "win_rate": 0.33,
+      "avg_deltas_per_hand": 2.55,
+      "attention_efficiency": 12.9412,
+      "layers_attended": {
+        "cards": 247,
+        "betting": 8
+      }
+    },
+    "intermediate": {
+      "wins": 34,
+      "win_rate": 0.34,
+      "avg_deltas_per_hand": 4.97,
+      "attention_efficiency": 6.841,
+      "layers_attended": {
+        "behavior": 229,
+        "cards": 121,
+        "betting": 121,
+        "emotion": 26
+      }
+    },
+    "expert": {
+      "wins": 21,
+      "win_rate": 0.21,
+      "avg_deltas_per_hand": 6.89,
+      "attention_efficiency": 3.0479,
+      "layers_attended": {
+        "behavior": 226,
+        "emotion": 272,
+        "betting": 191
+      }
+    },
+    "baseline": {
+      "wins": 12,
+      "win_rate": 0.12,
+      "avg_deltas_per_hand": 11.41,
+      "attention_efficiency": 1.0517,
+      "layers_attended": {
+        "cards": 307,
+        "behavior": 222,
+        "betting": 311,
+        "emotion": 301
+      }
+    }
+  },
+  "summary": {
+    "best_win_rate": "intermediate",
+    "most_efficient_attention": "novice",
+    "insight": "Expert profile (tight on behavior/emotion, loose on cards) should win most because it attends to the RIGHT deltas \u2014 player behavior and emotional micro-deltas \u2014 rather than wasting attention on card probability noise."
+  }
+}
