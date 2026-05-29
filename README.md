@@ -1,295 +1,98 @@
 # flux-tensor-midi
 
-**4-dimensional tensor representation of MIDI events.**  
-6 languages: Python, Rust, C, CUDA, Fortran, JavaScript.
+4D tensor MIDI representation where PLATO rooms become musicians — T-0 clocks, Eisenstein rhythm snapping, gene regulatory networks, neural music cortex, and constraint repair.
 
-Room musicians, Eisenstein snap, INT8 saturation, side-channels.
+## What This Gives You
 
----
+- **Room musicians** — each PLATO room has a clock, produces notes, and listens to neighbors
+- **T-0 clock** — distributed tempo with Eisenstein lattice rhythm snapping
+- **Gene regulatory networks** — 25-gene musical genome with activation, repression, and horizontal transfer
+- **Neural music cortex** — brain-inspired architecture with dopamine, hippocampus memory, and multiple cortex types
+- **Constraint repair** — automatic fixing of constraint violations in generated MIDI
+- **Genre brain** — style-aware composition with genre classification
+- **Zero dependencies** — pure Python 3.10+
 
-## What It Does
+## Quick Start
 
-flux-tensor-midi represents musical events as 4-dimensional tensors:
+```python
+from flux_tensor_midi import RoomMusician, Arrangement, Track, MidiFileWriter
 
+# Create room musicians
+rooms = [
+    RoomMusician(name="bass", role="rhythm"),
+    RoomMusician(name="harmony", role="harmony"),
+    RoomMusician(name="melody", role="lead"),
+]
+
+# Arrange and perform
+arrangement = Arrangement(rooms=rooms, bpm=120, key="C", bars=8)
+arrangement.perform()
+
+# Export to MIDI
+writer = MidiFileWriter(arrangement)
+writer.save("output.mid")
 ```
-┌──────────────────────────────────────────────────────────┐
-│                  TensorMIDIEvent (4D)                     │
-├──────────────┬──────────────┬────────────┬───────────────┤
-│  Time (T-0)  │   Intent     │  Harmony   │ SideChannel   │
-│  Clock       │  (FluxVector)│  (Jaccard/ │  (Nod/Smile/  │
-│  EWMA drift  │  9 channels  │   Chord)   │   Frown)      │
-│  correction  │  INT8 sat.   │  Cosine    │  Ensemble     │
-│              │  Salience    │  similarity│  coordination │
-│              │  Tolerance   │            │               │
-├──────────────┼──────────────┼────────────┼───────────────┤
-│  When        │  What        │  How it    │  Body         │
-│              │              │  relates   │  language     │
-└──────────────┴──────────────┴────────────┴───────────────┘
+
+### Gene Regulatory Networks
+
+```python
+from flux_tensor_midi import GeneRegulatoryNetwork, MusicalGene
+
+# Build a musical genome
+grn = GeneRegulatoryNetwork()
+grn.add_gene(MusicalGene("harmonic_tension", threshold=0.5, output_rate=1.0))
+grn.add_gene(MusicalGene("rhythmic_density", threshold=0.3, output_rate=0.8))
+
+# Run regulatory dynamics
+grn.express(timesteps=100)
+notes = grn.to_notes()
 ```
 
-Think of a jazz ensemble. Each musician (a "room") has their own sense of time (T-0 clock), their own expressive voice (FluxVector), awareness of how they fit with others (harmony), and non-verbal cues like nods, smiles, and frowns (side-channels).
+### Neural Performance
 
-### Core Concepts
+```python
+from flux_tensor_midi import MusicalBrain, neural_performance
 
-**Room Musicians** — PLATO rooms as musicians. Each room has a clock, produces timestamped events, listens to others, and coordinates via side-channels.
+brain = MusicalBrain(cortex_types=["motor", "auditory", "prefrontal"])
+performance = neural_performance(brain, duration=60.0, bpm=120)
+```
 
-**T-0 Clocks** — Adaptive clocks using Exponentially Weighted Moving Average (EWMA) for drift correction. Each room tracks its own temporal reference point ("T-zero") and smooths out timing jitter.
+## API Reference
 
-**FluxVectors** — 9-channel tensors with per-channel salience (importance) and tolerance (allowed jitter). The 9 channels map to: Arousal, Valence, Dominance, Uncertainty, Novelty, Relevance, Competence, Affiliation, Urgency. In Rust, channels use INT8 saturation (-128 to 127) for zero-allocation performance.
+| Module | Key Types | Description |
+|---|---|---|
+| `core` | `RoomMusician`, `TZeroClock`, `FluxVector`, `EisensteinSnap` | Core room/clock architecture |
+| `gene_regulatory` | `GeneRegulatoryNetwork`, `MusicalGene` | GRN-based composition |
+| `neural_music` | `MusicalBrain`, `MusicalCortex`, `DopamineSystem` | Brain-inspired music |
+| `genre_brain` | `GenreBrain` | Style-aware generation |
+| `constraint_repair` | `ConstraintRepairSystem` | Auto-fix constraint violations |
+| `tracks` | `Arrangement`, `Track` | Multi-track arrangement |
+| `midi_writer` | `MidiFileWriter` | MIDI export |
 
-**EisensteinSnap** — Rhythmic quantization via the Eisenstein integer lattice (hexagonal tiling). The covering radius 1/√3 ≈ 0.577 provides optimal packing for snapping timestamps to musical grid points. Ratios map to rhythmic roles: unison (1:1), halftime (2:1), triplet (3:2), waltz (3:1), compound (4:3).
+## How It Fits
 
-**Side-Channels** — Non-verbal communication between musicians:
-- **Nod** (note-on) — acknowledgment, "I hear you," ready to proceed
-- **Smile** (CC) — approval, harmonic agreement, positive reinforcement  
-- **Frown** (note-off) — disagreement, dissonance, something's off
+The **composition engine** of the FLUX music ecosystem:
 
----
+- [constraint-theory-core](https://github.com/SuperInstance/constraint-theory-core) — constraint primitives used for verification
+- [flux-genome](https://github.com/SuperInstance/flux-genome) — 25-gene genome that feeds the GRN
+- [flux-algebra](https://github.com/SuperInstance/flux-algebra) — algebraic operations on pitch classes
+- [constraint-instrument](https://github.com/SuperInstance/constraint-instrument) — performance rendering
 
-## Install
+## Testing
 
-### Python (pip)
+```bash
+pip install -e ".[dev]"
+pytest -v  # 28 test files
+```
+
+## Installation
 
 ```bash
 pip install flux-tensor-midi
 ```
 
-Requires Python 3.10+. Zero external dependencies.
-
-### Rust (cargo)
-
-```toml
-[dependencies]
-flux-tensor-midi = "0.1"
-```
-
-Optional serde support: `flux-tensor-midi = { version = "0.1", features = ["serde"] }`
-
-### C (cmake)
-
-```bash
-mkdir build && cd build
-cmake ..
-make
-```
-
-Headers in `include/flux_midi/`. Link against `libflux_midi.a`.
-
-### JavaScript (npm)
-
-```bash
-npm install @superinstance/flux-tensor-midi
-```
-
-Zero dependencies. ESM module. Node.js >= 18.
-
-### CUDA / Fortran
-
-Build from source. See language-specific READMEs in `cuda/` and `fortran/`.
-
----
-
-## Quick Start: Python
-
-```python
-from flux_tensor_midi import FluxVector, TZeroClock, RoomMusician, EisensteinSnap
-from flux_tensor_midi.core.snap import RhythmicRole
-from flux_tensor_midi.ensemble.band import Band
-
-# Create musicians with different rhythmic roles
-conductor = RoomMusician("conductor", role=RhythmicRole.ROOT)
-bass = RoomMusician("bass", role=RhythmicRole.HALFTIME)
-drums = RoomMusician("drums", role=RhythmicRole.DOUBLETIME)
-
-# Set their states (9-channel vectors)
-conductor.update_state(FluxVector([0.8, 0.6, 0.4, 0.2, 0.1, 0.9, 0.7, 0.5, 0.3]))
-bass.update_state(FluxVector([0.5, 0.3, 0.8, 0.1, 0.0, 0.4, 0.6, 0.2, 0.7]))
-
-# Bass listens to conductor
-bass.listen_to(conductor)
-
-# Emit events (clock advances, Eisenstein snap applied)
-timestamp, vector = conductor.emit()
-print(f"Conductor at {timestamp:.1f}ms: {vector.values}")
-
-# Check coherence between rooms
-coherence = conductor.coherence_with(bass)
-print(f"Coherence: {coherence:.3f}")
-
-# Form a band
-band = Band("quartet", conductor=conductor, bpm=120.0)
-band.add_musician(bass)
-band.add_musician(drums)
-
-# Tick all musicians together
-events = band.tick_all()
-for name, (ts, vec) in events.items():
-    print(f"  {name}: {ts:.1f}ms")
-
-# Analyze ensemble harmony
-harmony = band.harmony()
-print(f"Chord quality: {harmony.quality()}")
-print(f"Consonance: {harmony.consonance():.3f}")
-```
-
-## Quick Start: Rust
-
-```rust
-use flux_tensor_midi::{
-    FluxChannel, FluxVector, TZeroClock, RoomMusician,
-    MidiEvent, Nod, Smile,
-    jaccard_active, weighted_jaccard,
-};
-
-// Create a flux vector with INT8 channels
-let mut channels = [FluxChannel::new(0); 9];
-channels[0] = FluxChannel::new(80);  // Arousal
-channels[1] = FluxChannel::with_cluster(64, 1);  // Valence, cluster 1
-let flux = FluxVector::new(channels);
-
-println!("Energy: {}", flux.energy());
-println!("Mean: {:.2}", flux.mean());
-println!("Std dev: {:.2}", flux.std_dev());
-
-// T-0 clock with half-life smoothing
-let mut clock = TZeroClock::with_half_life(10.0);
-clock.tick(1.0);
-clock.tick(2.0);
-clock.tick(3.0);
-println!("EWMA: {:.4}", clock.ema);
-println!("Deviation: {:.4}", clock.deviation());
-
-// Create a room musician
-let mut musician = RoomMusician::new("bass", 3);
-let event = MidiEvent::note_on(60, 100);
-musician.receive_midi(&event, 1.0);
-
-// Express into a flux vector
-let mut room_flux = FluxVector::uniform(0);
-musician.express_into(&mut room_flux);
-println!("Room flux: {}", room_flux);
-
-// Side-channels
-let nod = Nod::from_midi_velocity(64, 127);
-println!("Nod confidence: {:.2}", nod.confidence());
-
-// Jaccard similarity
-let a = FluxVector::uniform(100);
-let b = FluxVector::uniform(50);
-println!("Jaccard: {:.3}", jaccard_active(&a, &b));
-```
-
----
-
-## Architecture
-
-```
-flux-tensor-midi/
-├── core/          FluxVector, TZeroClock, EisensteinSnap, RoomMusician
-├── midi/          MidiEvent, MidiClock, channel mapping
-├── harmony/       Jaccard similarity, chord quality, spectral analysis
-├── ensemble/      Band (multi-musician), Score (recorded performance)
-├── sidechannel/   Nod, Smile, Frown
-└── adapters/      DAW bridge (Python)
-```
-
-### Layer Diagram
-
-```
-  ┌─────────────────────────────────────────┐
-  │              ensemble/                   │
-  │    Band · Score · listening matrix       │
-  ├─────────────────────────────────────────┤
-  │    sidechannel/                         │
-  │    Nod · Smile · Frown                  │
-  ├──────────┬──────────────────────────────┤
-  │  harmony │                              │
-  │  Jaccard · Chord · Spectrum             │
-  ├──────────┴──────────────────────────────┤
-  │    midi/                                │
-  │    MidiEvent · Clock · Channel          │
-  ├─────────────────────────────────────────┤
-  │              core/                       │
-  │  FluxVector · TZeroClock · Snap · Room  │
-  └─────────────────────────────────────────┘
-```
-
----
-
-## Language Support Matrix
-
-| Feature | Python | Rust | C | CUDA | Fortran | JS |
-|---------|--------|------|---|------|---------|----|
-| FluxVector | ✅ float | ✅ INT8 | ✅ struct | ✅ | ✅ | ✅ |
-| TZeroClock | ✅ EWMA | ✅ EWMA | ✅ EWMA | ✅ | ✅ | ✅ |
-| EisensteinSnap | ✅ | ✅ SnapRatio | ✅ | ✅ | ✅ | ✅ |
-| RoomMusician | ✅ | ✅ | ✅ | — | ✅ | ✅ |
-| MidiEvent | ✅ | ✅ | ✅ | — | — | ✅ |
-| SideChannels | ✅ | ✅ Nod/Smile/Frown | ✅ | — | — | ✅ |
-| Harmony/Jaccard | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| ChordQuality | ✅ | ✅ | — | — | — | — |
-| Band (ensemble) | ✅ | ✅ | ✅ | ✅ | — | ✅ |
-| Score (recording) | ✅ | ✅ | — | — | — | ✅ |
-| Spectral analysis | ✅ | ✅ DCT | ✅ | ✅ | ✅ | — |
-| Serde/serialization | — | ✅ optional | — | — | — | ✅ JSON |
-| Package manager | PyPI | crates.io | cmake | cmake | cmake | npm |
-
----
-
-## Documentation
-
-- [User Guide](docs/USER-GUIDE.md) — Complete usage documentation
-- [Developer Guide](docs/DEVELOPER-GUIDE.md) — Contributing and internals
-- [Roadmap](docs/ROADMAP.md) — Planned features and direction
-- [Examples](examples/) — Working code in Python
-- [Demos](demos/) — Full demonstration scripts
-
-## Related Projects
-
-- **[plato-midi-bridge](https://github.com/SuperInstance/plato-midi-bridge)** — Connect PLATO rooms to real MIDI hardware
-- **[counterpoint-engine](https://github.com/SuperInstance/counterpoint-engine)** — Species counterpoint generation using flux tensors
-- **[groove-analyzer](https://github.com/SuperInstance/groove-analyzer)** — Micro-timing analysis with Eisenstein lattice
-
----
-
-## Forgemaster Historical Context
-
-Forgemaster is the historical monorepo that seeded the entire Cocapn ecosystem. Over 160 modules have been extracted to standalone repositories under [SuperInstance](https://github.com/SuperInstance?tab=repositories). This repo now serves as the coordinator for flux-tensor-midi — the musical tensor library.
-
-### Cocapn Fleet Architecture
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                        APPLICATION LAYER                         │
-│   platoclaw │ plato-mcp │ cocapn-cli │ cocapn-ai-web            │
-├──────────────────────────────────────────────────────────────────┤
-│                      INTELLIGENCE LAYER                          │
-│   plato-model-ocean │ plato-escalation-gate │ plato-room-intel  │
-│   plato-training │ plato-soul-fingerprint │ fleet-calibrator    │
-├──────────────────────────────────────────────────────────────────┤
-│                       RUNTIME LAYER                              │
-│   plato-engine │ plato-mud │ flux-vm │ flux-lucid │ flux-isa   │
-│   flux-ast │ flux-compiler │ flux-hardware │ flux-verify-api    │
-├──────────────────────────────────────────────────────────────────┤
-│                      CONSTRAINT LAYER                            │
-│   constraint-theory-core │ spectral-conservation │ eisenstein    │
-│   dodecet-encoder │ penrose-memory │ guardc │ guard2mask        │
-│   holonomy-consensus │ pbft-rust │ snapkit (multi-lang)        │
-├──────────────────────────────────────────────────────────────────┤
-│                        DATA LAYER                                │
-│   plato-types │ plato-data │ tensor-spline │ flux-provenance    │
-│   tile-memory │ plato-tiles │ plato-kernel-constraints          │
-├──────────────────────────────────────────────────────────────────┤
-│                      INFRASTRUCTURE                              │
-│   fleet-router │ fleet-health-monitor │ fleet-murmur            │
-│   fleet-resonance │ zeitgeist-protocol │ fleet-gateway          │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Forgemaster is one of **9 agents** in the [Cocapn fleet](https://github.com/SuperInstance?tab=repositories).
-
----
+Requires Python ≥ 3.10.
 
 ## License
 
-[Apache 2.0](./LICENSE)
+MIT
