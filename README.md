@@ -1,3 +1,28 @@
+# 🧬 flux-tensor-midi
+
+**4D tensor MIDI — PLATO rooms as musicians, T-0 clocks, Eisenstein rhythm snapping, gene regulatory networks.**
+
+---
+
+## The Connection to the SuperInstance Fleet
+
+This repo was built by **Forgemaster** (ProArt RTX4050) as part of the
+SuperInstance mathematics research program. It connects to the MIDI fleet
+(180 repos) through the shared ternary group structure:
+
+### Direct connections
+
+
+
+
+
+
+
+---
+
+## Architecture
+
+```
 # flux-tensor-midi
 
 4D tensor MIDI representation where PLATO rooms become musicians — T-0 clocks, Eisenstein rhythm snapping, gene regulatory networks, neural music cortex, and constraint repair.
@@ -27,72 +52,19 @@ rooms = [
 # Arrange and perform
 arrangement = Arrangement(rooms=rooms, bpm=120, key="C", bars=8)
 arrangement.perform()
-
-# Export to MIDI
-writer = MidiFileWriter(arrangement)
-writer.save("output.mid")
 ```
 
-### Gene Regulatory Networks
+---
 
-```python
-from flux_tensor_midi import GeneRegulatoryNetwork, MusicalGene
+## Related Repos
 
-# Build a musical genome
-grn = GeneRegulatoryNetwork()
-grn.add_gene(MusicalGene("harmonic_tension", threshold=0.5, output_rate=1.0))
-grn.add_gene(MusicalGene("rhythmic_density", threshold=0.3, output_rate=0.8))
+- [fleet-ternary-music](https://github.com/SuperInstance/fleet-ternary-music) — Core ternary→music mapping
+- [fleet-math-foundations](https://github.com/SuperInstance/fleet-math-foundations) — 10-language group theory proofs
+- [fleet-science](https://github.com/SuperInstance/fleet-science) — Experiments and proofs
+- [fleet-orchestra](https://github.com/SuperInstance/fleet-orchestra) — Master orchestrator
 
-# Run regulatory dynamics
-grn.express(timesteps=100)
-notes = grn.to_notes()
-```
+## Ensign
 
-### Neural Performance
+**Tensor** — Fleet 4D MIDI Tensor Officer
 
-```python
-from flux_tensor_midi import MusicalBrain, neural_performance
-
-brain = MusicalBrain(cortex_types=["motor", "auditory", "prefrontal"])
-performance = neural_performance(brain, duration=60.0, bpm=120)
-```
-
-## API Reference
-
-| Module | Key Types | Description |
-|---|---|---|
-| `core` | `RoomMusician`, `TZeroClock`, `FluxVector`, `EisensteinSnap` | Core room/clock architecture |
-| `gene_regulatory` | `GeneRegulatoryNetwork`, `MusicalGene` | GRN-based composition |
-| `neural_music` | `MusicalBrain`, `MusicalCortex`, `DopamineSystem` | Brain-inspired music |
-| `genre_brain` | `GenreBrain` | Style-aware generation |
-| `constraint_repair` | `ConstraintRepairSystem` | Auto-fix constraint violations |
-| `tracks` | `Arrangement`, `Track` | Multi-track arrangement |
-| `midi_writer` | `MidiFileWriter` | MIDI export |
-
-## How It Fits
-
-The **composition engine** of the FLUX music ecosystem:
-
-- [constraint-theory-core](https://github.com/SuperInstance/constraint-theory-core) — constraint primitives used for verification
-- [flux-genome](https://github.com/SuperInstance/flux-genome) — 25-gene genome that feeds the GRN
-- [flux-algebra](https://github.com/SuperInstance/flux-algebra) — algebraic operations on pitch classes
-- [constraint-instrument](https://github.com/SuperInstance/constraint-instrument) — performance rendering
-
-## Testing
-
-```bash
-pip install -e ".[dev]"
-pytest -v  # 28 test files
-```
-
-## Installation
-
-```bash
-pip install flux-tensor-midi
-```
-
-Requires Python ≥ 3.10.
-
-## License
-
-MIT
+**Summon:** `/ensign tensor analyze`
