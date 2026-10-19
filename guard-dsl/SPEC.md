@@ -272,7 +272,7 @@ Every compiled module produces a **proof certificate** (`.guardcert`) alongside 
 - Per-obligation verification conditions in SMT-LIB format.
 - Solver results (`sat` / `unsat` / `unknown`).
 - Counterexamples for failed proofs.
-- A Merkle root over all obligation traces.
+- An `attestable` Merkle root over the obligation digests (not a trace root, and not tamper-evident — see [`CERTIFICATES.md`](CERTIFICATES.md)).
 
 See [`CERTIFICATES.md`](CERTIFICATES.md) for the complete format, Merkle construction, trusted computing base, and verification workflow.
 
